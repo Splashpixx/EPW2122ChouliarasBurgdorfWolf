@@ -11,7 +11,7 @@ Die zu erstellende Anwendung soll eine 3D Karte mit allen für Studenten der Inf
 Zusätzlich soll eine Raumnummer eingegeben werden können und dazu den schnellsten Route ausgegeben werden. 
 Die Räumlichkeiten werden in verschiedene Kategorien eingeteilt, beispielsweise Räume für eigenständiges Arbeiten oder Labore und Werkstätten und können so durch den Nutzer gefiltert werden.
 
-Ressourcen & Abhängigkeiten
+## Ressourcen & Abhängigkeiten
 Das Projekt wird als Entwicklungsprojekt in einer dreier Gruppe durchgeführt, somit sind für jedes Teammitglied ca. 300 Student Arbeitsaufwand eingeplant.
 Für die Modellierung der Karte wird Blender genutzt ……
 Hier welche Tools/Programme wollen wir benutzten?
@@ -22,6 +22,6 @@ Im Schwerpunkt Web Development hat die Gruppe (Hier Namen nennen) unabhängig ei
 Hier genaue besprochene Abgrenzung.
 Dafür soll im November ein Prototyp der Webschnittstelle zur Verfügung gestellt werden, damit die Web Development Gruppe ebenfalls mit der Umsetzung anfangen kann.
 Die beiden Gruppen sollen in der Lange sein unabhängig voneinander zu arbeiten, die Kommunikation ist vor allem bei der Webschnittstelle und sich evtl. ergebenden Änderungen am Projekt vorgesehen.
-
+## 
 Projekt- und Zeitplan beifügen
 Durchgeführt wird das Projekt als Team, dass in vier Audits den Projektstand und Fortschritt, sowie die Arbeitswese den Prüfern in einer Präsentation darstellt.
