@@ -2,7 +2,7 @@
 ### Projetmitglieder: Jens Brugdorf, Domeic Wolf, Anastasia Chouliaras
 
 ## Problemfeld & Kontext
-Durch die lange online Zusammenarbeit und die andauernden hybriden Veranstaltungen kennen sich viele Studenten nicht gut am Campus aus. Die Erst- und Zweitsemester haben durch die spezielle Raumnummerierung und die verschiedenen Gebäude in der Regel Orientierungsschwierigkeiten und suchen häufig lange nach dem richtigen Raum.
+Durch die lange online Zusammenarbeit und die andauernden hybriden Veranstaltungen kennen sich viele Studenten nicht gut am Campus aus. Die Erst- und Zweitsemester haben durch die spezielle Raumnummerierung und die verschiedenen Gebäude in der Regel Orientierungsschwierigkeiten und suchen häufig lange nach dem richtigen Raum. Doch auch auf höhere Semester kann dies zutreffen.
 An dieser Stelle soll das Projekt ansetzen und die Orientierung durch eine 3D Karte erleichtern. 
 Damit sollen sich Studenten, neue Mitarbeiter oder auch Besucher sowohl vor Ort als auch online ein Bild des Campus machen und die Route zum gesuchten Raum angezeigt bekommen.
 
