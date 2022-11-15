@@ -6,7 +6,7 @@ function init() {
   var scene = new THREE.Scene();
 
   var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-  camera.position.set(5.482, 5.29, -5.782);
+  camera.position.set(54.82, 52.9, -57.82);
   camera.rotation.set(toRad(-138.79), toRad(34.03), toRad(153.89));
 
   var renderer = new THREE.WebGLRenderer({
@@ -20,17 +20,24 @@ function init() {
   var controls = new THREE.OrbitControls(camera, renderer.domElement);
 
   //Lights
-  var light = new generatePointLight("rgb(255,255,255)", 1);
-  light.position.set(0, 5, 0);
+  const lightTargetObject = new THREE.Object3D();
+  scene.add(lightTargetObject);
+  lightTargetObject.position.set(-1, -1, 0);
+  var light = new THREE.DirectionalLight("rgb(255,255,255)", 0.3);
+  light.target = lightTargetObject;
+  light.shadow = true;
   scene.add(light);
 
-  //Geometry
-  var box = generateBox(1, 1, 1);
-  scene.add(box);
+  var ambientLight = new THREE.AmbientLight("rgb(255,255,255)", 0.5);
+  scene.add(ambientLight);
 
+  //Geometry
   var objloader = new THREE.OBJLoader();
   objloader.load("obj/testGeo.obj", function (object) {
-    object.position.set(-3, 0, 0);
+    const testMat = new THREE.MeshPhongMaterial({
+      color: 0xff0000,
+    });
+    object.material = testMat;
     scene.add(object);
   });
 
@@ -44,9 +51,9 @@ function init() {
   });
 
   const linePoints = [];
-  linePoints.push(new THREE.Vector3(-3, 0, 0));
-  linePoints.push(new THREE.Vector3(0, 3, 0));
-  linePoints.push(new THREE.Vector3(3, 0, 0));
+  linePoints.push(new THREE.Vector3(-50, 11, 0));
+  linePoints.push(new THREE.Vector3(0, 11, 0));
+  linePoints.push(new THREE.Vector3(10, 1, 0));
   const lineGeo = new THREE.BufferGeometry().setFromPoints(linePoints);
 
   const line = new THREE.Line(lineGeo, lineMat);
