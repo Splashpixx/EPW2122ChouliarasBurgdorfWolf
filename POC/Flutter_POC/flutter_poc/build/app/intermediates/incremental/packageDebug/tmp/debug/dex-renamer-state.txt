@@ -1,0 +1,4 @@
+#Mon Nov 21 15:11:56 CET 2022
+base.0=C\:\\Users\\burg.jens\\Desktop\\EPW2122ChouliarasBurgdorfWolf\\POC\\Flutter_POC\\flutter_poc\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
