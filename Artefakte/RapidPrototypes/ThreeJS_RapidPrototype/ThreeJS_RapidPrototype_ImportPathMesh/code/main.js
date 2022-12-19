@@ -1,14 +1,26 @@
 function pups(){
 
-  let fs = 1
-  fs += parseInt("3")
+  // let fs = 1
+  // fs += parseInt("3")
+  //
+  // console.log(fs)
+  //
+  // const derPath = "obj/BLBLBLBLBL.obj";
+  // objToPathMeshPoint(derPath);
 
-  console.log(fs)
+  var p1 = new PathMeshPoint1(1, new THREE.Vector3(1,1,1));
+  var p2 = new PathMeshPoint1(2, new THREE.Vector3(2,2,2));
+  console.log(p1)
 
-  const derPath = "obj/BLBLBLBLBL.obj";
-  objToPathMeshPoint(derPath);
+  var e1 = new Edge(p2, p1.pos.distanceTo(p2.pos))
+  console.log(e1)
 
-  
+  e1.neighbour.id = 5
+  e1.neighbour.pos = new THREE.Vector3(9,9,9)
+  console.log(p2)
+
+  // p1.edges.push(new Edge(p2,p1.pos.distanceTo(p2.pos)))
+  // console.log(p1)
 
 
 }
@@ -72,6 +84,22 @@ class PathMeshPoint{
     this.id = id;
     this.pos = pos;
     this.neighbours = neighbours
+  }
+}
+
+class PathMeshPoint1{
+  constructor(id, pos){
+    this.id = id;
+    this.pos = pos;
+    this.edges = [];
+    this.endFlagg = false;
+  }
+}
+
+class Edge{
+  constructor(point, distance){
+    this.neighbour = point;
+    this.weight = distance;
   }
 }
 
