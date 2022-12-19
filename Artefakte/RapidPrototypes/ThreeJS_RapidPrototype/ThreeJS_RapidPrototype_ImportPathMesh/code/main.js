@@ -75,7 +75,12 @@ class PathMeshPoint{
   }
 }
 
-
+class Edge{
+  constructor(PathMeshPoint, weight){
+    this.weight = weight
+    
+  }
+}
 
 
 pups();
