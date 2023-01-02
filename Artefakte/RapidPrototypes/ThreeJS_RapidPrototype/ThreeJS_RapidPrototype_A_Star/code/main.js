@@ -1,81 +1,86 @@
-function pups(){
-
-  let fs = 1
-  fs += parseInt("3")
-
-  console.log(fs)
-
-  const derPath = "obj/BLBLBLBLBL.obj";
-  objToPathMeshPoint(derPath);
-
-  
-
-
-}
-
-async function objToPathMeshPoint(path){
-  let objString = await fetchText(path);
-  let splitString = objString.split('\n');
-  let lonelyPointsAndEdges = await returnLonelyPointsAndEdges(splitString)
-  let pointsWithNeighbours = await matchNeighbours(lonelyPointsAndEdges)
-  console.log(pointsWithNeighbours)
-}
-
-async function matchNeighbours(input){
-  let meshPoints = input[0]
-  let edges = input[1]
-
-  console.log(meshPoints)
-  console.log(edges)
-
-  meshPoints.forEach(point => {
-        edges.forEach(edge => {
-          if (edge[0] == point.id){
-            point.neighbours.push(edge[1])
-          }
-          if (edge[1] == point.id){
-            point.neighbours.push(edge[0])
-          }
-        })
-  })
-  return meshPoints
-}
-
-async function returnLonelyPointsAndEdges(input){
-  let lonelyPoints = [];
-  let edges = [];
-  let vIndexCount = 0
-  input.forEach(element => {
-    if(element[0] == "v"){ //LonelyPoints
-      let elementSplit = element.split(" ");
-      lonelyPoints.push(new PathMeshPoint(vIndexCount, new THREE.Vector3(elementSplit[1],elementSplit[2],elementSplit[3]), []))
-      vIndexCount++
-    };
-    if(element[0] == "l"){ //lines
-        let elementSplit = element.split(" ")
-        let id1 = elementSplit[1]
-        let id2 = elementSplit[2]
-        edges.push([parseInt(id1)-1,parseInt(id2)-1])
-      };
-  });
-  return [lonelyPoints, edges]
-}
-
-async function fetchText(path) {
-  let response = await fetch(path);
-  let data = await response.text();
-  return data
-}
-
-class PathMeshPoint{
-  constructor(id, pos, neighbours){
-    this.id = id;
-    this.pos = pos;
-    this.neighbours = neighbours
+// Erstellen der benötigten Klassen
+class Edge {
+  constructor(neighbour, weight) {
+    this.neighbour = PathMeshPoint;
+    this.weight = 0.0;
   }
 }
 
+class PathMeshPoint {
+  constructor(id, pos) {
+    this.id = 0;
+    this.pos = new Vector3();
+    this.edges = [];
+    this.endFlag = false;
+  }
+}
+
+class PathMesh {
+  constructor() {
+    this.pathMeshPointList = [];
+  }
+}
+
+// Initialisieren der Variablen, erstmal alle leer
+var startPoint;
+var endPoint;
+var actualLocatioin;
+
+var previousPathPoint;
+
+const actualPathPoints = [];
+
+//befüllen des Arrays mit Beispielpunkten
+const points = [
+  new PathMeshPoint(1, THREE.Vector3(2, 0, 11), [2,1]),
+  new PathMeshPoint(2, THREE.Vector3(3, 0, 11), [(1,1),(3,5)]),
+  new PathMeshPoint(3, THREE.Vector3(3, 5, 11), [(2,5),(4,1),(5,2)]),
+  new PathMeshPoint(4, THREE.Vector3(4, 5, 11), [3,1]),
+  new PathMeshPoint(5, THREE.Vector3(3, 7, 11), [(3,2),(6,10)]),
+  new PathMeshPoint(6, THREE.Vector3(3, 7, 1), [(7,4),(8,4)]),
+  new PathMeshPoint(7, THREE.Vector3(3, 3, 1), [6,4]),
+  new PathMeshPoint(8, THREE.Vector3(3, 11, 1), [(6,4),(9,1)]),
+  new PathMeshPoint(9, THREE.Vector3(4, 11, 1), [8,1])
+];
+actualPathPoints = actualPathPoints.concat(points);
 
 
+// Beispiel Start und Endunte werden aus der Liste ausgewählt
+startPoint = actualPathPoints[0];
+actualLocatioin = startPoint;
+endPoint = actualPathPoints[8];
 
-pups();
+
+//Beginn des Loops
+while (actualLocatioin = endPoint){
+  
+  console.log(actualLocatioin);
+  previousPathPoint = startPoint;
+
+      if (actualLocatioin.edges.length > 1) {
+
+          console.log("hier die priority list abfragen");
+          let priorityList = [];
+
+              for (let i = 0; i < actualLocatioin.edges.length; i++) {
+                if (actualLocatioin.endFlag = false) {
+                  priorityList.push(actualPathPoints[actualLocatioin.Edge[i].id -= 1]);
+                }
+              }
+              actualLocatioin = priorityList[0];
+              //hier könnte man den Fall abfangen wenn die Priority liste leer ist, d.h. alle edges haben endflags und es gibt nur Sackgassen
+
+      }else {
+          //nächster Punkt, minus eins da der array bei 0 beginnt
+          actualLocatioin = actualPathPoints[actualLocatioin.Edge.id -= 1];
+        }
+
+  if (previousPathPoint == actualLocatioin){
+    console.log("Eine Sackgasse wurde errreicht");
+    actualLocatioin.endFlag = true;
+  }
+
+}
+
+console.log("Das Ziel wurde errreicht");
+
