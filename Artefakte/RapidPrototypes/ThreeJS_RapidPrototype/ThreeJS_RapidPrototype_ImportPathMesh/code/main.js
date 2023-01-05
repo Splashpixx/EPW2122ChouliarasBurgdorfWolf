@@ -1,7 +1,8 @@
 function main(){
-  const derPath = "obj/BLBLBLBLBL.obj";
+  const derPath = "obj/pathMesh.obj";
   let pointData = objToPathMeshPoint(derPath);
   console.log(pointData)
+  console.log(parseInt("010"))
 }
 
 async function objToPathMeshPoint(path){
