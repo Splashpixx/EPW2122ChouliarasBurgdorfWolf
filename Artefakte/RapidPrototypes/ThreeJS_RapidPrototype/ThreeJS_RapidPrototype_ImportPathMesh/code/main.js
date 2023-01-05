@@ -1,7 +1,7 @@
 function main(){
   const derPath = "obj/pathMesh.obj";
-  let pointData = objToPathMeshPoint(derPath);
-  console.log(pointData)
+  let pathMesh = objToPathMeshPoint(derPath);
+  console.log(pathMesh)
   console.log(parseInt("010"))
 }
 
@@ -9,7 +9,9 @@ async function objToPathMeshPoint(path){
   let objString = await fetchText(path);
   let splitString = objString.split('\n');
   let pointsAndEdges = await returnPointsAndEdgeData(splitString)
-  return await matchNeighbours(pointsAndEdges)
+  let points = matchNeighbours(pointsAndEdges)
+  setStairsOrElevator(points)
+  return await points
 }
 
 async function fetchText(path) {
@@ -60,12 +62,19 @@ async function matchNeighbours(input){
   return meshPoints
 }
 
+function setStairsOrElevator(input){
+  return input
+}
+
 class PathMeshPoint{
   constructor(id, pos){
     this.id = id;
     this.pos = pos;
     this.edges = [];
     this.endFlag = false;
+    this.prio = 0.0;
+    this.stairs = false;
+    this.elevator = false;
   }
 }
 
