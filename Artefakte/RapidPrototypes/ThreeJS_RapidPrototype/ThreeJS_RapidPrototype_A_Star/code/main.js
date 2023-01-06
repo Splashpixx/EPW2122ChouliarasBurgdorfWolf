@@ -65,11 +65,9 @@ function main()
     console.log(actualPathPoints);
 
 
-// Beispiel Start und Endunte werden aus der Liste ausgewählt
-    startPoint = actualPathPoints[0];
-    endPoint = actualPathPoints[2];
+// Beispiel Start und Endunte werden aus der Liste ausgewähl
 
-    findPath(startPoint, endPoint, actualPathPoints)
+    findPath(actualPathPoints[0], actualPathPoints[8], actualPathPoints)
 
 
 
@@ -87,27 +85,30 @@ function findPath(startPoint, endPoint, actualPathPoints){
         i++
         console.log("NEUE WHILE");
         console.log("actualPathPoint " + actualLocation.id);
-        console.log("previousPathPoint " + previousPathPoint.id);
+        // console.log("previousPathPoint " + previousPathPoint.id);
 
         if (actualLocation.edges.length > 1) {
 
             //Prio und sortierung der Edges des aktuellen Punktes
+            // console.log("MACH PRIO");
+            console.log("RECHNEN")
             calcPrio(actualLocation.edges,endPoint)
-            //console.log(actualLocation.edges)
+            console.log(actualLocation.edges)
 
+            console.log("SORTIEREN")
             sortPrio(actualLocation.edges)
-            //console.log(actualLocation.edges)
+            console.log(actualLocation.edges)
 
             var foundNewPoint = false;
 
-            actualLocation.edges.every(edges => {
+            actualLocation.edges.some(edges => {
                 // console.log("lba " + (edges.neighbour != previousPathPoint))
                 if (edges.neighbour.endFlag === false && edges.neighbour != previousPathPoint) {
                     console.log("kommen wir hier rein?")
                     previousPathPoint = actualLocation
                     actualLocation = edges.neighbour
                     foundNewPoint = true
-                    return false;
+                    return true;
                 }
             });
             // Falls es außer dem Rückweg nur Sackgassen gibt
@@ -138,28 +139,34 @@ function findPath(startPoint, endPoint, actualPathPoints){
 
 
 function calcPrio(edges,goal) {
- edges.forEach(element => {
+    // console.log("PRIOBERECHNUNG")
+    // console.log(edges)
+    edges.forEach(element => {
+        if (element.neighbour.prio == 0) {
 
-    if (element.prio == 0) {
-      element.prio = element.pos.THREE.distanceTo(goal.pos)
-    }
-  
+            // console.log(element.neighbour.pos)
+            // console.log(goal.pos)
+            // let prio = element.neighbour.pos.distanceTo(goal.pos)
+            // console.log(prio)
+          element.neighbour.prio = element.neighbour.pos.distanceTo(goal.pos)
+        }
  });
-
 }
 
 function sortPrio(edges) {
-
-//    for (var i = 0; i < edges.length; i++) {
-
-//      if (edges[i].neighbour.prio > edges[i + 1].neighbour.prio) {
-//        var a = edges[i]
-//        var b = edges[i + 1]
-//        edges[i] = b
-//        edges[i + 1] = a
-//        i = 0
-//      }
-//  }
+    // edges.forEach(element => {
+    //     element.neighbour.prio = 0
+    // })
+    for (var i = 0; i < edges.length; i++) {
+        if (edges[i].neighbour.prio > edges[i + 1].neighbour.prio) {
+            var a = edges[i].neighbour.prio
+            var b = edges[i + 1].neighbour.prio
+            edges[i] = b
+            edges[i + 1] = a
+            // sortPrio(edges)
+            // i = 0
+        }
+    }
 }
 
 main();
