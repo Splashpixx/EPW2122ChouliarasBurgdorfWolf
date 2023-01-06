@@ -67,7 +67,7 @@ function main()
 
 // Beispiel Start und Endunte werden aus der Liste ausgewähl
 
-    findPath(actualPathPoints[0], actualPathPoints[8], actualPathPoints)
+    findPath(actualPathPoints[8], actualPathPoints[0], actualPathPoints)
 
 
 
@@ -139,32 +139,23 @@ function findPath(startPoint, endPoint, actualPathPoints){
 
 
 function calcPrio(edges,goal) {
-    // console.log("PRIOBERECHNUNG")
-    // console.log(edges)
     edges.forEach(element => {
         if (element.neighbour.prio == 0) {
 
-            // console.log(element.neighbour.pos)
-            // console.log(goal.pos)
-            // let prio = element.neighbour.pos.distanceTo(goal.pos)
-            // console.log(prio)
           element.neighbour.prio = element.neighbour.pos.distanceTo(goal.pos)
         }
  });
 }
 
 function sortPrio(edges) {
-    // edges.forEach(element => {
-    //     element.neighbour.prio = 0
-    // })
-    for (var i = 0; i < edges.length; i++) {
-        if (edges[i].neighbour.prio > edges[i + 1].neighbour.prio) {
-            var a = edges[i].neighbour.prio
-            var b = edges[i + 1].neighbour.prio
+    for (var i = 0; i < edges.length-1; i++) {
+        let j = i+1
+        if (edges[i].neighbour.prio > edges[j].neighbour.prio) {
+            var a = edges[i]
+            var b = edges[j]
             edges[i] = b
-            edges[i + 1] = a
-            // sortPrio(edges)
-            // i = 0
+            edges[j] = a
+            i = 0
         }
     }
 }
