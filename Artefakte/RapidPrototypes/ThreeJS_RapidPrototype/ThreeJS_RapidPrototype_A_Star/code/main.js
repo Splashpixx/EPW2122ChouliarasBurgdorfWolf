@@ -67,55 +67,68 @@ function main()
 
 // Beispiel Start und Endunte werden aus der Liste ausgewählt
     startPoint = actualPathPoints[0];
-    actualLocatioin = startPoint;
     endPoint = actualPathPoints[2];
 
+    findPath(startPoint, endPoint, actualPathPoints)
 
-var i = 0
+
+
+
+}
+
+function findPath(startPoint, endPoint, actualPathPoints){
+
+    var actualLocation = startPoint;
+    var previousPathPoint = startPoint
+
+    var i = 0
 //Beginn des Loops
-    while (actualLocatioin != endPoint && i < 20) {
-      i++
-      console.log("NEUE WHILE");
-      console.log("actualPathPoint " + actualLocatioin.id);
-        
+    while (actualLocation != endPoint && i < 20) {
+        i++
+        console.log("NEUE WHILE");
+        console.log("actualPathPoint " + actualLocation.id);
         console.log("previousPathPoint " + previousPathPoint.id);
 
-        if (actualLocatioin.edges.length > 1) {
+        if (actualLocation.edges.length > 1) {
 
             //Prio und sortierung der Edges des aktuellen Punktes
-            calcPrio(actualLocatioin.edges,endPoint)
-            //console.log(actualLocatioin.edges)
+            calcPrio(actualLocation.edges,endPoint)
+            //console.log(actualLocation.edges)
 
-            sortPrio(actualLocatioin.edges)
-            //console.log(actualLocatioin.edges)
+            sortPrio(actualLocation.edges)
+            //console.log(actualLocation.edges)
 
             var foundNewPoint = false;
-           
-                actualLocatioin.edges.every(edges => {
-                  if (edges.neighbour.endFlag == false && edges.neighbour != previousPathPoint) {
-                        actualLocatioin = edges.neighbour
-                        foundNewPoint = true
-                        return false;
-                    }
-                });
 
-              // Falls es außer dem Rückweg nur Sackgassen gibt
-              if (foundNewPoint == false) {
-                actualLocatioin = previousPathPoint;
-              }
+            actualLocation.edges.every(edges => {
+                // console.log("lba " + (edges.neighbour != previousPathPoint))
+                if (edges.neighbour.endFlag === false && edges.neighbour != previousPathPoint) {
+                    console.log("kommen wir hier rein?")
+                    previousPathPoint = actualLocation
+                    actualLocation = edges.neighbour
+                    foundNewPoint = true
+                    return false;
+                }
+            });
+            // Falls es außer dem Rückweg nur Sackgassen gibt
+            if (foundNewPoint == false) {
+                actualLocation.endFlag = true
+                previousPathPoint = actualLocation
+                actualLocation = previousPathPoint;
+            }
 
         } else {
             //nächster Punkt
-            previousPathPoint = actualLocatioin;
-            actualLocatioin = actualLocatioin.edges[0].neighbour;
+            previousPathPoint = actualLocation;
+            actualLocation = actualLocation.edges[0].neighbour;
         }
 
 
-        if (previousPathPoint == actualLocatioin) {
+        if (previousPathPoint == actualLocation) {
             console.log("Eine Sackgasse wurde errreicht");
-            actualLocatioin.endFlag = true;
+            actualLocation.endFlag = true;
         }
-        
+
 
     }
 
