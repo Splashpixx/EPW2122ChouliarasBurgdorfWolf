@@ -63,6 +63,11 @@ const Scene = () => {
     )
   }
 
+  var testBox1 = <Boxx position={active ? [26.5,13,39.5]  : [26.5,12,39.5]} />;
+  var testBox2 = <Boxx position={active ? [-6,13,-6]  : [-6,12,-6]}/>;
+
+  const tests = [testBox1,testBox2]
+
  
   return ( 
   <Canvas>
@@ -96,10 +101,8 @@ const Scene = () => {
           />
       </Suspense>  
 
-      
-
-      <Boxx position={active ? [36.5,13,39.5]  : [36.5,12,39.5]} />
-      <Boxx position={active ? [-6,13,-6]  : [-6,12,-6]} />
+    {tests.map((x) => (x))}
+    
 
   </Canvas>
   );
