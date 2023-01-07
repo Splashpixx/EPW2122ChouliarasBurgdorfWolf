@@ -27,8 +27,6 @@ import { createContext, useMemo, useContext, useLayoutEffect, forwardRef } from 
 const Scene = () => {
   const cube = useRef()
 
-  var x = "green"
-
   //OBJ Loader
     const materials = useLoader(MTLLoader, "obj/testGeo.mtl");
     const obj = useLoader(OBJLoader, "obj/testGeo.obj", (loader) => {
@@ -40,7 +38,7 @@ const Scene = () => {
 
 
   function reducer(state, action) {
-    console.log(arrayWithActiveCubes)
+    
 
     switch (action.type) {
       case 'increment':
@@ -59,6 +57,11 @@ const Scene = () => {
             arrayWithActiveCubes.push(action.payloade)
           }
       }
+      if (arrayWithActiveCubes.length == 2) {
+        console.log("done")
+       
+      }
+      console.log(arrayWithActiveCubes)
         return
       case 'decrement':
         
@@ -69,8 +72,7 @@ const Scene = () => {
       if (JSON.stringify(arrayWithActiveCubes[1]) == JSON.stringify(action.payloade)){
         arrayWithActiveCubes.splice(1, 1);
       } 
-    
-        
+      console.log(arrayWithActiveCubes)
         return
       default:
         throw new Error();
@@ -153,7 +155,8 @@ const Scene = () => {
       </line>
     )
   }
-   
+
+     
   return ( 
   <Canvas>
       
@@ -179,8 +182,8 @@ const Scene = () => {
 
     <Boxlogic/>
 
-    <Line start={[36.5,12,39.5]} end={[-6,12,-6]} />
-    
+    <Line start={[10,10,10]} end={[20,10,-30]} />
+
   </Canvas>
   );
 };
@@ -193,4 +196,4 @@ const App = () => {
 
 export default App;
 
-// Save for alter https://www.youtube.com/watch?v=LNvn66zJyKs
+// Save for alter https://www.youtube.com/watch?v=LNvn66zJyKs https://onion2k.github.io/r3f-by-example/
