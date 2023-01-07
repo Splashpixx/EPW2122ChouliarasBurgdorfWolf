@@ -9,7 +9,7 @@ import * as THREE from "three";
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { useLoader } from '@react-three/fiber'
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
-import { Suspense } from "react";
+import { Suspense, useReducer } from "react";
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
 
 //https://codesandbox.io/s/basic-clerping-example-qh8vhf?file=/src/Scene.js
@@ -20,6 +20,9 @@ import { useFrame, useThree } from "@react-three/fiber";
 
 //https://onion2k.github.io/r3f-by-example/examples/hooks/rotating-cube/
 import { render } from "react-dom";
+
+//https://codesandbox.io/s/splines-3k4g6?file=/src/Nodes.js:148-265
+import { createContext, useMemo, useContext, useLayoutEffect, forwardRef } from 'react'
 
 const Scene = () => {
   const cube = useRef()
@@ -33,8 +36,46 @@ const Scene = () => {
     loader.setMaterials(materials);
   });
 
-  const [active, setActive] = useState(false)
-  
+  const arrayWithActiveCubes = []
+
+
+  function reducer(state, action) {
+    console.log(arrayWithActiveCubes)
+
+    switch (action.type) {
+      case 'increment':
+
+      if(arrayWithActiveCubes.length <= 0){
+        arrayWithActiveCubes.push(action.payloade)
+      } else {
+
+        var inArray = false
+        arrayWithActiveCubes.forEach(element => {
+          if(JSON.stringify(element) == JSON.stringify(action.payloade)){
+            inArray = true
+          }
+          });
+          if(!inArray){
+            arrayWithActiveCubes.push(action.payloade)
+          }
+      }
+        return
+      case 'decrement':
+        
+      if(JSON.stringify(arrayWithActiveCubes[0]) == JSON.stringify(action.payloade)){
+          arrayWithActiveCubes.splice(0, 1);
+      }
+      
+      if (JSON.stringify(arrayWithActiveCubes[1]) == JSON.stringify(action.payloade)){
+        arrayWithActiveCubes.splice(1, 1);
+      } 
+    
+        
+        return
+      default:
+        throw new Error();
+    }
+  }
 
   function Boxx(props) {
     
@@ -42,33 +83,77 @@ const Scene = () => {
     
     const [hovered, setHover] = useState(false)
     const [active, setActive] = useState(false)
+
+    const [state, dispatcher] = useReducer(reducer)
+
     
     useFrame((state, delta) => (mesh.current.rotation.x += delta))
-    
+
     return (
       <mesh
         {...props}
         ref={mesh}
         scale={active ? 1.5 : 1}
-        onClick={(event) => setActive(!active)}
+        onClick={() => {
+          setActive(!active) 
+          
+          if(!active){
+            dispatcher({type: 'increment', payloade: props.position})
+            
+          } else {
+            dispatcher({type: 'decrement', payloade: props.position})
+          }
+        }
+      }
 
+        
         //Hover
         onPointerOver={(event) => setHover(true)}
         onPointerOut={(event) => setHover(false)}>
 
         <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color={hovered ? 'green' : 'red'} color={active ? 'green' : 'red'} />
+        <meshStandardMaterial color={active ? 'green' : 'red' && hovered ? 'yellow' : 'red'} />
+        
       </mesh>
 
     )
   }
 
-  var testBox1 = <Boxx position={active ? [26.5,13,39.5]  : [26.5,12,39.5]} />;
-  var testBox2 = <Boxx position={active ? [-6,13,-6]  : [-6,12,-6]}/>;
+// max 2 aussuchen
 
-  const tests = [testBox1,testBox2]
+  function Boxlogic(){
+    const [active, setActive] = useState(false)
 
- 
+
+
+    const items = [
+      <Boxx position={active ? [36.5,13,39.5] : [36.5,12,39.5]}/>,
+      <Boxx position={active ? [-6,13,-6]  : [-6,12,-6]}/>
+    ]
+
+    
+    
+    return(
+      items.map((x) => (x))
+    )
+  }
+
+  function Line({ start, end }) {
+    const ref = useRef()
+    
+    //rendert erst wenn der rest gerendert wurde
+    useLayoutEffect(() => {
+      ref.current.geometry.setFromPoints([start, end].map((point) => new THREE.Vector3(...point)))
+    }, [start, end])
+    
+    return (
+      <line ref={ref}>
+        <bufferGeometry />
+        <lineBasicMaterial color="hotpink" />
+      </line>
+    )
+  }
+   
   return ( 
   <Canvas>
       
@@ -89,21 +174,13 @@ const Scene = () => {
           <primitive 
             object={obj}
             position={[0, 0, 0]}
-            onClick={(e) => {
-              if(x == "green"){
-                x = "blue"
-              } else {
-                x = "green"
-              }
-              console.log(obj)
-            }}
-            onWheel={(e) => console.log('wheel spins')}
           />
       </Suspense>  
 
-    {tests.map((x) => (x))}
-    
+    <Boxlogic/>
 
+    <Line start={[36.5,12,39.5]} end={[-6,12,-6]} />
+    
   </Canvas>
   );
 };
@@ -115,3 +192,5 @@ const App = () => {
 
 
 export default App;
+
+// Save for alter https://www.youtube.com/watch?v=LNvn66zJyKs
