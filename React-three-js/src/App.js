@@ -33,29 +33,35 @@ const Scene = () => {
     loader.setMaterials(materials);
   });
 
+  const [active, setActive] = useState(false)
+  
 
-  const Box = () => {
-    const boxRef = useRef();
+  function Boxx(props) {
+    
+    const mesh = useRef()
+    
+    const [hovered, setHover] = useState(false)
     const [active, setActive] = useState(false)
-  
-    useFrame(() => {
-      boxRef.current.rotation.y += 0.01;
-    });
-  
+    
+    useFrame((state, delta) => (mesh.current.rotation.x += delta))
+    
     return (
-      <mesh position={active ? [36.5,13,39.5]  : [36.5,12,39.5]} ref={boxRef} rotation-x={Math.PI * 0.25} rotation-y={Math.PI * 0.25}
-      
-      scale={active ? 1.5 : 1} onClick={() => setActive(!active)} 
-        
+      <mesh
+        {...props}
+        ref={mesh}
+        scale={active ? 1.5 : 1}
+        onClick={(event) => setActive(!active)}
 
-      >
-        <boxBufferGeometry args={[2, 2, 2]} />
-        <meshStandardMaterial color={active ? "green" : "red"} />
+        //Hover
+        onPointerOver={(event) => setHover(true)}
+        onPointerOut={(event) => setHover(false)}>
+
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color={hovered ? 'green' : 'red'} color={active ? 'green' : 'red'} />
       </mesh>
-    );
-  };
 
-  
+    )
+  }
 
  
   return ( 
@@ -90,7 +96,11 @@ const Scene = () => {
           />
       </Suspense>  
 
-      <Box />
+      
+
+      <Boxx position={active ? [36.5,13,39.5]  : [36.5,12,39.5]} />
+      <Boxx position={active ? [-6,13,-6]  : [-6,12,-6]} />
+
   </Canvas>
   );
 };
