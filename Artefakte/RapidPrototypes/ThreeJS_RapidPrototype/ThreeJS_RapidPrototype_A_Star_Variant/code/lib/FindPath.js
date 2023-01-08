@@ -1,87 +1,81 @@
-function findPath(startPoint, endPoint, actualPathPoints){
+async function findPath(startPoint, endPoint, pathMesh){
 
-    var actualLocation = startPoint;
-    var previousPathPoint = startPoint
+    startPoint.depth = 0
 
-    var i = 0
-//Beginn des Loops
-    while (actualLocation != endPoint && i < 20) {
-        i++
-        console.log("NEUE WHILE");
-        console.log("actualPathPoint " + actualLocation.id);
-        // console.log("previousPathPoint " + previousPathPoint.id);
+    let currentLoc = startPoint
 
-        if (actualLocation.edges.length > 1) {
+    while (currentLoc !== endPoint) {
 
-            //Prio und sortierung der Edges des aktuellen Punktes
-            // console.log("MACH PRIO");
-            console.log("RECHNEN")
-            calcPrio(actualLocation.edges,endPoint)
-            console.log(actualLocation.edges)
+        await setDepth(currentLoc.edges, currentLoc.depth)
 
-            console.log("SORTIEREN")
-            sortPrio(actualLocation.edges)
-            console.log(actualLocation.edges)
+        if (currentLoc.edges.length === 1) {
+            if(currentLoc === endPoint){
 
-            var foundNewPoint = false;
+            } else{
+                currentLoc.endFlag = true
+                currentLoc = currentLoc.edges[0].neighbour
+            }
+        } else {
+            await calcPrio(currentLoc.edges,endPoint)
+            await sortPrio(currentLoc.edges)
 
-            actualLocation.edges.some(edges => {
-                // console.log("lba " + (edges.neighbour != previousPathPoint))
-                if (edges.neighbour.endFlag === false && edges.neighbour != previousPathPoint) {
-                    console.log("kommen wir hier rein?")
-                    previousPathPoint = actualLocation
-                    actualLocation = edges.neighbour
-                    foundNewPoint = true
-                    return true;
-                }
-            });
-            // Falls es außer dem Rückweg nur Sackgassen gibt
-            if (foundNewPoint == false) {
-                actualLocation.endFlag = true
-                previousPathPoint = actualLocation
-                actualLocation = previousPathPoint;
+            let newPoint
+            try {
+                newPoint = currentLoc.edges.find(
+                    edge => ((edge.neighbour.endFlag === false && currentLoc.depth < edge.neighbour.depth))
+                ).neighbour
+            } catch (error){
             }
 
-        } else {
-            //nächster Punkt
-            previousPathPoint = actualLocation;
-            actualLocation = actualLocation.edges[0].neighbour;
+            if(newPoint === undefined){
+                currentLoc.endFlag = true
+                currentLoc = currentLoc.edges.find(
+                    edge => (edge.neighbour.depth === currentLoc.depth-1)
+                ).neighbour
+            } else{
+                currentLoc = newPoint
+            }
         }
-
-
-        if (previousPathPoint == actualLocation) {
-            console.log("Eine Sackgasse wurde errreicht");
-            actualLocation.endFlag = true;
-        }
-
-
     }
-
-    console.log("Das Ziel wurde errreicht");
-
-    return 1
-
+    let path = await getPath(startPoint, endPoint)
+    pathMesh.forEach(pathPoint => {
+        pathPoint.prio = 0
+        pathPoint.depth = 0.0
+        pathPoint.endFlag = false
+    })
+    return path
 }
 
-
-function calcPrio(edges,goal) {
-    edges.forEach(element => {
-        if (element.neighbour.prio == 0) {
-
-            element.neighbour.prio = element.neighbour.pos.distanceTo(goal.pos)
+async function calcPrio(edges,endPoint) {
+    edges.forEach(edge => {
+        if (edge.neighbour.prio === 0) {
+            edge.neighbour.prio = edge.neighbour.pos.distanceTo(endPoint.pos)
         }
     });
 }
 
-function sortPrio(edges) {
-    for (var i = 0; i < edges.length-1; i++) {
-        let j = i+1
-        if (edges[i].neighbour.prio > edges[j].neighbour.prio) {
-            var a = edges[i]
-            var b = edges[j]
-            edges[i] = b
-            edges[j] = a
-            i = 0
+async function sortPrio(edges) {
+    edges.sort(function (a,b){
+        return a.neighbour.prio - b.neighbour.prio;
+    });
+}
+
+async function setDepth(edges, depthValue){
+    edges.forEach(edge =>{
+        if(edge.neighbour.depth == null){
+            edge.neighbour.depth = (depthValue + 1)
         }
+    })
+}
+
+async function getPath(startPoint, endPoint){
+    let path = []
+    let currentPoint = endPoint
+    while (currentPoint.depth > 0){
+        console.log(currentPoint.id)
+        path.push(currentPoint.pos)
+        currentPoint = currentPoint.edges.find(edge => (edge.neighbour.depth < currentPoint.depth)).neighbour
     }
+    path.push(currentPoint)
+    return path
 }
