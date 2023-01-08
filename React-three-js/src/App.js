@@ -154,13 +154,14 @@ const Scene = () => {
         <lineBasicMaterial color="hotpink" />
       </line>
     )
+
   }
 
      
   return ( 
   <Canvas>
       
-      <OrbitControls/>
+      <OrbitControls position={[20,10,10]}/>
       
       <ambientLight 
       intensity={0.5}
