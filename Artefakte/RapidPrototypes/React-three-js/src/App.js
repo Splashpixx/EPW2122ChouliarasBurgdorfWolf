@@ -9,7 +9,7 @@ import * as THREE from "three";
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { useLoader } from '@react-three/fiber'
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
-import { Suspense, useReducer } from "react";
+import { Children, Suspense, useReducer } from "react";
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
 
 //https://codesandbox.io/s/basic-clerping-example-qh8vhf?file=/src/Scene.js
@@ -23,26 +23,70 @@ import { render } from "react-dom";
 
 //https://codesandbox.io/s/splines-3k4g6?file=/src/Nodes.js:148-265
 import { createContext, useMemo, useContext, useLayoutEffect, forwardRef } from 'react'
+import { MeshStandardMaterial } from 'three';
+
+import create from 'zustand'
+
+// Komentare zu aufbau React, Hooks, algemein comments
+
+/*
+!- Hooks -!
+- Hooks starten immer mit use (useState, useEffekt, useReducer...)
+- Hooks sind immer am start einer funktion
+
+useState: wenn sich etwas ändert -> Re-render UI | Aufbau const [value/var, setter] = useState() 
+useEffekt: wird immer aufberufen im fall dass sich eins state ändert
+useRef: ähnlich wie useState, nur dass es die UI nicht neu rendert
+useReducer: Komplexe version von useState das eine funktion aufrufen kann
+
+Bieten die Möglichkeit, State in Functional Components zu nutzen, was bisher nur in Class Components möglich war.
+*/
 
 const Scene = () => {
   const cube = useRef()
 
+  /*
   //OBJ Loader
     const materials = useLoader(MTLLoader, "obj/testGeo.mtl");
-    const obj = useLoader(OBJLoader, "obj/testGeo.obj", (loader) => {
+    const obj = useLoader(OBJLoader, "obj/32xx_full.obj", (loader) => {
+      
     materials.preload();
     loader.setMaterials(materials);
+    
   });
+  */
+
+  //OBJ Loader
+  function Model(props){
+    const objRef = useRef()
+
+    const [active, setActive] = useState(false)
+
+    const obj = useLoader(OBJLoader, "obj/32xx_full.obj", (loader) => {})
+
+    
+    return (
+      <mesh>
+        <primitive 
+          {...props}
+          ref={objRef}
+          scale={active ? 1.5 : 1}
+          onClick={(e) => console.log(e.object.name)}  
+          object={obj} 
+          />   
+        
+        <meshStandardMaterial color={active ? 'green' : 'red' } />
+      </mesh>   
+    )
+  }
 
   const arrayWithActiveCubes = []
 
-
   function reducer(state, action) {
     
-
     switch (action.type) {
       case 'increment':
-
+        console.log()
       if(arrayWithActiveCubes.length <= 0){
         arrayWithActiveCubes.push(action.payloade)
       } else {
@@ -87,7 +131,6 @@ const Scene = () => {
     const [active, setActive] = useState(false)
 
     const [state, dispatcher] = useReducer(reducer)
-
     
     useFrame((state, delta) => (mesh.current.rotation.x += delta))
 
@@ -98,7 +141,7 @@ const Scene = () => {
         scale={active ? 1.5 : 1}
         onClick={() => {
           setActive(!active) 
-          
+          //console.log(obj)
           if(!active){
             dispatcher({type: 'increment', payloade: props.position})
             
@@ -157,12 +200,44 @@ const Scene = () => {
 
   }
 
+/* Kamera einstellunf und erstellung */
+
+  
+
+  const CameraControls = () => {
+    const [ortho, set] = useState(false)
+  
+    return (
+      <>
+      
+      <PerspectiveCamera position={[0, 20, 1.8]} fov={120} makeDefault={!ortho} rotation={false}/>
+      <OrbitControls position={[20,0,10]} makeDefault={ortho}/>
+      </>
+    )
+  }
+ 
+  
+  function Counter() {
+    return (
+      <div className="counter">
+        <button onClick={console.log("f")}>Switch cam</button>
+      </div>
+    )
+  }
+  /*
+  useEffect(() => {
+    const interval = setInterval(() => set((state) => !state), 1000)
+    return () => clearInterval(interval)
+  }, [])
+  */
      
   return ( 
+
+    <>
   <Canvas>
-      
-      <OrbitControls position={[20,10,10]}/>
-      
+
+    <CameraControls/>
+
       <ambientLight 
       intensity={0.5}
       />
@@ -173,19 +248,23 @@ const Scene = () => {
         shadow-mapSize-width={512}
         intensity={0.8}
       />
-      
+
       <Suspense fallback={null}>
-          <primitive 
-            object={obj}
-            position={[0, 0, 0]}
-          />
-      </Suspense>  
+        <Model />
+      </Suspense>
 
     <Boxlogic/>
 
     <Line start={[10,10,10]} end={[20,10,-30]} />
 
   </Canvas>
+
+  <div className='main'>
+    <h1>Hello</h1>
+    <Counter/>
+  </div>
+  
+  </>
   );
 };
 
@@ -198,3 +277,16 @@ const App = () => {
 export default App;
 
 // Save for alter https://www.youtube.com/watch?v=LNvn66zJyKs https://onion2k.github.io/r3f-by-example/
+// https://codesandbox.io/s/example-f8t3w?file=/src/App.js:4177-4370 // GUI
+
+
+
+/*
+<Suspense fallback={null}>
+          <primitive 
+            object={obj}
+            position={[0, 0, 0]}
+            
+          />
+      </Suspense> 
+*/
