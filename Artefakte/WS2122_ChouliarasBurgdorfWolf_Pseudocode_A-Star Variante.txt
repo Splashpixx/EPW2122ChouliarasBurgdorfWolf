@@ -1,0 +1,89 @@
+Pseudocode AStar-Variante:
+
+%Evaluation ob Treppe oder Aufzug
+if (keine Treppe nehmen) {element.stairs & Endflag auf true setzen}
+if (keinen Aufzug nehmen) {element.elevator & Endflag auf true setzen}
+
+startPoint.depth = 0
+
+while (currentLoc !== endPoint){
+
+	%Tiefe der benachbarte Edges um eins erhöhen 
+	setDepth(currentLoc.edges, currentLoc.depth)
+
+	if (nur eine Edge) {
+		if (currentLoc != endPoint) {
+			aktuellen Punkt als Sackgasse makieren, EndFlag= true
+			zum vorherigen Punkt zurückkehren
+		}
+	}else {
+		% Kalkulation der Priorität anhand der Entfernung zum Endpunkt 
+		% Sortierung der Edges nach Entfernung zum Endpunkt 
+		ausführen calcPrio und sortPrio 
+		
+		%Suchen des neuen/nächsten Punkts
+		newPoint = edges.find{
+			erste Edge die kein EndFlag und eine höhere Tiefe hat
+		}
+		
+		if (newPoint = undefined) {
+			endFlag = true &
+			edges.find{
+				gehe zum vorherigen Punkt, erkenbar an der Tiefe-1
+			}	
+		}else{
+			currentLoc = newPoint
+		}	
+		
+	}
+	
+}Ende while
+
+%kürzesten Pfad ausgeben
+getPath()
+
+zurücksetzen von Prio, Tiefe und EndFlags
+
+
+-----------------------------------------------------------------------
+
+Pseudocode getPath():
+
+Starte beim Endpunkt
+
+while (currentPoint.depth > 0){
+
+	edges.find{
+		gehe zu der Edge die genau eine Tiefe geringer ist
+	}
+	füge die Edge dem Path hinzu
+}return path
+
+
+
+
+
+		
+		
+		
+		
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

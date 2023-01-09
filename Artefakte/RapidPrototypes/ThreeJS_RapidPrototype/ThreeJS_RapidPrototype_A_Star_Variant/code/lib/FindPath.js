@@ -26,12 +26,10 @@ async function findPath(startPoint, endPoint, pathMesh, takeStairs, takeElevator
         await setDepth(currentLoc.edges, currentLoc.depth)
 
         if (currentLoc.edges.length === 1) {
-            if(currentLoc === endPoint){
-
-            } else{
+            if(currentLoc != endPoint){
                 currentLoc.endFlag = true
                 currentLoc = currentLoc.edges[0].neighbour
-            }
+            } 
         } else {
             await calcPrio(currentLoc.edges,endPoint)
             await sortPrio(currentLoc.edges)
