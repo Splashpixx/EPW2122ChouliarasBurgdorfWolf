@@ -1,20 +1,35 @@
-async function findPath(startPoint, endPoint, pathMesh){
+async function findPath(startPoint, endPoint, pathMesh, takeStairs, takeElevator){
+
+    if(takeStairs===false){
+        pathMesh.forEach(element => {
+            if (element.stairs === true){
+                element.endFlag = true
+            }
+        })
+    }
+
+    if(takeElevator===false){
+        pathMesh.forEach(element => {
+            if (element.elevator === true){
+                element.endFlag = true
+            }
+        })
+    }
 
     startPoint.depth = 0
 
     let currentLoc = startPoint
 
     while (currentLoc !== endPoint) {
+        // console.log(currentLoc.id)
 
         await setDepth(currentLoc.edges, currentLoc.depth)
 
         if (currentLoc.edges.length === 1) {
-            if(currentLoc === endPoint){
-
-            } else{
+            if(currentLoc != endPoint){
                 currentLoc.endFlag = true
                 currentLoc = currentLoc.edges[0].neighbour
-            }
+            } 
         } else {
             await calcPrio(currentLoc.edges,endPoint)
             await sortPrio(currentLoc.edges)
@@ -22,7 +37,10 @@ async function findPath(startPoint, endPoint, pathMesh){
             let newPoint
             try {
                 newPoint = currentLoc.edges.find(
-                    edge => ((edge.neighbour.endFlag === false && currentLoc.depth < edge.neighbour.depth))
+                    edge => ((
+                        edge.neighbour.endFlag === false &&
+                        currentLoc.depth < edge.neighbour.depth
+                    ))
                 ).neighbour
             } catch (error){
             }
@@ -72,10 +90,16 @@ async function getPath(startPoint, endPoint){
     let path = []
     let currentPoint = endPoint
     while (currentPoint.depth > 0){
-        console.log(currentPoint.id)
-        path.push(currentPoint.pos)
-        currentPoint = currentPoint.edges.find(edge => (edge.neighbour.depth < currentPoint.depth)).neighbour
+
+        path.push(currentPoint)
+
+        currentPoint = currentPoint.edges.find(
+            edge => (
+                (edge.neighbour.depth === currentPoint.depth-1 && edge.neighbour.endFlag === false) ||
+                (edge.neighbour === startPoint)
+            )
+        ).neighbour
     }
-    path.push(currentPoint)
+    path.push(startPoint)
     return path
 }

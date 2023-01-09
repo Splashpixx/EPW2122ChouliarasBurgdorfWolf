@@ -5,7 +5,7 @@ async function main()
     const pathMesh = await importPathMesh(pathMeshPath);
     console.log(pathMesh)
 
-    let path = await findPath(pathMesh[34], pathMesh[164], pathMesh)
+    let path = await findPath(pathMesh[159], pathMesh[182], pathMesh,true,true)
 
     console.log(path)
 }
