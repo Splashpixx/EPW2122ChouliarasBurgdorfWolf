@@ -26,24 +26,7 @@ code {
   pointer-events: none;
 }
 
-
 /*  */
-
-.canvas-container {
-  height: unset;
-  flex: 1 0 0px;
-  margin-bottom: -100px;
-}
-.canvas-container::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  height: 100px;
-  width: 100%;
-  background: linear-gradient(0deg, black, transparent);
-}
 
 .main {
   position: relative;
@@ -66,46 +49,18 @@ code {
 }
 }
 
-.bg {
-background-image: url('https://uploads.codesandbox.io/uploads/user/b3e56831-8b98-4fee-b941-0e27f39883ab/DWLR-bg.jpg');
-}
-
-.stars {
-background-image: url('https://uploads.codesandbox.io/uploads/user/b3e56831-8b98-4fee-b941-0e27f39883ab/OiNX-stars.png');
-}
-
-.ground {
-background-image: url('https://uploads.codesandbox.io/uploads/user/b3e56831-8b98-4fee-b941-0e27f39883ab/xyC5-ground.png');
-}
-
-.main > .code {
-position: absolute;
-right: 10vw;
-margin-right: -60px;
-width: 640px;
-max-width: 80%;
-height: 100%;
-display: flex;
-align-items: center;
-justify-content: center;
-}
-
-.code-container {
-position: relative;
-margin-bottom: -60px;
-}
 
 .counter {
 position: absolute;
-top: -800px;
-right: -20px;
+top: -95vh;
+right: -3vw;
 color: white;
-background: #394a52;
-padding: 40px;
+background: #23698a;
+padding: 30px;
 border-radius: 10px;
 box-shadow: 0 16px 40px -5px rgba(0, 0, 0, 0.5);
 width: 120px;
-height: 120px;
+height: 60px;
 font-size: 3em;
 z-index: 20000;
 pointer-events: all;
@@ -115,7 +70,7 @@ pointer-events: all;
 position: absolute;
 left: 50%;
 top: 50%;
-margin-top: -10px;
+margin-top: -30px;
 transform: translate3d(-50%, -50%, 0);
 }
 

@@ -27,6 +27,8 @@ import { MeshStandardMaterial } from 'three';
 
 import create from 'zustand'
 
+import { useControls } from 'leva'
+
 // Komentare zu aufbau React, Hooks, algemein comments
 
 /*
@@ -71,7 +73,7 @@ const Scene = () => {
           {...props}
           ref={objRef}
           scale={active ? 1.5 : 1}
-          onClick={(e) => console.log(e.object.name)}  
+          onClick={(e) => console.log(e.object.position)}  
           object={obj} 
           />   
         
@@ -169,24 +171,21 @@ const Scene = () => {
   function Boxlogic(){
     const [active, setActive] = useState(false)
 
-
-
     const items = [
       <Boxx position={active ? [36.5,13,39.5] : [36.5,12,39.5]}/>,
       <Boxx position={active ? [-6,13,-6]  : [-6,12,-6]}/>
     ]
 
-    
-    
     return(
       items.map((x) => (x))
     )
   }
 
+
   function Line({ start, end }) {
     const ref = useRef()
     
-    //rendert erst wenn der rest gerendert wurde
+    //Synchrones rendern
     useLayoutEffect(() => {
       ref.current.geometry.setFromPoints([start, end].map((point) => new THREE.Vector3(...point)))
     }, [start, end])
@@ -200,43 +199,37 @@ const Scene = () => {
 
   }
 
-/* Kamera einstellunf und erstellung */
 
-  
+  /* Kamera einstellung und erstellung */
+  const [kamera, set] = useState(false)
+/*
+  const {kamera} = useControls({
+    kamera : true
+  })
+*/
+  const test = (kamera ? true : false)
 
-  const CameraControls = () => {
-    const [ortho, set] = useState(false)
-  
-    return (
-      <>
-      
-      <PerspectiveCamera position={[0, 20, 1.8]} fov={120} makeDefault={!ortho} rotation={false}/>
-      <OrbitControls position={[20,0,10]} makeDefault={ortho}/>
-      </>
-    )
+  function conlog(){
+    console.log("hello")
+    set(!kamera)
   }
- 
-  
+
   function Counter() {
     return (
       <div className="counter">
-        <button onClick={console.log("f")}>Switch cam</button>
+        <button onClick={conlog}>Switch cam</button>
       </div>
     )
   }
-  /*
-  useEffect(() => {
-    const interval = setInterval(() => set((state) => !state), 1000)
-    return () => clearInterval(interval)
-  }, [])
-  */
+
      
   return ( 
-
     <>
+    
   <Canvas>
 
-    <CameraControls/>
+      <PerspectiveCamera position={[0, 20, 1.8]} fov={120} makeDefault={!kamera} rotation={[0,-90,0]} enableRotate={test}/>
+      <OrbitControls position={[20,0,10]} makeDefault={kamera} enableRotate={test}/>
 
       <ambientLight 
       intensity={0.5}
@@ -259,10 +252,11 @@ const Scene = () => {
 
   </Canvas>
 
+
   <div className='main'>
-    <h1>Hello</h1>
     <Counter/>
   </div>
+  
   
   </>
   );
@@ -289,4 +283,9 @@ export default App;
             
           />
       </Suspense> 
+
+
+<div className='main'>
+    <Counter/>
+  </div>
 */
