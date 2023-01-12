@@ -53,25 +53,58 @@ const Scene = () => {
   //OBJ Loader
   // https://www.youtube.com/watch?v=xy_tbV4pC54
   function Model(props){
+
     const objRef = useRef()
 
     const [active, setActive] = useState(false)
 
     const obj = useLoader(OBJLoader, "obj/32xx_full.obj", (loader) => {})
     
+    AddSingleMesh(obj)
+
     return (
       <mesh>
         <primitive 
           {...props}
           ref={objRef}
           scale={active ? 1.5 : 1}
-          onClick={(e) => console.log(e.object)}  
+          onClick={(e) => console.log(obj)}  
           object={obj} 
           />   
         
-        <meshStandardMaterial color={active ? 'green' : 'red' } />
       </mesh>   
     )
+  }
+
+  function AddSingleMesh(){
+
+    const objRef = useRef()
+    const [active, setActive] = useState(false)
+    const obj = useLoader(OBJLoader, "obj/32xx_full.obj", (loader) => {})
+
+    const items = [  ]
+
+    obj.children.forEach(e => {
+        //element["key"] = element.uudi;
+        //Object.assign(element, {[key : element.uudi]});
+        //console.log(element.uuid)
+             
+        items.push( 
+          <mesh
+            scale = {e.scale}
+            material = {e.material}
+            geometry = {e.geometry}
+            material-color = {active ? "green" : "blue"}
+            key = {e.id}
+          >
+          </mesh>
+        )
+      })
+
+      return(
+        //true
+        items.map((x) => (x))
+      )
   }
 
   const stateShoe = proxy({
@@ -86,7 +119,6 @@ const Scene = () => {
      band: "#ffffff",
      patch: "#ffffff"
     }})
-  
 
   function ModelShoe(props) {
     const refSh = useRef()
@@ -218,6 +250,7 @@ const Scene = () => {
       <Boxx position={active ? [-6,13,-6]  : [-6,12,-6]}/>
     ]
 
+    console.log(items[1])
     return(
       items.map((x) => (x))
     )
@@ -281,10 +314,13 @@ const Scene = () => {
 
       <Suspense fallback={null}>
         <ModelShoe/>
-        <Model/>
+        
+        <AddSingleMesh/>
       </Suspense>
 
     <Boxlogic/>
+
+    
 
     <Line start={[10,10,10]} end={[20,10,-30]} />
 
