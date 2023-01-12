@@ -50,32 +50,10 @@ Bieten die Möglichkeit, State in Functional Components zu nutzen, was bisher nu
 const Scene = () => {
   const cube = useRef()
 
-  //OBJ Loader
-  // https://www.youtube.com/watch?v=xy_tbV4pC54
-  function Model(props){
 
-    const objRef = useRef()
+  //Laden der obj datei
 
-    const [active, setActive] = useState(false)
-
-    const obj = useLoader(OBJLoader, "obj/32xx_full.obj", (loader) => {})
-    
-    AddSingleMesh(obj)
-
-    return (
-      <mesh>
-        <primitive 
-          {...props}
-          ref={objRef}
-          scale={active ? 1.5 : 1}
-          onClick={(e) => console.log(obj)}  
-          object={obj} 
-          />   
-        
-      </mesh>   
-    )
-  }
-
+  const arrayWithActiveRooms = []
 
   function RednerChild(e){
     const [active, setActive] = useState(false)
@@ -102,9 +80,10 @@ const Scene = () => {
     return obj.children.map(e => {
           return RednerChild(e)
       })
-
-
   }
+
+
+  //
 
   const arrayWithActiveCubes = []
 
@@ -165,8 +144,7 @@ const Scene = () => {
         {...props}
         ref={mesh}
         scale={active ? 1.5 : 1}
-        onClick={() => { setActive(!active) 
-          //console.log(obj)
+        onClick={() => { setActive(!active)
           if(!active){
             dispatcher({type: 'increment', payloade: props.position})
             
@@ -176,7 +154,6 @@ const Scene = () => {
         }
       }
 
-        
         //Hover
         onPointerOver={(event) => setHover(true)}
         onPointerOut={(event) => setHover(false)}>
@@ -185,7 +162,6 @@ const Scene = () => {
         <meshStandardMaterial color={active ? 'green' : 'red' && hovered ? 'yellow' : 'red'} />
         
       </mesh>
-
     )
   }
 
@@ -262,24 +238,18 @@ const Scene = () => {
       />
 
       <Suspense fallback={null}>
-        
-        
         <AddSingleMesh/>
       </Suspense>
 
     <Boxlogic/>
 
-    
-
     <Line start={[10,10,10]} end={[20,10,-30]} />
 
   </Canvas>
 
-
   <div className='main'>
     <Counter/>
   </div>
-  
   
   </>
   );
@@ -295,20 +265,3 @@ export default App;
 
 // Save for alter https://www.youtube.com/watch?v=LNvn66zJyKs https://onion2k.github.io/r3f-by-example/
 // https://codesandbox.io/s/example-f8t3w?file=/src/App.js:4177-4370 // GUI
-
-
-
-/*
-<Suspense fallback={null}>
-          <primitive 
-            object={obj}
-            position={[0, 0, 0]}
-            
-          />
-      </Suspense> 
-
-
-<div className='main'>
-    <Counter/>
-  </div>
-*/
