@@ -55,7 +55,7 @@ const Scene = () => {
 
   const arrayWithActiveRooms = []
 
-  function RednerChild(e){
+  function RenderChild(e){
     const [active, setActive] = useState(false)
     const [hovered, setHover] = useState(false)
 
@@ -78,12 +78,11 @@ const Scene = () => {
     const obj = useLoader(OBJLoader, "obj/32xx_full.obj", (loader) => {})
 
     return obj.children.map(e => {
-          return RednerChild(e)
+          return RenderChild(e)
       })
   }
 
 
-  //
 
   const arrayWithActiveCubes = []
 
@@ -196,7 +195,6 @@ const Scene = () => {
         <lineBasicMaterial color="hotpink" />
       </line>
     )
-
   }
 
 
@@ -216,8 +214,7 @@ const Scene = () => {
       </div>
     )
   }
-
-     
+  
   return ( 
     <>
     
