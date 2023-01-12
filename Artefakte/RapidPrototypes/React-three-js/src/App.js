@@ -76,85 +76,34 @@ const Scene = () => {
     )
   }
 
-  function AddSingleMesh(){
 
-    const objRef = useRef()
+  function RednerChild(e){
     const [active, setActive] = useState(false)
-    const obj = useLoader(OBJLoader, "obj/32xx_full.obj", (loader) => {})
+    const [hovered, setHover] = useState(false)
 
-    const items = [  ]
-
-    obj.children.forEach(e => {
-        //element["key"] = element.uudi;
-        //Object.assign(element, {[key : element.uudi]});
-        //console.log(element.uuid)
-             
-        items.push( 
-          <mesh
+    return(
+      <mesh
             scale = {e.scale}
             material = {e.material}
             geometry = {e.geometry}
-            material-color = {active ? "green" : "blue"}
+            onClick = {(e) => setActive(!active)}
             key = {e.id}
+            onPointerOver={(event) => setHover(true)}
+            onPointerOut={(event) => setHover(false)}
           >
-          </mesh>
-        )
-      })
-
-      return(
-        //true
-        items.map((x) => (x))
-      )
+          <meshStandardMaterial color={active ? 'green' : 'red'  && hovered ? 'yellow' : 'red'} />
+      </mesh>
+    )
   }
 
-  const stateShoe = proxy({
-    current: null,
-    items: {
-     laces: "#ffffff", 
-     mesh: "#ffffff",
-     caps: "#ffffff",
-     inner: "#ffffff", 
-     sole: "#ffffff",
-     stripes: "#ffffff",
-     band: "#ffffff",
-     patch: "#ffffff"
-    }})
+  function AddSingleMesh(){
+    const obj = useLoader(OBJLoader, "obj/32xx_full.obj", (loader) => {})
 
-  function ModelShoe(props) {
-    const refSh = useRef()
-    const { nodes, materials } = useGLTF('/shoe-draco.glb')
-    const snap = useSnapshot(stateShoe)
+    return obj.children.map(e => {
+          return RednerChild(e)
+      })
 
-    //const [active, setHover] = useState(false)
-    const [active, setActive] = useState(false)
 
-    /*
-    useEffect(() => {
-      if (active) {
-        stateShoe.items[snap.current] = "green"
-      } else {
-        stateShoe.items[snap.current] = "red"
-      }
-    }, [active])
-    */
-
-    
-// color={snap.items[snap.current]} onChange={(color) => (stateShoe.items[snap.current] = color)}  console.log(stateShoe.current = e.object.material.name)
-    return (
-      <group ref={refSh}
-
-        onClick={(e) => (e.stopPropagation(),  console.log(stateShoe.current = e.object.material.name) , setActive(!active))}
-      >
-        <mesh color={snap.items.laces }                            geometry={nodes.shoe.geometry}     material={materials.laces}/> 
-        <mesh material-color={snap.items.mesh     }                geometry={nodes.shoe_1.geometry}   material={materials.mesh} />
-        <mesh material-color={snap.items.caps     }                geometry={nodes.shoe_2.geometry}   material={materials.caps} />
-        <mesh material-color={snap.items.inner    }                geometry={nodes.shoe_3.geometry}   material={materials.inner} />
-        <mesh material-color={active ? 'green' : snap.items.sole} geometry={nodes.shoe_4.geometry}    material={materials.sole}/>
-        <mesh material-color={snap.items.stripes  }               geometry={nodes.shoe_5.geometry}    material={materials.stripes} />
-        <mesh material-color={snap.items.band     }               geometry={nodes.shoe_6.geometry}    material={materials.band} />
-        <mesh material-color={snap.items.patch    }               geometry={nodes.shoe_7.geometry}    material={materials.patch} />
-      </group>
-    )
   }
 
   const arrayWithActiveCubes = []
@@ -313,7 +262,7 @@ const Scene = () => {
       />
 
       <Suspense fallback={null}>
-        <ModelShoe/>
+        
         
         <AddSingleMesh/>
       </Suspense>
