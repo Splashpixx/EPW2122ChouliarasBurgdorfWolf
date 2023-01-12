@@ -1,23 +1,23 @@
 function importPathMesh(pfadZumOBJ){
-      let objString = ObjInStringKonvertieren(pfadZumOBJ)
-      let splitString = objSting.inStringArraySplitten(„\n“)
-      let punkteUndEdges = inUnsereDatentypenKonvertieren(splitString)
-      let punkte = punkteMitNachbarnVerbinden(punkteUndEdges)
-      punkteAlsTreppeOderAufzugMarkieren(punkte)
-      return punkte
+     let objString = ObjInStringKonvertieren(pfadZumOBJ)     
+     let splitString = objSting.inStringArraySplitten(„\n“)
+     let punkteUndEdgeData = punktDatenInPathMeshPoints(splitString)
+     let pathMeshPoints = punkteMitNachbarnVerbinden(punkteUndEdgeData)
+     treppeOderAufzugMarkieren(pathMeshPoints)
+     return pathMeshPonts
 }
 
-inUnsereDatentypenKonvertieren(string){
+punktDatenInPathMeshPoints(string){
      let points = []
      let edgeData = []
      let index = 0
      for (each in string){
             if (each[0] == „v“){
-                  points.push(neuer PathMeshPont(index, koordinaten))
+                  points.push(neuer PathMeshPont(index-1, koordinaten))
                   index++
             }
             if (each[0] == „l“){
-                   edgeDate.push([ersteVertexID, zweiteVertexID])
+                   edgeData.push([ersteVertexID, zweiteVertexID])
             }
       return [points, edgeData]
 }
@@ -30,10 +30,10 @@ punkteMitNachbarnVerbinden([points, edgeData]){
                    }
             }
       }
-      return punkte
+      return pathMeshPoints
 }
 
-punkteAlsTreppeOderAufzugMarkieren(punkte){
+treppeOderAufzugMarkieren(punkte){
        wenn (richtungsVektor.Y zu einem Nachbarpunkt != 0){
               wenn (richtungsVektor.Y zu einem Nachbarpunkt == 1 oder -1){
                     aufzug = true
@@ -41,5 +41,4 @@ punkteAlsTreppeOderAufzugMarkieren(punkte){
                      treppe = true
               }
        }
-      return punkte
 }
