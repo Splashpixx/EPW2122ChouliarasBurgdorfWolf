@@ -1,0 +1,45 @@
+function importPathMesh(pfadZumOBJ){
+      let objString = ObjInStringKonvertieren(pfadZumOBJ)
+      let splitString = objSting.inStringArraySplitten(„\n“)
+      let punkteUndEdges = inUnsereDatentypenKonvertieren(splitString)
+      let punkte = punkteMitNachbarnVerbinden(punkteUndEdges)
+      punkteAlsTreppeOderAufzugMarkieren(punkte)
+      return punkte
+}
+
+inUnsereDatentypenKonvertieren(string){
+     let points = []
+     let edgeData = []
+     let index = 0
+     for (each in string){
+            if (each[0] == „v“){
+                  points.push(neuer PathMeshPont(index, koordinaten))
+                  index++
+            }
+            if (each[0] == „l“){
+                   edgeDate.push([ersteVertexID, zweiteVertexID])
+            }
+      return [points, edgeData]
+}
+
+punkteMitNachbarnVerbinden([points, edgeData]){
+      for (punkt in points){
+            for(daten in edgeData){
+                   if (punkt.ID in daten gefunden){
+                         erstelle Edge(NachbarPunkt, entfernungBerechnen)
+                   }
+            }
+      }
+      return punkte
+}
+
+punkteAlsTreppeOderAufzugMarkieren(punkte){
+       wenn (richtungsVektor.Y zu einem Nachbarpunkt != 0){
+              wenn (richtungsVektor.Y zu einem Nachbarpunkt == 1 oder -1){
+                    aufzug = true
+              } else{
+                     treppe = true
+              }
+       }
+      return punkte
+}
