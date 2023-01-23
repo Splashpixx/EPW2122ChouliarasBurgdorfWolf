@@ -6,6 +6,9 @@
 //https://onion2k.github.io/r3f-by-example/examples/hooks/rotating-cube/
 //https://codesandbox.io/s/splines-3k4g6?file=/src/Nodes.js:148-265
 //https://codesandbox.io/s/basic-clerping-example-qh8vhf?file=/src/Scene.js
+// https://www.youtube.com/watch?v=LNvn66zJyKs https://onion2k.github.io/r3f-by-example/
+
+// https://codesandbox.io/s/example-f8t3w?file=/src/App.js:4177-4370 // GUI Example
 
 */
 
@@ -16,13 +19,14 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { useLoader } from '@react-three/fiber'
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
 import { PerspectiveCamera } from "@react-three/drei";
-import { useState, useRef, useLayoutEffect  } from "react";
+import { useState, useRef, useLayoutEffect, useReducer  } from "react";
 
 // Eigene Scripts //
 
 import {findPath} from "./test/FindPath";
 import {importPathMesh} from "./test/ImportPathMesh";
 import {RenderChild} from "./buildingGen"
+import { hover } from '@testing-library/user-event/dist/hover';
 
 /*
 !- Hooks -!
@@ -40,28 +44,36 @@ Bieten die Möglichkeit, State in Functional Components zu nutzen, was bisher nu
 const Scene = () => {
   const cube = useRef()
 
+
+  // Punkte
   async function testModul(){
 
     const pathMesh = await importPathMesh("obj/pathMesh.obj");
-    
-    const test2 = await findPath(pathMesh[0],pathMesh[32],pathMesh);
+    //console.log(pathMesh)
+    const pathtest = await findPath(pathMesh[0],pathMesh[32],pathMesh);
     
     return(
-      test2
+      pathtest
     )
   }
 
   const weg = testModul()
-  console.log(weg)
 
 
-  // Hier wird das gebäude geladen
+  // Gebäude
+
   function AddSingleMesh(){
     const obj = useLoader(OBJLoader, "obj/32xx_full.obj", (loader) => {})
 
-    return obj.children.map(e => {
-          return RenderChild(e)
-      })
+    const listofMashes = []
+
+    obj.children.map(e => {
+      listofMashes.push(RenderChild(e))
+    })
+
+    return listofMashes.map(e => {
+      return e
+    })
   }
 
 
@@ -70,7 +82,25 @@ const Scene = () => {
   function Line({ start, end }) {
     const ref = useRef()
     
-    //Synchrones rendern
+
+    const points = []
+
+      if(kamera) {
+          points.push(new THREE.Vector3(-10, 0, 0))
+          points.push(new THREE.Vector3(0, 10, 0))
+          points.push(new THREE.Vector3(10, 0, 0))
+      } else {
+      }
+
+      const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
+
+      return (
+          <line ref={ref} geometry={lineGeometry}>
+              <lineBasicMaterial attach="material" color={'#9c88ff'} linewidth={100} linecap={'round'} linejoin={'round'} />
+          </line>
+          )
+
+    /*Synchrones rendern
     useLayoutEffect(() => {
       ref.current.geometry.setFromPoints([start, end].map((point) => new THREE.Vector3(...point)))
     }, [start, end])
@@ -81,6 +111,7 @@ const Scene = () => {
         <lineBasicMaterial color="hotpink" />
       </line>
     )
+    */
   }
 
   /* Kamera einstellung und erstellung */
@@ -120,7 +151,7 @@ const Scene = () => {
 
       <AddSingleMesh/>
       
-    <Line start={[10,10,10]} end={[20,10,-30]} />
+    <Line/>
 
   </Canvas>
 
@@ -139,6 +170,3 @@ const App = () => {
 
 
 export default App;
-
-// Save for alter https://www.youtube.com/watch?v=LNvn66zJyKs https://onion2k.github.io/r3f-by-example/
-// https://codesandbox.io/s/example-f8t3w?file=/src/App.js:4177-4370 // GUI

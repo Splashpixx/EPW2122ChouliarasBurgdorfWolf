@@ -54,14 +54,19 @@ import { useLoader, useState, useReducer, Suspense  } from "react";
 
     const [state, dispatcher] = useReducer(raumauswahl)
 
+    //const [checkers, dispatcherTwo] = useReducer(checker)
+    
     return(
       <mesh
             scale = {e.scale}
             material = {e.material}
             geometry = {e.geometry}
             key = {e.id}
-            onPointerOver={(event) => setHover(true)}
-            onPointerOut={(event) => setHover(false)}
+            
+            onPointerOver={(event) => {setHover(true); event.stopPropagation()}}
+
+            onPointerOut={(event) => {setHover(false); event.stopPropagation()}}
+
             onClick={(e) => { setActive(!active)
               //console.log(arrayWithActiveRooms)
               active ? dispatcher({type: 'decrement', payloade: e.point}) : dispatcher({type: 'increment', payloade: e.point})
