@@ -19,7 +19,11 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { useLoader } from '@react-three/fiber'
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
 import { PerspectiveCamera } from "@react-three/drei";
-import { useState, useRef, useLayoutEffect, useReducer  } from "react";
+import React, { useState, useRef, useLayoutEffect, useReducer, Suspense  } from "react";
+
+import { Line2 } from 'three/examples/jsm/lines/Line2'
+import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
+import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 
 // Eigene Scripts //
 
@@ -62,14 +66,11 @@ const Scene = () => {
   }
 
 
-  /* Linien gen */
+  /* Linien gen https://codesandbox.io/s/r3f-line-adding-points-workaround-11g9h?file=/src/index.js */
 
   async function testModul(){
-
     const pathMesh = await importPathMesh("obj/pathMesh.obj")
-    
     const pathtest = await findPath(pathMesh[0],pathMesh[39],pathMesh)
-
     return pathtest
   }
 
@@ -82,8 +83,6 @@ const Scene = () => {
     testx.then((data) => {
       data.map((e) => points.push(e))
     })
-    
-    console.log(points)
 
     const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
 
@@ -92,6 +91,32 @@ const Scene = () => {
             <lineBasicMaterial attach="material" color={'#9c88ff'} linewidth={100} linecap={'round'} linejoin={'round'} />
         </line>
         )
+  }
+
+  function GenerateNewLine(){
+
+    const points = []
+    
+    const testx = testModul()
+    testx.then((data) => {
+      data.map((e) => points.push(e))
+    })
+
+    console.log(points)
+    
+    return(
+      <>
+      <Line points={points} color="blue" linewidth={3} position={[5, 0, 0]} />
+      <line position={[0, 0, 0]}>
+        <bufferGeometry
+          onUpdate={(weg) => {
+            weg.setFromPoints(points)
+          }}
+        />
+        <lineBasicMaterial color="red" />
+      </line>
+      </>
+    )
   }
 
 
@@ -132,7 +157,10 @@ const Scene = () => {
 
       <AddSingleMesh/>
       
-    <Line/>
+      <Suspense fallback={null}>
+        <GenerateNewLine/>
+      </Suspense>
+    
 
   </Canvas>
 
