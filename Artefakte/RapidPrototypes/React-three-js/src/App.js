@@ -1,46 +1,28 @@
-import './App.css';
-// https://www.youtube.com/watch?v=kxXaIHi1j4w
-import { Canvas, extend } from '@react-three/fiber';
-import glsl from "babel-plugin-glsl/macro"
-import { PositionPoint, shaderMaterial } from '@react-three/drei';
-import * as THREE from "three";
+/*
+- Nützliche Links -
 
+// https://www.youtube.com/watch?v=kxXaIHi1j4w
 // https://docs.pmnd.rs/react-three-fiber/tutorials/loading-models
+//https://onion2k.github.io/r3f-by-example/examples/hooks/rotating-cube/
+//https://codesandbox.io/s/splines-3k4g6?file=/src/Nodes.js:148-265
+//https://codesandbox.io/s/basic-clerping-example-qh8vhf?file=/src/Scene.js
+
+*/
+
+import './App.css';
+import { Canvas, extend } from '@react-three/fiber';
+import * as THREE from "three";
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { useLoader } from '@react-three/fiber'
-import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
-import { Children, Suspense, useReducer } from "react";
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
-
-//https://codesandbox.io/s/basic-clerping-example-qh8vhf?file=/src/Scene.js
 import { PerspectiveCamera } from "@react-three/drei";
-import { Box, Plane, Text } from "@react-three/drei";
-import { useEffect, useState, useRef  } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
-
-//https://onion2k.github.io/r3f-by-example/examples/hooks/rotating-cube/
-import { render } from "react-dom";
-
-//https://codesandbox.io/s/splines-3k4g6?file=/src/Nodes.js:148-265
-import { createContext, useMemo, useContext, useLayoutEffect, forwardRef } from 'react'
-import { MeshStandardMaterial } from 'three';
-
-import create from 'zustand'
-import { Mesh } from "three"
-import { useGLTF } from '@react-three/drei'
-
-import { useControls } from 'leva'
-import { proxy, useSnapshot } from 'valtio'
-
-
+import { useState, useRef, useLayoutEffect  } from "react";
 
 // Eigene Scripts //
 
 import {findPath} from "./test/FindPath";
 import {importPathMesh} from "./test/ImportPathMesh";
-
-
-// Komentare zu aufbau React, Hooks, algemein comments
+import {RenderChild} from "./buildingGen"
 
 /*
 !- Hooks -!
@@ -72,181 +54,14 @@ const Scene = () => {
   const weg = testModul()
   console.log(weg)
 
-  //Laden der obj datei
 
-  const arrayWithActiveRooms = []
-
-
-  // Fügt dem Array über uns den angeklickten vector hinzu
-  function raumauswahl(state, action) {
-
-    const vecToArray = [ action.payloade.x, action.payloade.y, action.payloade.z ]
-    
-    // Increment = Raum ist Aktiv, Decrement = Raum ist inaktiv 
-    switch (action.type) {
-      case 'increment':
-        // wenn unser arrayWithActiveRooms leer ist müssen wir nicht schauen ob es den ausgewählten draum im array doppelt gibt 
-        if(arrayWithActiveRooms.length <= 0){
-          arrayWithActiveRooms.push(vecToArray)
-          } else {
-            var inArray = false
-            // Geht den array Durch und schaut nach doppelten einträgen
-            arrayWithActiveRooms.forEach(element => {
-              if(JSON.stringify(element) == JSON.stringify(vecToArray)){
-                inArray = true
-              }
-              });
-              if(!inArray){
-                arrayWithActiveRooms.push(vecToArray)
-              }
-          }
-        if (arrayWithActiveRooms.length == 2) {
-          //console.log("done")
-        }
-          return
-      case 'decrement':
-        
-        if(JSON.stringify(arrayWithActiveRooms[0]) == JSON.stringify(vecToArray)){
-          arrayWithActiveRooms.splice(0, 1);
-        }
-        
-        if (JSON.stringify(arrayWithActiveRooms[1]) == JSON.stringify(vecToArray)){
-          arrayWithActiveRooms.splice(1, 1);
-        } 
-          return
-      default:
-        throw new Error();
-    }
-  }
-  
-  function RenderChild(e){
-    const [active, setActive] = useState(false)
-    const [hovered, setHover] = useState(false)
-
-    const [state, dispatcher] = useReducer(raumauswahl)
-
-    return(
-      <mesh
-            scale = {e.scale}
-            material = {e.material}
-            geometry = {e.geometry}
-            key = {e.id}
-            onPointerOver={(event) => setHover(true)}
-            onPointerOut={(event) => setHover(false)}
-            onClick={(e) => { setActive(!active)
-              //console.log(arrayWithActiveRooms)
-              active ? dispatcher({type: 'decrement', payloade: e.point}) : dispatcher({type: 'increment', payloade: e.point})
-              
-            }
-          }
-          >
-          <meshStandardMaterial color={active ? 'green' : 'red'  && hovered ? 'yellow' : 'red'} />
-      </mesh>
-    )
-  }
-
+  // Hier wird das gebäude geladen
   function AddSingleMesh(){
     const obj = useLoader(OBJLoader, "obj/32xx_full.obj", (loader) => {})
 
     return obj.children.map(e => {
           return RenderChild(e)
       })
-  }
-
-
-  /* ingame cubes */
-  const arrayWithActiveCubes = []
-
-  function reducer(state, action) {
-    
-    switch (action.type) {
-      case 'increment':
-      if(arrayWithActiveCubes.length <= 0){
-        arrayWithActiveCubes.push(action.payloade)
-      } else {
-
-        var inArray = false
-        arrayWithActiveCubes.forEach(element => {
-          if(JSON.stringify(element) == JSON.stringify(action.payloade)){
-            inArray = true
-          }
-          });
-          if(!inArray){
-            arrayWithActiveCubes.push(action.payloade)
-          }
-      }
-      if (arrayWithActiveCubes.length == 2) {
-        //("done")
-       
-      }
-      //console.log(arrayWithActiveCubes)
-        return
-      case 'decrement':
-        
-      if(JSON.stringify(arrayWithActiveCubes[0]) == JSON.stringify(action.payloade)){
-          arrayWithActiveCubes.splice(0, 1);
-      }
-      
-      if (JSON.stringify(arrayWithActiveCubes[1]) == JSON.stringify(action.payloade)){
-        arrayWithActiveCubes.splice(1, 1);
-      } 
-      //console.log(arrayWithActiveCubes)
-        return
-      default:
-        throw new Error();
-    }
-  }
-
-  function Boxx(props) {
-    
-    const mesh = useRef()
-    
-    const [hovered, setHover] = useState(false)
-    const [active, setActive] = useState(false)
-
-    const [state, dispatcher] = useReducer(reducer)
-    
-    useFrame((state, delta) => (mesh.current.rotation.x += delta))
-
-    return (
-      <mesh
-        {...props}
-        ref={mesh}
-        scale={active ? 1.5 : 1}
-        onClick={() => { setActive(!active)
-          if(!active){
-            dispatcher({type: 'increment', payloade: props.position})
-            
-          } else {
-            dispatcher({type: 'decrement', payloade: props.position})
-          }
-        }
-      }
-
-        //Hover
-        onPointerOver={(event) => setHover(true)}
-        onPointerOut={(event) => setHover(false)}>
-
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color={active ? 'green' : 'red' && hovered ? 'yellow' : 'red'} />
-        
-      </mesh>
-    )
-  }
-
-
-  function Boxlogic(){
-    const [active, setActive] = useState(false)
-
-    const items = [
-      <Boxx position={active ? [-39,10,40] : [-39,11,40]}/>,
-      <Boxx position={active ? [12,10,-6]  : [12,11,-6]}/>
-    ]
-
-    //console.log(items[1])
-    return(
-      items.map((x) => (x))
-    )
   }
 
 
@@ -268,7 +83,6 @@ const Scene = () => {
     )
   }
 
-
   /* Kamera einstellung und erstellung */
   const [kamera, set] = useState(false)
 
@@ -288,13 +102,10 @@ const Scene = () => {
   
   return ( 
     <>
-  
   <Canvas>
 
       <PerspectiveCamera position={[0, 20, 1.8]} fov={120} makeDefault={!kamera} rotation={[0,-90,0]} enableRotate={test}/>
       <OrbitControls position={[20,40,10]} makeDefault={kamera} enableRotate={test}/>
-
-      
 
       <ambientLight 
       intensity={0.5}
@@ -307,12 +118,8 @@ const Scene = () => {
         intensity={0.8}
       />
 
-      <Suspense fallback={null}>
-        <AddSingleMesh/>
-      </Suspense>
-
-    <Boxlogic/>
-
+      <AddSingleMesh/>
+      
     <Line start={[10,10,10]} end={[20,10,-30]} />
 
   </Canvas>
@@ -320,7 +127,7 @@ const Scene = () => {
   <div className='main'>
     <Counter/>
   </div>
-  
+
   </>
   );
 };
