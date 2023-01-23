@@ -1,0 +1,134 @@
+async function main(){
+  const derPath = "obj/pathMesh.obj";
+  // const derPath = "obj/pathMesh_TEST.obj";
+  let pathMesh = await objToPathMeshPoint(derPath);
+  console.log(pathMesh)
+  // console.log(parseInt("010"))
+
+  // const v1 = new THREE.Vector3(0,-10,0)
+  // const v2 = new THREE.Vector3(0,10,0)
+  // var v3 = subThreeV3(v1,v2)
+  // console.log(v1)
+  // console.log(v2)
+  // console.log(v3)
+
+
+}
+
+async function objToPathMeshPoint(path){
+  let objString = await fetchText(path);
+  let splitString = objString.split('\n');
+  let pointsAndEdges = await returnPointsAndEdgeData(splitString)
+  let points = await matchNeighbours(pointsAndEdges)
+  // console.log("points")
+  // console.log(points)
+  points = await setStairsOrElevator(points)
+  return points
+}
+
+async function fetchText(path) {
+  let response = await fetch(path);
+  return await response.text();
+}
+
+async function returnPointsAndEdgeData(input){
+  let points = [];
+  let edgeData = [];
+  let vIndexCount = 0
+  input.forEach(element => {
+    if(element[0] == "v"){
+      let elementSplit = element.split(" ");
+
+      let vecX = parseFloat(elementSplit[1])
+      vecX = (Math.round(vecX * 10000) / 10000)
+
+      let vecY = parseFloat(elementSplit[2])
+      vecY = (Math.round(vecY * 10000) / 10000)
+
+      let vecZ = parseFloat(elementSplit[3])
+      vecZ = (Math.round(vecZ * 10000) / 10000)
+
+      let newPathMeshPoint = new PathMeshPoint(vIndexCount, new THREE.Vector3(vecX,vecY,vecZ))
+
+      points.push(newPathMeshPoint)
+      vIndexCount++
+    }
+    if(element[0] == "l"){
+      let elementSplit = element.split(" ")
+      let id1 = elementSplit[1]
+      let id2 = elementSplit[2]
+      edgeData.push([parseInt(id1)-1,parseInt(id2)-1])
+    }
+  });
+  return [points, edgeData]
+}
+
+async function matchNeighbours(input){
+  let meshPoints = input[0]
+  let edgeData = input[1]
+
+  meshPoints.forEach(point => {
+    edgeData.forEach(edgeData => {
+      if (edgeData[0] == point.id){
+        let weight = point.pos.distanceTo(meshPoints[edgeData[1]].pos)
+        point.edges.push(new Edge(meshPoints[edgeData[1]], weight))
+
+      }
+      if (edgeData[1] == point.id){
+        let weight = point.pos.distanceTo(meshPoints[edgeData[0]].pos)
+        point.edges.push(new Edge(meshPoints[edgeData[0]], weight))
+      }
+    })
+  })
+  return meshPoints
+}
+
+async function setStairsOrElevator(input){
+  input.forEach(meshPoint => {
+    if(meshPoint.stairs === false && meshPoint.elevator === false){
+      meshPoint.edges.forEach(edge => {
+        let dir = subThreeV3(meshPoint.pos,edge.neighbour.pos)
+        dir = normalizeThreeV3(dir)
+        // console.log(dir)
+        if(Math.abs(dir.y) !== 0){
+          if(Math.abs(dir.y) === 1){
+            meshPoint.elevator = true
+          } else {
+            meshPoint.stairs = true
+          }
+        }
+      })
+    }
+  })
+  return input
+}
+
+function subThreeV3(v1, v2){
+  return new THREE.Vector3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z)
+}
+
+function normalizeThreeV3(input){
+  let length = Math.sqrt((input.x * input.x) + (input.y * input.y)+(input.z * input.z))
+  return new THREE.Vector3(input.x/length, input.y/length, input.z/length)
+}
+
+class PathMeshPoint{
+  constructor(id, pos){
+    this.id = id;
+    this.pos = pos;
+    this.edges = [];
+    this.endFlag = false;
+    this.prio = 0.0;
+    this.stairs = false;
+    this.elevator = false;
+  }
+}
+
+class Edge{
+  constructor(neighbour, weight) {
+    this.neighbour = neighbour;
+    this.weight = weight
+  }
+}
+
+main();

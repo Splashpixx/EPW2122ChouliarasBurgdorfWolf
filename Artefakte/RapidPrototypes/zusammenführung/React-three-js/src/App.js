@@ -32,14 +32,6 @@ import { useGLTF } from '@react-three/drei'
 import { useControls } from 'leva'
 import { proxy, useSnapshot } from 'valtio'
 
-
-
-// Eigene Scripts //
-
-import {findPath} from "./test/FindPath";
-import {importPathMesh} from "./test/ImportPathMesh";
-
-
 // Komentare zu aufbau React, Hooks, algemein comments
 
 /*
@@ -58,19 +50,6 @@ Bieten die Möglichkeit, State in Functional Components zu nutzen, was bisher nu
 const Scene = () => {
   const cube = useRef()
 
-  async function testModul(){
-
-    const pathMesh = await importPathMesh("obj/pathMesh.obj");
-    
-    const test2 = await findPath(pathMesh[0],pathMesh[32],pathMesh);
-    
-    return(
-      test2
-    )
-  }
-
-  const weg = testModul()
-  console.log(weg)
 
   //Laden der obj datei
 
@@ -101,7 +80,7 @@ const Scene = () => {
               }
           }
         if (arrayWithActiveRooms.length == 2) {
-          //console.log("done")
+          console.log("done")
         }
           return
       case 'decrement':
@@ -134,7 +113,7 @@ const Scene = () => {
             onPointerOver={(event) => setHover(true)}
             onPointerOut={(event) => setHover(false)}
             onClick={(e) => { setActive(!active)
-              //console.log(arrayWithActiveRooms)
+              console.log(arrayWithActiveRooms)
               active ? dispatcher({type: 'decrement', payloade: e.point}) : dispatcher({type: 'increment', payloade: e.point})
               
             }
@@ -176,10 +155,10 @@ const Scene = () => {
           }
       }
       if (arrayWithActiveCubes.length == 2) {
-        //("done")
+        console.log("done")
        
       }
-      //console.log(arrayWithActiveCubes)
+      console.log(arrayWithActiveCubes)
         return
       case 'decrement':
         
@@ -190,7 +169,7 @@ const Scene = () => {
       if (JSON.stringify(arrayWithActiveCubes[1]) == JSON.stringify(action.payloade)){
         arrayWithActiveCubes.splice(1, 1);
       } 
-      //console.log(arrayWithActiveCubes)
+      console.log(arrayWithActiveCubes)
         return
       default:
         throw new Error();
@@ -243,7 +222,7 @@ const Scene = () => {
       <Boxx position={active ? [12,10,-6]  : [12,11,-6]}/>
     ]
 
-    //console.log(items[1])
+    console.log(items[1])
     return(
       items.map((x) => (x))
     )
