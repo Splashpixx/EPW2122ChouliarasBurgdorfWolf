@@ -1,9 +1,52 @@
 
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { useLoader, useState, useReducer, Suspense  } from "react";
+import {findPath} from "./test/FindPath";
+import {importPathMesh} from "./test/ImportPathMesh";
+import * as THREE from "three";
+import {  useRef, useLayoutEffect } from "react";
 
 
+  // Punkte
+  async function testModul(){
+
+    const pathMesh = await importPathMesh("obj/pathMesh.obj");
+    //console.log(pathMesh)
+    const pathtest = await findPath(pathMesh[0],pathMesh[32],pathMesh);
+    return(
+      pathtest
+    )
+  }
+
+  
+
+  async function output(){
+    const weg = await testModul()
+  }  
+  
+
+  /*
+  const weg = testModul()
+
+  const pathtest = findPath(weg[0],weg[32],weg);
+  
+  console.log(weg)
+  */
+  function Line({ start, end }) {
+    const ref = useRef()
     
+    const points = [output()]
+
+      const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
+
+      return (
+          <line ref={ref} geometry={lineGeometry}>
+              <lineBasicMaterial attach="material" color={'#9c88ff'} linewidth={100} linecap={'round'} linejoin={'round'} />
+          </line>
+          )
+  }
+
+
   const arrayWithActiveRooms = []
 
   // Fügt dem Array über uns den angeklickten vector hinzu
@@ -68,9 +111,7 @@ import { useLoader, useState, useReducer, Suspense  } from "react";
             onPointerOut={(event) => {setHover(false); event.stopPropagation()}}
 
             onClick={(e) => { setActive(!active)
-              //console.log(arrayWithActiveRooms)
-              active ? dispatcher({type: 'decrement', payloade: e.point}) : dispatcher({type: 'increment', payloade: e.point})
-              
+            active ? dispatcher({type: 'decrement', payloade: e.point}) : dispatcher({type: 'increment', payloade: e.point})
             }
           }
           >
@@ -79,4 +120,4 @@ import { useLoader, useState, useReducer, Suspense  } from "react";
     )
   }
 
-export {RenderChild};
+export {RenderChild, Line};

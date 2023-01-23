@@ -25,7 +25,7 @@ import { useState, useRef, useLayoutEffect, useReducer  } from "react";
 
 import {findPath} from "./test/FindPath";
 import {importPathMesh} from "./test/ImportPathMesh";
-import {RenderChild} from "./buildingGen"
+import {RenderChild, Line} from "./buildingGen"
 import { hover } from '@testing-library/user-event/dist/hover';
 
 /*
@@ -45,22 +45,7 @@ const Scene = () => {
   const cube = useRef()
 
 
-  // Punkte
-  async function testModul(){
-
-    const pathMesh = await importPathMesh("obj/pathMesh.obj");
-    //console.log(pathMesh)
-    const pathtest = await findPath(pathMesh[0],pathMesh[32],pathMesh);
-    
-    return(
-      pathtest
-    )
-  }
-
-  const weg = testModul()
-
-
-  // Gebäude
+  // Gebäude !-Pathfinding ist in der buildingGen.js-!
 
   function AddSingleMesh(){
     const obj = useLoader(OBJLoader, "obj/32xx_full.obj", (loader) => {})
@@ -79,40 +64,36 @@ const Scene = () => {
 
   /* Linien gen */
 
-  function Line({ start, end }) {
-    const ref = useRef()
+  async function testModul(){
+
+    const pathMesh = await importPathMesh("obj/pathMesh.obj")
     
+    const pathtest = await findPath(pathMesh[0],pathMesh[39],pathMesh)
 
-    const points = []
-
-      if(kamera) {
-          points.push(new THREE.Vector3(-10, 0, 0))
-          points.push(new THREE.Vector3(0, 10, 0))
-          points.push(new THREE.Vector3(10, 0, 0))
-      } else {
-      }
-
-      const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
-
-      return (
-          <line ref={ref} geometry={lineGeometry}>
-              <lineBasicMaterial attach="material" color={'#9c88ff'} linewidth={100} linecap={'round'} linejoin={'round'} />
-          </line>
-          )
-
-    /*Synchrones rendern
-    useLayoutEffect(() => {
-      ref.current.geometry.setFromPoints([start, end].map((point) => new THREE.Vector3(...point)))
-    }, [start, end])
-    
-    return (
-      <line ref={ref}>
-        <bufferGeometry />
-        <lineBasicMaterial color="hotpink" />
-      </line>
-    )
-    */
+    return pathtest
   }
+
+  
+  function Line() {
+    
+    const points = []
+    
+    const testx = testModul()
+    testx.then((data) => {
+      data.map((e) => points.push(e))
+    })
+    
+    console.log(points)
+
+    const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
+
+    return (
+        <line geometry={lineGeometry}>
+            <lineBasicMaterial attach="material" color={'#9c88ff'} linewidth={100} linecap={'round'} linejoin={'round'} />
+        </line>
+        )
+  }
+
 
   /* Kamera einstellung und erstellung */
   const [kamera, set] = useState(false)
