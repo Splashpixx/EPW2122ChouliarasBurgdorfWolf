@@ -88,3 +88,64 @@ background: transparent;
 color: white;
 cursor: pointer;
 }
+
+
+.addNewPointRandom{
+  position: absolute;
+top: -55vh;
+right: -3vw;
+color: white;
+background: #23698a;
+padding: 30px;
+border-radius: 10px;
+box-shadow: 0 16px 40px -5px rgba(0, 0, 0, 0.5);
+width: 120px;
+height: 60px;
+font-size: 3em;
+z-index: 20000;
+pointer-events: all;
+}
+
+.addNewPointRandom > button {
+  margin: 10px;
+  padding: 5px 10px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100px;
+  border-radius: 5px;
+  border: solid 2px white;
+  outline: none;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  }
+
+.main2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: white;
+  pointer-events: none;
+}
+
+/*  */
+
+.main2 {
+  position: relative;
+  flex: 0 0 auto;
+  height: auto;
+}
+
+.main2 > div {
+  position: relative;
+  height: auto;
+}
+
+.flex{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

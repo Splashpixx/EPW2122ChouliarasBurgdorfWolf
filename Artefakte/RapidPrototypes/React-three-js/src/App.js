@@ -13,13 +13,13 @@
 */
 
 import './App.css';
-import { Canvas, extend } from '@react-three/fiber';
+import { Canvas, extend, useThree } from '@react-three/fiber';
 import * as THREE from "three";
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { useLoader } from '@react-three/fiber'
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
 import { PerspectiveCamera } from "@react-three/drei";
-import React, { useState, useRef, useLayoutEffect, useReducer, Suspense  } from "react";
+import React, { useState, useRef, useLayoutEffect, useReducer, Suspense, useEffect  } from "react";
 
 import { Line2 } from 'three/examples/jsm/lines/Line2'
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
@@ -66,58 +66,7 @@ const Scene = () => {
   }
 
 
-  /* Linien gen https://codesandbox.io/s/r3f-line-adding-points-workaround-11g9h?file=/src/index.js */
 
-  async function testModul(){
-    const pathMesh = await importPathMesh("obj/pathMesh.obj")
-    const pathtest = await findPath(pathMesh[0],pathMesh[39],pathMesh)
-    return pathtest
-  }
-
-  
-  function Line() {
-    
-    const points = []
-    
-    const testx = testModul()
-    testx.then((data) => {
-      data.map((e) => points.push(e))
-    })
-
-    const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
-
-    return (
-        <line geometry={lineGeometry}>
-            <lineBasicMaterial attach="material" color={'#9c88ff'} linewidth={100} linecap={'round'} linejoin={'round'} />
-        </line>
-        )
-  }
-
-  function GenerateNewLine(){
-
-    const points = []
-    
-    const testx = testModul()
-    testx.then((data) => {
-      data.map((e) => points.push(e))
-    })
-
-    console.log(points)
-    
-    return(
-      <>
-      <Line points={points} color="blue" linewidth={3} position={[5, 0, 0]} />
-      <line position={[0, 0, 0]}>
-        <bufferGeometry
-          onUpdate={(weg) => {
-            weg.setFromPoints(points)
-          }}
-        />
-        <lineBasicMaterial color="red" />
-      </line>
-      </>
-    )
-  }
 
 
   /* Kamera einstellung und erstellung */
@@ -136,7 +85,92 @@ const Scene = () => {
       </div>
     )
   }
+
+  /* ALLES MIT LINIEN IST HIER*/
+
+  /* Linien gen https://codesandbox.io/s/r3f-line-adding-points-workaround-11g9h?file=/src/index.js */
+
+  async function testModul(start, ende){
+    const pathMesh = await importPathMesh("obj/pathMesh.obj")
+    const pathtest = await findPath(pathMesh[start],pathMesh[ende],pathMesh)
+    return pathtest
+  }
+
+
+  // StartMap -> muss generiert werden da sonst ein error kommt
+  const dummy_points = Array.from({ length: 5 }).map(() => [0, 0, 0])
+
+  const [wegPunkte, setWegPunkte] = useState(null)
+
+  function addnewBtn() {
+
+    console.log(wegpunkt1, wegpunkt2)
+
+    setWegPunkte(wegPunkte => [])
+
+    const testWeg = testModul(wegpunkt1, wegpunkt2)
+    testWeg.then((data) => {
+      if(data != null){
+        data.map((e) => {
+          /* angenommen man hat ein objekt=[ ob1: "a", ob2: "b",ob3: "c" ] dann ist {...objekt} das gleiche wie { ob1="a", ob2="b", ob3="c" } */
+          setWegPunkte((points) => [...(points || [[0, 0, 0]]), [e.x, e.y, e.z]])}
+        )
+      }
+    })
+
+  }
+
+
+  const [wegpunkt1, setWegpunkt1] = useState(null);
+  const [wegpunkt2, setWegpunkt2] = useState(null);
+
+  const handleaddNumber = (e) => {
+    setWegpunkt1(e.target.value);
+  };
+
+  const handleaddNumber2 = (e) => {
+    setWegpunkt2(e.target.value);
+  };
+
+  function AddNewPointRandom() {
+    return (
+      <div className="addNewPointRandom">
+        <div className='flex'>
+          <input
+            onChange={(e) => handleaddNumber(e)}
+            value={wegpunkt1 ? wegpunkt1 : ""}
+            type="number"
+          />
+          <input
+            onChange={(e) => handleaddNumber2(e)}
+            value={wegpunkt2 ? wegpunkt2 : ""}
+            type="number"
+          />
+          <button onClick={addnewBtn}>Zeig mir den weg</button>
+        </div>
+        
+      </div>
+    )
+  }
+
+  function Thing({ points }){
+
+    return (
+      <>
+        <line position={[0, 0, 0]}>
+          <bufferGeometry
+            onUpdate={(geom) => {
+              geom.setFromPoints(points.map((p) => new THREE.Vector3(p[0], p[1], p[2])))
+            }}
+          />
+          <lineBasicMaterial color="red" />
+        </line>
+      </>
+    )
+  }
+
   
+
   return ( 
     <>
   <Canvas>
@@ -156,16 +190,20 @@ const Scene = () => {
       />
 
       <AddSingleMesh/>
-      
-      <Suspense fallback={null}>
-        <GenerateNewLine/>
-      </Suspense>
+
+
+      <Thing points={wegPunkte || dummy_points} />
+
     
 
   </Canvas>
 
   <div className='main'>
     <Counter/>
+  </div>
+
+  <div className='main2'>
+    <AddNewPointRandom/>
   </div>
 
   </>
@@ -179,3 +217,15 @@ const App = () => {
 
 
 export default App;
+
+
+    // Array.from generiert einen array mit 3 random werten bzw einen array mit der länge 3 deren werte random sind
+    //const next = Array.from({ length: 3 }).map(() => Math.random() * extent * 2 - extent)
+
+    
+  /*
+  the useThree hook gives you access to the state model which contains
+   the default renderer, the scene, your camera, and so on. 
+   It also gives you the current size of the canvas in screen and viewport coordinates.
+   https://docs.pmnd.rs/react-three-fiber/api/hooks
+  */
