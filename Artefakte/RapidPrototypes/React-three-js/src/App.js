@@ -29,7 +29,7 @@ import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 
 import {findPath} from "./test/FindPath";
 import {importPathMesh} from "./test/ImportPathMesh";
-import {RenderChild, Line} from "./buildingGen"
+import {RenderChild, Thing, AddNewPointRandom, BadCode} from "./buildingGen"
 import { hover } from '@testing-library/user-event/dist/hover';
 
 /*
@@ -57,15 +57,13 @@ const Scene = () => {
     const listofMashes = []
 
     obj.children.map(e => {
-      listofMashes.push(RenderChild(e))
+      listofMashes.push(RenderChild2(e))
     })
 
     return listofMashes.map(e => {
       return e
     })
   }
-
-
 
 
 
@@ -86,40 +84,56 @@ const Scene = () => {
     )
   }
 
-  /* ALLES MIT LINIEN IST HIER*/
+     /* ALLES MIT LINIEN IST HIER*/
 
   /* Linien gen https://codesandbox.io/s/r3f-line-adding-points-workaround-11g9h?file=/src/index.js */
 
-  async function testModul(start, ende){
+  async function wegBerechnung(start, ende){
     const pathMesh = await importPathMesh("obj/pathMesh.obj")
     const pathtest = await findPath(pathMesh[start],pathMesh[ende],pathMesh)
     return pathtest
   }
-
 
   // StartMap -> muss generiert werden da sonst ein error kommt
   const dummy_points = Array.from({ length: 5 }).map(() => [0, 0, 0])
 
   const [wegPunkte, setWegPunkte] = useState(null)
 
-  function addnewBtn() {
+  const activeRooms = []
 
-    console.log(wegpunkt1, wegpunkt2)
+  function addnewBtn() {
 
     setWegPunkte(wegPunkte => [])
 
-    const testWeg = testModul(wegpunkt1, wegpunkt2)
-    testWeg.then((data) => {
-      if(data != null){
-        data.map((e) => {
-          /* angenommen man hat ein objekt=[ ob1: "a", ob2: "b",ob3: "c" ] dann ist {...objekt} das gleiche wie { ob1="a", ob2="b", ob3="c" } */
-          setWegPunkte((points) => [...(points || [[0, 0, 0]]), [e.x, e.y, e.z]])}
-        )
-      }
-    })
+    const auswahl1 = Number(activeRooms[0])
+    const auswahl2 = Number(activeRooms[1])
 
+    console.log(auswahl1, auswahl2)
+    
+    if (auswahl1 > 0 || auswahl2 > 0) {
+      const weg = wegBerechnung(auswahl1, auswahl2)
+      weg.then((data) => {
+        if(data != null){
+          data.map((e) => {
+            setWegPunkte((points) => [...(points || [[0, 0, 0]]), [e.x, e.y, e.z]])}
+          )
+        }
+      })
+
+    } else if (wegpunkt1, wegpunkt2 != null) {
+      const testWeg = wegBerechnung(wegpunkt1, wegpunkt2)
+      testWeg.then((data) => {
+        if(data != null){
+          data.map((e) => {
+            /* angenommen man hat ein objekt=[ ob1: "a", ob2: "b",ob3: "c" ] dann ist {...objekt} das gleiche wie { ob1="a", ob2="b", ob3="c" } */
+            setWegPunkte((points) => [...(points || [[0, 0, 0]]), [e.x, e.y, e.z]])}
+          )
+        }
+      })
+    } else {
+      console.log("error keine wegpunkte ausgewählt")
+    }
   }
-
 
   const [wegpunkt1, setWegpunkt1] = useState(null);
   const [wegpunkt2, setWegpunkt2] = useState(null);
@@ -154,7 +168,6 @@ const Scene = () => {
   }
 
   function Thing({ points }){
-
     return (
       <>
         <line position={[0, 0, 0]}>
@@ -170,6 +183,83 @@ const Scene = () => {
   }
 
   
+
+  // Fügt dem Array über uns den angeklickten vector hinzu
+  function raumauswahl(state, action) {
+    
+    const vecToArray = action.payloade
+    // Increment = Raum ist Aktiv, Decrement = Raum ist inaktiv 
+    switch (action.type) {
+      case 'increment':
+        
+        // wenn unser arrayWithActiveRooms leer ist müssen wir nicht schauen ob es den ausgewählten draum im array doppelt gibt 
+        if(activeRooms.length <= 0){
+          activeRooms.push(vecToArray)
+          } else {
+            var inArray = false
+            // Geht den array Durch und schaut nach doppelten einträgen
+            activeRooms.forEach(element => {
+              if(JSON.stringify(element) == JSON.stringify(vecToArray)){
+                inArray = true
+              }
+              });
+              if(!inArray){
+                activeRooms.push(vecToArray)
+              }
+          }
+        if (activeRooms.length == 2) {
+          //console.log("done")
+        }
+          return
+      case 'decrement':
+        
+        if(JSON.stringify(activeRooms[0]) == JSON.stringify(vecToArray)){
+          activeRooms.splice(0, 1);
+        }
+        
+        if (JSON.stringify(activeRooms[1]) == JSON.stringify(vecToArray)){
+          activeRooms.splice(1, 1);
+        } 
+          return
+      default:
+        throw new Error();
+    }
+  }
+  
+  function RenderChild2(e){
+    const [active, setActive] = useState(false)
+    const [hovered, setHover] = useState(false)
+
+    const [state, dispatcher] = useReducer(raumauswahl)
+
+    const raumname = "" + e.name
+    raumname.slice(-3)
+    
+    return(
+      <mesh
+            scale = {e.scale}
+            material = {e.material}
+            geometry = {e.geometry}
+            key = {e.id}
+            name = {raumname}
+            
+            onPointerOver={(event) => {setHover(true); event.stopPropagation()}}
+
+            onPointerOut={(event) => {setHover(false); event.stopPropagation()}}
+
+            onClick={(e) => { setActive(!active)
+            active ? dispatcher({type: 'decrement', payloade: raumname.slice(-3)}) : dispatcher({type: 'increment', payloade: raumname.slice(-3)})
+            e.stopPropagation()
+            }
+          }
+          >
+          <meshStandardMaterial color={active ? 'green' : 'red'  && hovered ? 'yellow' : 'red'} />
+      </mesh>
+    )
+  }
+
+ 
+  // 
 
   return ( 
     <>
@@ -190,7 +280,6 @@ const Scene = () => {
       />
 
       <AddSingleMesh/>
-
 
       <Thing points={wegPunkte || dummy_points} />
 

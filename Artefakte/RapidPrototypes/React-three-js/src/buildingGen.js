@@ -7,83 +7,44 @@ import * as THREE from "three";
 import {  useRef, useLayoutEffect } from "react";
 
 
-  // Punkte
-  async function testModul(){
-
-    const pathMesh = await importPathMesh("obj/pathMesh.obj");
-    //console.log(pathMesh)
-    const pathtest = await findPath(pathMesh[0],pathMesh[32],pathMesh);
-    return(
-      pathtest
-    )
-  }
-
-  
-
-  async function output(){
-    const weg = await testModul()
-  }  
-  
-
-  /*
-  const weg = testModul()
-
-  const pathtest = findPath(weg[0],weg[32],weg);
-  
-  console.log(weg)
-  */
-  function Line({ start, end }) {
-    const ref = useRef()
-    
-    const points = [output()]
-
-      const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
-
-      return (
-          <line ref={ref} geometry={lineGeometry}>
-              <lineBasicMaterial attach="material" color={'#9c88ff'} linewidth={100} linecap={'round'} linejoin={'round'} />
-          </line>
-          )
-  }
-
-
-  const arrayWithActiveRooms = []
+ 
+const activeRooms = []
 
   // Fügt dem Array über uns den angeklickten vector hinzu
   function raumauswahl(state, action) {
-
-    const vecToArray = [ action.payloade.x, action.payloade.y, action.payloade.z ]
     
+    const vecToArray = action.payloade
     // Increment = Raum ist Aktiv, Decrement = Raum ist inaktiv 
     switch (action.type) {
       case 'increment':
+        
         // wenn unser arrayWithActiveRooms leer ist müssen wir nicht schauen ob es den ausgewählten draum im array doppelt gibt 
-        if(arrayWithActiveRooms.length <= 0){
-          arrayWithActiveRooms.push(vecToArray)
+        if(activeRooms.length <= 0){
+          activeRooms.push(vecToArray)
           } else {
             var inArray = false
             // Geht den array Durch und schaut nach doppelten einträgen
-            arrayWithActiveRooms.forEach(element => {
+            activeRooms.forEach(element => {
               if(JSON.stringify(element) == JSON.stringify(vecToArray)){
                 inArray = true
               }
               });
               if(!inArray){
-                arrayWithActiveRooms.push(vecToArray)
+                activeRooms.push(vecToArray)
               }
           }
-        if (arrayWithActiveRooms.length == 2) {
+        if (activeRooms.length == 2) {
           //console.log("done")
         }
           return
       case 'decrement':
         
-        if(JSON.stringify(arrayWithActiveRooms[0]) == JSON.stringify(vecToArray)){
-          arrayWithActiveRooms.splice(0, 1);
+        if(JSON.stringify(activeRooms[0]) == JSON.stringify(vecToArray)){
+          activeRooms.splice(0, 1);
         }
         
-        if (JSON.stringify(arrayWithActiveRooms[1]) == JSON.stringify(vecToArray)){
-          arrayWithActiveRooms.splice(1, 1);
+        if (JSON.stringify(activeRooms[1]) == JSON.stringify(vecToArray)){
+          activeRooms.splice(1, 1);
         } 
           return
       default:
@@ -97,7 +58,8 @@ import {  useRef, useLayoutEffect } from "react";
 
     const [state, dispatcher] = useReducer(raumauswahl)
 
-    //const [checkers, dispatcherTwo] = useReducer(checker)
+    const raumname = "" + e.name
+    raumname.slice(-3)
     
     return(
       <mesh
@@ -105,13 +67,15 @@ import {  useRef, useLayoutEffect } from "react";
             material = {e.material}
             geometry = {e.geometry}
             key = {e.id}
+            name = {raumname}
             
             onPointerOver={(event) => {setHover(true); event.stopPropagation()}}
 
             onPointerOut={(event) => {setHover(false); event.stopPropagation()}}
 
             onClick={(e) => { setActive(!active)
-            active ? dispatcher({type: 'decrement', payloade: e.point}) : dispatcher({type: 'increment', payloade: e.point})
+            active ? dispatcher({type: 'decrement', payloade: raumname.slice(-3)}) : dispatcher({type: 'increment', payloade: raumname.slice(-3)})
+            e.stopPropagation()
             }
           }
           >
@@ -120,4 +84,7 @@ import {  useRef, useLayoutEffect } from "react";
     )
   }
 
-export {RenderChild, Line};
+
+
+
+export {RenderChild};
