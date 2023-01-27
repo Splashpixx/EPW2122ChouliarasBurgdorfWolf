@@ -12,7 +12,7 @@ class PathMeshPoint{
         this.edges = [];
         this.depth = null;
         this.endFlag = false;
-        this.prio = 0.0;
+        this.prio = null;
         this.stairs = false;
         this.elevator = false;
     }
