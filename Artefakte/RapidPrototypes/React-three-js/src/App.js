@@ -138,6 +138,12 @@ const Scene = () => {
   const [wegpunkt1, setWegpunkt1] = useState(null);
   const [wegpunkt2, setWegpunkt2] = useState(null);
 
+  const [treppeRadio, setTreppeRadio] = useState(true);
+  const [aufzugRadio, setAufzugRadio] = useState(null);
+  const [popupTrigger, setPopupTrigger] = useState(null);
+
+
+
   const handleaddNumber = (e) => {
     setWegpunkt1(e.target.value);
   };
@@ -146,26 +152,77 @@ const Scene = () => {
     setWegpunkt2(e.target.value);
   };
 
-  function AddNewPointRandom() {
-    return (
-      <div className="addNewPointRandom">
-        <div className='flex'>
-          <input
-            onChange={(e) => handleaddNumber(e)}
-            value={wegpunkt1 ? wegpunkt1 : ""}
-            type="number"
-          />
-          <input
-            onChange={(e) => handleaddNumber2(e)}
-            value={wegpunkt2 ? wegpunkt2 : ""}
-            type="number"
-          />
-          <button onClick={addnewBtn}>Zeig mir den weg</button>
-        </div>
+  const handleRadioButtons = (radioName) => {
+      if(radioName === "aufzugRadio") {
+        setAufzugRadio(true)
+        setTreppeRadio(false)
+      } else if(radioName === "treppeRadio") {
+        setAufzugRadio(false)
+        setTreppeRadio(true)
+      }
+  };
+// Hier Aufruf Wegfinndungsalgorithmus
+  const handleBerechneWegButton = () => {
+    wegBerechnung(wegpunkt1, wegpunkt2);
+    setPopupTrigger(false);
+  }
+
+  // Weg genrieren Button mit Popup
+  function WegButtonPopup() {
+      return (
+        <div className='ignore'>
+          <div className="WegButton">
+           <button onClick={e => setPopupTrigger(true)} >Weg generieren</button> 
+           </div>
+            {popupTrigger === true &&
+            <div className="WegButtonPopup">
+              <form>
+              <label htmlFor="startPunkt" >Start Raumnummer </label>
+            <input
+                  id="startPunkt" 
+                  onChange={(e) => handleaddNumber(e)}
+                  value={wegpunkt1 ? wegpunkt1 : ""}
+                  type="number"
+                />
+                
+                </form>
+                <form>
+                <label htmlFor="endPunkt">Ziel Raumnummer </label>
+                <input
+                  id="endPunkt" 
+                  onChange={(e) => handleaddNumber2(e)}
+                  value={wegpunkt2 ? wegpunkt2 : ""}
+                  type="number"
+                />
+                
+                </form>
+                <form class="formMitPadding">
+                <input 
+                  type="radio" 
+                  id="treppeRadio"   
+                  onChange={(e) => handleRadioButtons(e.target.id)}
+                  checked={treppeRadio}
+                  />
+                <label htmlFor="treppeRadio">Treppe</label>
+                <input 
+                  type="radio" 
+                  id="aufzugRadio"   
+                  onChange={(e) => handleRadioButtons(e.target.id)}
+                  checked={aufzugRadio}
+                  />
+                <label htmlFor="aufzugRadio">Aufzug</label>
+                </form>
+                <form>
+                
+                <button onClick={() => handleBerechneWegButton()}>Weg generieren</button>
+                </form>
+            </div> 
+          }
         
       </div>
-    )
+      )
   }
+
 
   function Thing({ points }){
     return (
@@ -292,7 +349,7 @@ const Scene = () => {
   </div>
 
   <div className='main2'>
-    <AddNewPointRandom/>
+    <WegButtonPopup/>
   </div>
 
   </>
