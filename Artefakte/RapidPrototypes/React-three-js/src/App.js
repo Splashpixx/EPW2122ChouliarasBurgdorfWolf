@@ -176,13 +176,11 @@ const Scene = () => {
               geom.setFromPoints(points.map((p) => new THREE.Vector3(p[0], p[1], p[2])))
             }}
           />
-          <lineBasicMaterial color="red" />
+          <lineBasicMaterial color="green" linewidth={50}/>
         </line>
       </>
     )
   }
-
-  
 
   // Fügt dem Array über uns den angeklickten vector hinzu
   function raumauswahl(state, action) {
@@ -207,12 +205,16 @@ const Scene = () => {
                 activeRooms.push(vecToArray)
               }
           }
-        if (activeRooms.length == 2) {
-          //console.log("done")
-        }
-          return
+
+          if ( activeRooms.length == 2 ){
+            //const merken
+            //addnewBtn()
+            console.log("done")
+
+          }
+
+        return
       case 'decrement':
-        
         if(JSON.stringify(activeRooms[0]) == JSON.stringify(vecToArray)){
           activeRooms.splice(0, 1);
         }
@@ -247,9 +249,15 @@ const Scene = () => {
 
             onPointerOut={(event) => {setHover(false); event.stopPropagation()}}
 
-            onClick={(e) => { setActive(!active)
-            active ? dispatcher({type: 'decrement', payloade: raumname.slice(-3)}) : dispatcher({type: 'increment', payloade: raumname.slice(-3)})
-            e.stopPropagation()
+            onClick={(e) => { 
+              if(activeRooms.length <= 1){
+                setActive(!active)
+                active ? dispatcher({type: 'decrement', payloade: raumname.slice(-3)}) : dispatcher({type: 'increment', payloade: raumname.slice(-3)})
+              } else {
+                setActive(false)
+                dispatcher({type: 'decrement', payloade: raumname.slice(-3)})
+              }
+              e.stopPropagation()
             }
           }
           >
