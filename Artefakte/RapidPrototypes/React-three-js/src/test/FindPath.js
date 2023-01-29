@@ -3,21 +3,7 @@ import * as THREE from "three";
 
 async function findPath(startPoint, endPoint, pathMesh, takeStairs, takeElevator){
 
-    if(takeStairs===false){
-        pathMesh.forEach(element => {
-            if (element.stairs === true){
-                element.endFlag = true
-            }
-        })
-    }
-
-    if(takeElevator===false){
-        pathMesh.forEach(element => {
-            if (element.elevator === true){
-                element.endFlag = true
-            }
-        })
-    }
+    setElevationFlags(startPoint, endPoint, pathMesh, takeStairs, takeElevator)
 
     startPoint.depth = 0
 
@@ -60,8 +46,8 @@ async function findPath(startPoint, endPoint, pathMesh, takeStairs, takeElevator
     }
     let path = await getPath(startPoint, endPoint)
     pathMesh.forEach(pathPoint => {
-        pathPoint.prio = 0
-        pathPoint.depth = 0.0
+        pathPoint.prio = null
+        pathPoint.depth = null
         pathPoint.endFlag = false
     })
     return path
@@ -107,6 +93,41 @@ async function getPath(startPoint, endPoint){
     return path
 }
 
+async function setElevationFlags(startPoint, endPoint, pathMesh, takeStairs, takeElevator){
+
+    pathMesh.forEach(element => {
+        if (endPoint.pos.y === startPoint.pos.y){
+            if(element.stairs || element.elevator){
+                element.endFlag = true
+            }
+        }else{
+            if(takeStairs===false){
+                pathMesh.forEach(element => {
+                    if (element.stairs === true){
+                        element.endFlag = true
+                    }
+                })
+            }
+            if(takeElevator===false){
+                pathMesh.forEach(element => {
+                    if (element.elevator === true){
+                        element.endFlag = true
+                    }
+                })
+            }
+            if(endPoint.pos.y > startPoint.pos.y){
+                if(element.pos.y < startPoint.pos.y){
+                    element.endFlag = true
+                }
+            }
+            if(endPoint.pos.y < startPoint.pos.y){
+                if(element.pos.y > startPoint.pos.y){
+                    element.endFlag = true
+                }
+            }
+        }
+    })
+}
 
 
 export {findPath};
