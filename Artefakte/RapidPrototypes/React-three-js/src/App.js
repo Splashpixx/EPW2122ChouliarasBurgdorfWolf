@@ -161,7 +161,7 @@ const Scene = () => {
         setTreppeRadio(true)
       }
   };
-// Hier Aufruf Wegfinndungsalgorithmus
+// Aufruf Wegfinndungsalgorithmus
   const handleBerechneWegButton = () => {
     wegBerechnung(wegpunkt1, wegpunkt2);
     setPopupTrigger(false);
