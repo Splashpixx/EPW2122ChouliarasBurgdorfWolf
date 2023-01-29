@@ -343,7 +343,7 @@ const Scene = () => {
             }
           }
           >
-          <meshStandardMaterial color={active ? 'green' : 'red'  && hovered ? 'yellow' : 'red'} />
+          <meshStandardMaterial color={active ? 'green' : 'gray'  && hovered ? 'yellow' : 'gray'} />
       </mesh>
     )
   }
