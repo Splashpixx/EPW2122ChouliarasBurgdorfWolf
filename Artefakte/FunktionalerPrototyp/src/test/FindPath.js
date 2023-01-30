@@ -5,12 +5,23 @@ async function findPath(startPoint, endPoint, pathMesh, takeStairs, takeElevator
 
     setElevationFlags(startPoint, endPoint, pathMesh, takeStairs, takeElevator)
 
+    var tookStairs = false
+
     startPoint.depth = 0
 
     let currentLoc = startPoint
 
     while (currentLoc !== endPoint) {
         // console.log(currentLoc.id)
+
+        if(!tookStairs && currentLoc.pos === endPoint.pos){
+            tookStairs = true
+            pathMesh.forEach(point =>{
+                if(point.stairs || point.elevator){
+                    point.endFlag = true
+                }
+            })
+        }
 
         await setDepth(currentLoc.edges, currentLoc.depth)
 

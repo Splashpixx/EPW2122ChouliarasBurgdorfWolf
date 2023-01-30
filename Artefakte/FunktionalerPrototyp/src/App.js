@@ -107,22 +107,28 @@ const Scene = () => {
   
   // Gebäude !-Pathfinding ist in der buildingGen.js-!
 
-  function AddEtage_03_Raeume(){
-    return ImportMeshesFromOBJ("obj/Main_Etage_03_Raeume.obj",true, "red", "yellow", "green", raumauswahl, activeRooms)}
+  function AddEtage03Raeume(){
+    return ImportMeshesFromOBJ("obj/Main_Etage_03_Raeume.obj",true, "#ff0000", "yellow", "green", raumauswahl, activeRooms)}
   function AddEtage03Geo(){
-    return ImportMeshesFromOBJ("obj/Main_Etage_03_Geo.obj",false, "gray", "", "", raumauswahl, activeRooms)}
+    return ImportMeshesFromOBJ("obj/Main_Etage_03_Geo.obj",false, "#aaaaaa", "", "", raumauswahl, activeRooms)}
   function AddEtage02Raeume(){
-    return ImportMeshesFromOBJ("obj/Main_Etage_02_Raeume.obj",true, "red", "yellow", "green", raumauswahl, activeRooms)}
+    return ImportMeshesFromOBJ("obj/Main_Etage_02_Raeume.obj",true, "#cc0000", "yellow", "green", raumauswahl, activeRooms)}
   function AddEtage02Geo(){
-    return ImportMeshesFromOBJ("obj/Main_Etage_02_Geo.obj",false, "gray", "", "", raumauswahl, activeRooms)}
+    return ImportMeshesFromOBJ("obj/Main_Etage_02_Geo.obj",false, "#999999", "", "", raumauswahl, activeRooms)}
   function AddEtage01Raeume(){
-    return ImportMeshesFromOBJ("obj/Main_Etage_01_Raeume.obj",true, "red", "yellow", "green", raumauswahl, activeRooms)}
+    return ImportMeshesFromOBJ("obj/Main_Etage_01_Raeume.obj",true, "#880000", "yellow", "green", raumauswahl, activeRooms)}
   function AddEtage01Geo(){
-    return ImportMeshesFromOBJ("obj/Main_Etage_01_Geo.obj",false, "gray", "", "", raumauswahl, activeRooms)}
+    return ImportMeshesFromOBJ("obj/Main_Etage_01_Geo.obj",false, "#888888", "", "", raumauswahl, activeRooms)}
   function AddEtage00Raeume(){
-    return ImportMeshesFromOBJ("obj/Main_Etage_00_Raeume.obj",true, "red", "yellow", "green", raumauswahl, activeRooms)}
+    return ImportMeshesFromOBJ("obj/Main_Etage_00_Raeume.obj",true, "#440000", "yellow", "green", raumauswahl, activeRooms)}
   function AddEtage00Geo(){
-    return ImportMeshesFromOBJ("obj/Main_Etage_00_Geo.obj",false, "gray", "", "", raumauswahl, activeRooms)}
+    return ImportMeshesFromOBJ("obj/Main_Etage_00_Geo.obj",false, "#666666", "", "", raumauswahl, activeRooms)}
+  function AddStairs(){
+    return ImportMeshesFromOBJ("obj/Stairs.obj",false, "#66aa66", "", "", raumauswahl, activeRooms)}
+  function AddElevators(){
+    return ImportMeshesFromOBJ("obj/Elevators.obj",false, "#5566bb", "", "", raumauswahl, activeRooms)}
+  function AddGround(){
+    return ImportMeshesFromOBJ("obj/Ground.obj",false, "#222222", "", "", raumauswahl, activeRooms)}
 
 
     function ImportMeshesFromOBJ(path, clickable, baseColor, hoverColor, activeColor, raumauswahl, activeRooms){
@@ -378,13 +384,16 @@ const Scene = () => {
         />
 
         <AddEtage03Geo/>
-        <AddEtage03Geo/>
+        <AddEtage03Raeume/>
         <AddEtage02Geo/>
         <AddEtage02Raeume/>
         <AddEtage01Geo/>
         <AddEtage01Raeume/>
         <AddEtage00Geo/>
         <AddEtage00Raeume/>
+        <AddStairs/>
+        <AddElevators/>
+        <AddGround/>
 
         <LineRenderer points={wegPunkte || [ [0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0] ]} />
 
