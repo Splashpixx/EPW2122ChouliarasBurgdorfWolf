@@ -30,7 +30,7 @@ import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 import {findPath} from "./test/FindPath";
 import {importPathMesh} from "./test/ImportPathMesh";
 import {RenderChild, Thing, AddNewPointRandom, BadCode} from "./buildingGen"
-import {MeshClickable, MeshNOTClickable, ImportMeshesFromOBJ} from "./test/MeshFunctions";
+// import {MeshClickable, MeshNOTClickable, ImportMeshesFromOBJ} from "./test/MeshFunctions";
 import { hover } from '@testing-library/user-event/dist/hover';
 
 /*
@@ -43,74 +43,205 @@ useEffekt: wird immer aufberufen im fall dass sich eins state ändert
 useRef: ähnlich wie useState, nur dass es die UI nicht neu rendert
 useReducer: Komplexe version von useState das eine funktion aufrufen kann
 
+
 Bieten die Möglichkeit, State in Functional Components zu nutzen, was bisher nur in Class Components möglich war.
-*/
+*/ 
 
 const Scene = () => {
-  const cube = useRef()
 
+  // Setting const
+  const [wegpunkt1, setWegpunkt1] = useState(null);
+  const [wegpunkt2, setWegpunkt2] = useState(null);
 
-  // Gebäude !-Pathfinding ist in der buildingGen.js-!
+  const [treppeRadio, setTreppeRadio] = useState(true);
+  const [aufzugRadio, setAufzugRadio] = useState(null);
+  const [popupTrigger, setPopupTrigger] = useState(null);
+  
 
-  function AddEtage_03_Raeume(){
-    return ImportMeshesFromOBJ("obj/Main_Etage_03_Raeume.obj",true, "red", "yellow", "green", raumauswahl, activeRooms)}
-  function AddEtage_03_Geo(){
-    return ImportMeshesFromOBJ("obj/Main_Etage_03_Geo.obj",false, "gray", "", "", raumauswahl, activeRooms)}
-  function AddEtage_02_Raeume(){
-    return ImportMeshesFromOBJ("obj/Main_Etage_02_Raeume.obj",true, "red", "yellow", "green", raumauswahl, activeRooms)}
-  function AddEtage_02_Geo(){
-    return ImportMeshesFromOBJ("obj/Main_Etage_02_Geo.obj",false, "gray", "", "", raumauswahl, activeRooms)}
-  function AddEtage_01_Raeume(){
-    return ImportMeshesFromOBJ("obj/Main_Etage_01_Raeume.obj",true, "red", "yellow", "green", raumauswahl, activeRooms)}
-  function AddEtage_01_Geo(){
-    return ImportMeshesFromOBJ("obj/Main_Etage_01_Geo.obj",false, "gray", "", "", raumauswahl, activeRooms)}
-  function AddEtage_00_Raeume(){
-    return ImportMeshesFromOBJ("obj/Main_Etage_00_Raeume.obj",true, "red", "yellow", "green", raumauswahl, activeRooms)}
-  function AddEtage_00_Geo(){
-    return ImportMeshesFromOBJ("obj/Main_Etage_00_Geo.obj",false, "gray", "", "", raumauswahl, activeRooms)}
-
-  /* Kamera einstellung und erstellung */
+ //kamera = true ist die normale kamera, false orthographisch
   const [kamera, set] = useState(false)
-
-  const test = (kamera ? true : false)
-
-  function changeView(){
-    set(!kamera)
-  }
-
-  function Counter() {
-    return (
-      <div className="counter">
-        <button onClick={changeView}>Switch cam</button>
-      </div>
-    )
-  }
-
-     /* ALLES MIT LINIEN IST HIER*/
-
-  /* Linien gen https://codesandbox.io/s/r3f-line-adding-points-workaround-11g9h?file=/src/index.js */
-
-  async function wegBerechnung(start, ende,treppe,aufzug){
-    const pathMesh = await importPathMesh("obj/PathMesh.obj")
-    const pathtest = await findPath(pathMesh[start],pathMesh[ende],pathMesh,treppe,aufzug)
-    return pathtest
-  }
-
-  // StartMap -> muss generiert werden da sonst ein error kommt
-  const dummy_points = Array.from({ length: 5 }).map(() => [0, 0, 0])
+  const rotierbarkeit = (kamera ? true : false)
 
   const [wegPunkte, setWegPunkte] = useState(null)
 
   const activeRooms = []
 
-  function addnewBtn() {
+    // Fügt dem Array über uns den angeklickten vector hinzu
+    function raumauswahl(state, action) {
+    
+      const vecToArray = action.payloade
+      // Increment = Raum ist Aktiv, Decrement = Raum ist inaktiv 
+      switch (action.type) {
+        case 'increment':
+          
+          // wenn unser arrayWithActiveRooms leer ist müssen wir nicht schauen ob es den ausgewählten draum im array doppelt gibt 
+          if(activeRooms.length <= 0){
+            activeRooms.push(vecToArray)
+            } else {
+              var inArray = false
+              // Geht den array Durch und schaut nach doppelten einträgen
+              activeRooms.forEach(element => {
+                if(JSON.stringify(element) == JSON.stringify(vecToArray)){
+                  inArray = true
+                }
+                });
+                if(!inArray){
+                  activeRooms.push(vecToArray)
+                }
+            }
+  
+          return
+        case 'decrement':
+          if(JSON.stringify(activeRooms[0]) == JSON.stringify(vecToArray)){
+            activeRooms.splice(0, 1);
+          }
+          
+          if (JSON.stringify(activeRooms[1]) == JSON.stringify(vecToArray)){
+            activeRooms.splice(1, 1);
+          } 
+            return
+        default:
+          throw new Error();
+      }
+    }
+  
+  // Gebäude !-Pathfinding ist in der buildingGen.js-!
+
+  function AddEtage_03_Raeume(){
+    return ImportMeshesFromOBJ("obj/Main_Etage_03_Raeume.obj",true, "red", "yellow", "green", raumauswahl, activeRooms)}
+  function AddEtage03Geo(){
+    return ImportMeshesFromOBJ("obj/Main_Etage_03_Geo.obj",false, "gray", "", "", raumauswahl, activeRooms)}
+  function AddEtage02Raeume(){
+    return ImportMeshesFromOBJ("obj/Main_Etage_02_Raeume.obj",true, "red", "yellow", "green", raumauswahl, activeRooms)}
+  function AddEtage02Geo(){
+    return ImportMeshesFromOBJ("obj/Main_Etage_02_Geo.obj",false, "gray", "", "", raumauswahl, activeRooms)}
+  function AddEtage01Raeume(){
+    return ImportMeshesFromOBJ("obj/Main_Etage_01_Raeume.obj",true, "red", "yellow", "green", raumauswahl, activeRooms)}
+  function AddEtage01Geo(){
+    return ImportMeshesFromOBJ("obj/Main_Etage_01_Geo.obj",false, "gray", "", "", raumauswahl, activeRooms)}
+  function AddEtage00Raeume(){
+    return ImportMeshesFromOBJ("obj/Main_Etage_00_Raeume.obj",true, "red", "yellow", "green", raumauswahl, activeRooms)}
+  function AddEtage00Geo(){
+    return ImportMeshesFromOBJ("obj/Main_Etage_00_Geo.obj",false, "gray", "", "", raumauswahl, activeRooms)}
+
+
+    function ImportMeshesFromOBJ(path, clickable, baseColor, hoverColor, activeColor, raumauswahl, activeRooms){
+      const obj = useLoader(OBJLoader, path, (loader) => {})
+  
+      const listofMeshes = []
+  
+      obj.children.map(e => {
+          listofMeshes.push(RenderChild2(e, clickable, baseColor, hoverColor, activeColor, raumauswahl, activeRooms))
+      })
+  
+      return listofMeshes.map(e => {
+          return e
+      })
+  }
+  
+  function RenderChild2(e, clickable, baseColor, hoverColor, activeColor, raumauswahl, activeRooms){
+      const [active, setActive] = useState(false)
+      const [hovered, setHover] = useState(false)
+  
+      const [state, dispatcher] = useReducer(raumauswahl)
+  
+      const raumname = "" + e.name
+      raumname.slice(-3)
+  
+      if (clickable){
+          return MeshClickable(e.scale, e.material, e.geometry, e.id, raumname, baseColor, hoverColor, activeColor, raumauswahl, activeRooms)
+      }else{
+          return MeshNOTClickable(e.scale, e.material, e.geometry, e.id, raumname, baseColor, raumauswahl, activeRooms)
+      }
+  }
+  
+  function MeshClickable(scale, material, geometry, id, name, baseColor, hoverColor, activeColor, raumauswahl, activeRooms){
+  
+      const [active, setActive] = useState(false)
+      const [hovered, setHover] = useState(false)
+      const [state, dispatcher] = useReducer(raumauswahl)
+  
+      return(
+          <mesh
+              scale = {scale}
+              material = {material}
+              geometry = {geometry}
+              key = {id}
+              name = {name}
+  
+              onPointerOver={(event) => {setHover(true); event.stopPropagation()}}
+  
+              onPointerOut={(event) => {setHover(false); event.stopPropagation()}}
+  
+              onClick={(e) => {
+                  if(activeRooms.length <= 1){
+                      setActive(!active)
+                      active ? dispatcher({type: 'decrement', payloade: name}) : dispatcher({type: 'increment', payloade: name})
+                  } else {
+                      setActive(false)
+                      dispatcher({type: 'decrement', payloade: name})
+                  }
+                  e.stopPropagation()
+              }
+              }
+          >
+              <meshStandardMaterial color={active ? activeColor : baseColor  && hovered ? hoverColor : baseColor} />
+          </mesh>
+      )
+  }
+  
+  function MeshNOTClickable(scale, material, geometry, id, name, baseColor, raumauswahl){
+  
+      const [active, setActive] = useState(false)
+      const [hovered, setHover] = useState(false)
+      const [state, dispatcher] = useReducer(raumauswahl)
+  
+      return(
+          <mesh
+              scale = {scale}
+              material = {material}
+              geometry = {geometry}
+              key = {id}
+              name = {name}
+  
+              onClick={(e) => {}}
+          >
+              <meshStandardMaterial color={baseColor} />
+          </mesh>
+      )
+  }
+ 
+  /* Kamera einstellung und erstellung */
+  
+  function changeView(){
+    set(!kamera)
+  }
+
+  function SwitchCam() {
+    return (
+      <div className="SwitchCam">
+        <button onClick={changeView}>Switch cam</button>
+      </div>
+    )
+  }
+
+  /* ALLES MIT LINIEN IST HIER*/
+  /* Linien gen https://codesandbox.io/s/r3f-line-adding-points-workaround-11g9h?file=/src/index.js */
+
+  async function wegBerechnung(start, ende, treppe, aufzug){
+    const pathMesh = await importPathMesh("obj/PathMesh.obj")
+    const pathtest = await findPath(pathMesh[start],pathMesh[ende],pathMesh,treppe,aufzug)
+    return pathtest
+  }
+
+  function routeBerechnen() {
 
     setWegPunkte(wegPunkte => [])
 
-    const auswahl1 = Number(activeRooms[0])
-    const auswahl2 = Number(activeRooms[1])
+    const auswahl1 = Number(activeRooms[0].slice(-3))
+    const auswahl2 = Number(activeRooms[1].slice(-3))
 
-    console.log(auswahl1, auswahl2)
+    console.log(auswahl1, auswahl2, activeRooms)
     
     if (auswahl1 > 0 || auswahl2 > 0) {
       const weg = wegBerechnung(auswahl1, auswahl2)
@@ -122,7 +253,7 @@ const Scene = () => {
         }
       })
 
-    } else if (wegpunkt1, wegpunkt2 != null) {
+    } else if (wegpunkt1 != null || wegpunkt2 != null) {
       const testWeg = wegBerechnung(wegpunkt1, wegpunkt2)
       testWeg.then((data) => {
         if(data != null){
@@ -136,15 +267,6 @@ const Scene = () => {
       console.log("error keine wegpunkte ausgewählt")
     }
   }
-
-  const [wegpunkt1, setWegpunkt1] = useState(null);
-  const [wegpunkt2, setWegpunkt2] = useState(null);
-
-  const [treppeRadio, setTreppeRadio] = useState(true);
-  const [aufzugRadio, setAufzugRadio] = useState(null);
-  const [popupTrigger, setPopupTrigger] = useState(null);
-
-
 
   const handleaddNumber = (e) => {
     setWegpunkt1(e.target.value);
@@ -163,7 +285,7 @@ const Scene = () => {
         setTreppeRadio(true)
       }
   };
-// Aufruf Wegfinndungsalgorithmus aus Popup
+/* Aufruf Wegfinndungsalgorithmus aus Popup   kann gleich raus
   const handleBerechneWegButton = () => {
     setPopupTrigger(false);
     const popupWeg = wegBerechnung(wegpunkt1, wegpunkt2,setTreppeRadio, setAufzugRadio);
@@ -176,67 +298,12 @@ const Scene = () => {
     })
     console.log(popupWeg)
   }
+  */
 
-  // Weg genrieren Button mit Popup
-  function WegButtonPopup() {
-      return (
-        <div className='ignore'>
-          <div className="WegButton">
-           <button onClick={e => setPopupTrigger(true)} >Weg generieren</button> 
-           </div>
-            {popupTrigger === true &&
-            <div className="WegButtonPopup">
-              <form>
-              <label htmlFor="startPunkt" >Start Raumnummer </label>
-            <input
-                  id="startPunkt" 
-                  onChange={(e) => handleaddNumber(e)}
-                  value={wegpunkt1 ? wegpunkt1 : ""}
-                  type="number"
-                />
-                
-                </form>
-                <form>
-                <label htmlFor="endPunkt">Ziel Raumnummer </label>
-                <input
-                  id="endPunkt" 
-                  onChange={(e) => handleaddNumber2(e)}
-                  value={wegpunkt2 ? wegpunkt2 : ""}
-                  type="number"
-                />
-                
-                </form>
-                <form className="formMitPadding">
-                <input 
-                  type="radio" 
-                  id="treppeRadio"   
-                  onChange={(e) => handleRadioButtons(e.target.id)}
-                  checked={treppeRadio}
-                  />
-                <label htmlFor="treppeRadio">Treppe</label>
-                <input 
-                  type="radio" 
-                  id="aufzugRadio"   
-                  onChange={(e) => handleRadioButtons(e.target.id)}
-                  checked={aufzugRadio}
-                  />
-                <label htmlFor="aufzugRadio">Aufzug</label>
-                </form>
-                <form>
-                
-                <button onClick={() => handleBerechneWegButton()}>Weg generieren</button>
-                </form>
-            </div> 
-          }
-        
-      </div>
-      )
-  }
-
-  function ButtonDerFunktioniert(){
-
+  // Weg genrieren im UI
+  function UiRoute(){
     return(
-      <div className="addNewPointRandom">
+      <div className="uiRoute">
         <div className='flex'>
           <input
             onChange={(e) => handleaddNumber(e)}
@@ -248,13 +315,33 @@ const Scene = () => {
             value={wegpunkt2 ? wegpunkt2 : ""}
             type="number"
           />
-          <button onClick={addnewBtn}>Zeig mir den weg</button>
         </div>
+        
+        <div className="treppeAufzug">
+        <button    
+          type="button"
+          onChange={(e) => handleRadioButtons(e.target.id)}
+          checked={treppeRadio}
+          
+          > Treppe </button>
+
+        <button    
+          type="button"
+          onChange={(e) => handleRadioButtons(e.target.id)}
+          checked={aufzugRadio}
+          > Aufzug </button>
+          
+        </div>
+
+        <div className="berechnenButton">
+        <button onClick={routeBerechnen}>Zeig mir den weg</button>
+        </div>
+
       </div>
     )
   }
 
-  function Thing({ points }){
+  function LineRenderer({ points }){
     return (
       <>
         <line position={[0, 0, 0]}>
@@ -269,95 +356,46 @@ const Scene = () => {
     )
   }
 
-  // Fügt dem Array über uns den angeklickten vector hinzu
-  function raumauswahl(state, action) {
-    
-    const vecToArray = action.payloade
-    // Increment = Raum ist Aktiv, Decrement = Raum ist inaktiv 
-    switch (action.type) {
-      case 'increment':
-        
-        // wenn unser arrayWithActiveRooms leer ist müssen wir nicht schauen ob es den ausgewählten draum im array doppelt gibt 
-        if(activeRooms.length <= 0){
-          activeRooms.push(vecToArray)
-          } else {
-            var inArray = false
-            // Geht den array Durch und schaut nach doppelten einträgen
-            activeRooms.forEach(element => {
-              if(JSON.stringify(element) == JSON.stringify(vecToArray)){
-                inArray = true
-              }
-              });
-              if(!inArray){
-                activeRooms.push(vecToArray)
-              }
-          }
-
-          if ( activeRooms.length == 2 ){
-            //const merken
-            //addnewBtn()
-            console.log("done")
-
-          }
-
-        return
-      case 'decrement':
-        if(JSON.stringify(activeRooms[0]) == JSON.stringify(vecToArray)){
-          activeRooms.splice(0, 1);
-        }
-        
-        if (JSON.stringify(activeRooms[1]) == JSON.stringify(vecToArray)){
-          activeRooms.splice(1, 1);
-        } 
-          return
-      default:
-        throw new Error();
-    }
-  }
- 
-  // 
 
   return ( 
     <>
-  <Canvas>
+    <Canvas>
 
-      <PerspectiveCamera position={[0, 20, 1.8]} fov={120} makeDefault={!kamera} rotation={[0,-90,0]} enableRotate={test}/>
-      <OrbitControls position={[20,40,10]} makeDefault={kamera} enableRotate={test}/>
+        <PerspectiveCamera position={[0, 20, 1.8]} fov={120} makeDefault={!kamera} rotation={[0,-90,0]} enableRotate={rotierbarkeit}/>
+        <OrbitControls position={[20,40,10]} makeDefault={kamera} enableRotate={rotierbarkeit}/>
 
-      <ambientLight 
-      intensity={0.5}
-      />
+        <ambientLight 
+        intensity={0.5}
+        />
 
-      <directionalLight
-        castShadow
-        shadow-mapSize-height={512}
-        shadow-mapSize-width={512}
-        intensity={0.8}
-      />
+        <directionalLight
+          castShadow
+          shadow-mapSize-height={512}
+          shadow-mapSize-width={512}
+          intensity={0.8}
+        />
 
-      <AddEtage_03_Geo/>
-      <AddEtage_03_Raeume/>
-      <AddEtage_02_Geo/>
-      <AddEtage_02_Raeume/>
-      <AddEtage_01_Geo/>
-      <AddEtage_01_Raeume/>
-      <AddEtage_00_Geo/>
-      <AddEtage_00_Raeume/>
+        <AddEtage03Geo/>
+        <AddEtage03Geo/>
+        <AddEtage02Geo/>
+        <AddEtage02Raeume/>
+        <AddEtage01Geo/>
+        <AddEtage01Raeume/>
+        <AddEtage00Geo/>
+        <AddEtage00Raeume/>
 
-      <Thing points={wegPunkte || dummy_points} />
+        <LineRenderer points={wegPunkte || [ [0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0] ]} />
 
-    
+    </Canvas>
 
-  </Canvas>
+    <div className='main'>
+      <SwitchCam/>
+    </div>
 
-  <div className='main'>
-    <Counter/>
-  </div>
+    <div className='main2'>
 
-  <div className='main2'>
-    <WegButtonPopup/>
-    <ButtonDerFunktioniert/>
-  </div>
+      <UiRoute/>
+    </div>
 
   </>
   );
