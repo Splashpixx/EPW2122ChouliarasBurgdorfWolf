@@ -142,7 +142,26 @@ const Scene = () => {
   const [aufzugRadio, setAufzugRadio] = useState(null);
   const [popupTrigger, setPopupTrigger] = useState(null);
 
+  function ButtonDerFunktioniert(){
 
+    return(
+      <div className="addNewPointRandom">
+        <div className='flex'>
+          <input
+            onChange={(e) => handleaddNumber(e)}
+            value={wegpunkt1 ? wegpunkt1 : ""}
+            type="number"
+          />
+          <input
+            onChange={(e) => handleaddNumber2(e)}
+            value={wegpunkt2 ? wegpunkt2 : ""}
+            type="number"
+          />
+          <button onClick={addnewBtn}>Zeig mir den weg</button>
+        </div>
+      </div>
+    )
+  }
 
   const handleaddNumber = (e) => {
     setWegpunkt1(e.target.value);
@@ -169,53 +188,58 @@ const Scene = () => {
 
   // Weg genrieren Button mit Popup
   function WegButtonPopup() {
+    
       return (
         <div className='ignore'>
           <div className="WegButton">
-           <button onClick={e => setPopupTrigger(true)} >Weg generieren</button> 
+           
+           <button onClick={e => {setPopupTrigger(true)}} >Weg generieren</button> 
+           
+           
            </div>
             {popupTrigger === true &&
             <div className="WegButtonPopup">
               <form>
-              <label htmlFor="startPunkt" >Start Raumnummer </label>
-            <input
-                  id="startPunkt" 
-                  onChange={(e) => handleaddNumber(e)}
-                  value={wegpunkt1 ? wegpunkt1 : ""}
-                  type="number"
-                />
-                
+                <label htmlFor="startPunkt" >Start Raumnummer </label>
+                  <input
+                    id="startPunkt" 
+                    onChange={(e) => handleaddNumber(e)}
+                    value={wegpunkt1 ? wegpunkt1 : ""}
+                    type="number"
+                  />
                 </form>
+
                 <form>
-                <label htmlFor="endPunkt">Ziel Raumnummer </label>
-                <input
-                  id="endPunkt" 
-                  onChange={(e) => handleaddNumber2(e)}
-                  value={wegpunkt2 ? wegpunkt2 : ""}
-                  type="number"
-                />
-                
+                  <label htmlFor="endPunkt">Ziel Raumnummer </label>
+                  <input
+                    id="endPunkt" 
+                    onChange={(e) => handleaddNumber2(e)}
+                    value={wegpunkt2 ? wegpunkt2 : ""}
+                    type="number"
+                  />
                 </form>
+
                 <form class="formMitPadding">
-                <input 
-                  type="radio" 
-                  id="treppeRadio"   
-                  onChange={(e) => handleRadioButtons(e.target.id)}
-                  checked={treppeRadio}
-                  />
-                <label htmlFor="treppeRadio">Treppe</label>
-                <input 
-                  type="radio" 
-                  id="aufzugRadio"   
-                  onChange={(e) => handleRadioButtons(e.target.id)}
-                  checked={aufzugRadio}
-                  />
-                <label htmlFor="aufzugRadio">Aufzug</label>
+                  <input 
+                    type="radio" 
+                    id="treppeRadio"   
+                    onChange={(e) => handleRadioButtons(e.target.id)}
+                    checked={treppeRadio}
+                    />
+                  <label htmlFor="treppeRadio">Treppe</label>
+                  <input 
+                    type="radio" 
+                    id="aufzugRadio"   
+                    onChange={(e) => handleRadioButtons(e.target.id)}
+                    checked={aufzugRadio}
+                    />
+                  <label htmlFor="aufzugRadio">Aufzug</label>
                 </form>
+
                 <form>
-                
-                <button onClick={() => handleBerechneWegButton()}>Weg generieren</button>
+                  <button onClick={() => handleBerechneWegButton()}>Weg generieren</button>
                 </form>
+
             </div> 
           }
         
@@ -323,7 +347,9 @@ const Scene = () => {
     )
   }
 
- 
+
+  
+
   // 
 
   return ( 
@@ -347,9 +373,6 @@ const Scene = () => {
       <AddSingleMesh/>
 
       <Thing points={wegPunkte || dummy_points} />
-
-    
-
   </Canvas>
 
   <div className='main'>
@@ -360,6 +383,9 @@ const Scene = () => {
     <WegButtonPopup/>
   </div>
 
+    <div className='main2'>
+      <ButtonDerFunktioniert/>
+    </div>
   </>
   );
 };
