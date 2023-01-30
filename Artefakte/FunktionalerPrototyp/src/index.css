@@ -163,16 +163,17 @@ pointer-events: all;
     cursor: pointer;
   }
 
-  .treppeAufzug {
+  .treppeAufzug > button {
     margin: 10px;
     padding: 5px 10px;
+    padding-top: 10px;
     left: 0;
     bottom: 0;
     width: 100px;
     border-radius: 5px;
-    border: solid 2px white;
+    border: none;
     outline: none;
-    background: transparent;
+    background: #8C8C8C;
     color: white;
     cursor: pointer;
   }

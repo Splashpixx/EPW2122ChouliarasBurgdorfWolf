@@ -306,11 +306,13 @@ const Scene = () => {
       <div className="uiRoute">
         <div className='flex'>
           <input
+            id= "startpunkt"
             onChange={(e) => handleaddNumber(e)}
             value={wegpunkt1 ? wegpunkt1 : ""}
             type="number"
           />
           <input
+            id= "zielpunkt"
             onChange={(e) => handleaddNumber2(e)}
             value={wegpunkt2 ? wegpunkt2 : ""}
             type="number"
@@ -334,7 +336,7 @@ const Scene = () => {
         </div>
 
         <div className="berechnenButton">
-        <button onClick={routeBerechnen}>Zeig mir den weg</button>
+        <button onClick={routeBerechnen}>Route berechnen</button>
         </div>
 
       </div>
