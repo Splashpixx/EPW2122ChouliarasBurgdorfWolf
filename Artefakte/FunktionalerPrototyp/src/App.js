@@ -90,9 +90,9 @@ const Scene = () => {
 
   /* Linien gen https://codesandbox.io/s/r3f-line-adding-points-workaround-11g9h?file=/src/index.js */
 
-  async function wegBerechnung(start, ende){
+  async function wegBerechnung(start, ende,treppe,aufzug){
     const pathMesh = await importPathMesh("obj/PathMesh.obj")
-    const pathtest = await findPath(pathMesh[start],pathMesh[ende],pathMesh)
+    const pathtest = await findPath(pathMesh[start],pathMesh[ende],pathMesh,treppe,aufzug)
     return pathtest
   }
 
@@ -163,10 +163,18 @@ const Scene = () => {
         setTreppeRadio(true)
       }
   };
-// Aufruf Wegfinndungsalgorithmus
+// Aufruf Wegfinndungsalgorithmus aus Popup
   const handleBerechneWegButton = () => {
-    wegBerechnung(wegpunkt1, wegpunkt2);
     setPopupTrigger(false);
+    const popupWeg = wegBerechnung(wegpunkt1, wegpunkt2,setTreppeRadio, setAufzugRadio);
+    popupWeg.then((data) => {
+      if(data != null){
+        data.map((e) => {
+          setWegPunkte((points) => [...(points || [[0, 0, 0]]), [e.x, e.y, e.z]])}
+        )
+      }
+    })
+    console.log(popupWeg)
   }
 
   // Weg genrieren Button mit Popup
@@ -198,7 +206,7 @@ const Scene = () => {
                 />
                 
                 </form>
-                <form class="formMitPadding">
+                <form className="formMitPadding">
                 <input 
                   type="radio" 
                   id="treppeRadio"   
@@ -223,6 +231,27 @@ const Scene = () => {
         
       </div>
       )
+  }
+
+  function ButtonDerFunktioniert(){
+
+    return(
+      <div className="addNewPointRandom">
+        <div className='flex'>
+          <input
+            onChange={(e) => handleaddNumber(e)}
+            value={wegpunkt1 ? wegpunkt1 : ""}
+            type="number"
+          />
+          <input
+            onChange={(e) => handleaddNumber2(e)}
+            value={wegpunkt2 ? wegpunkt2 : ""}
+            type="number"
+          />
+          <button onClick={addnewBtn}>Zeig mir den weg</button>
+        </div>
+      </div>
+    )
   }
 
   function Thing({ points }){
@@ -327,6 +356,7 @@ const Scene = () => {
 
   <div className='main2'>
     <WegButtonPopup/>
+    <ButtonDerFunktioniert/>
   </div>
 
   </>
