@@ -51,16 +51,41 @@ const Scene = () => {
 
   // Gebäude !-Pathfinding ist in der buildingGen.js-!
 
-  function AddSingleMesh(){
-    const obj = useLoader(OBJLoader, "obj/32xx_full.obj", (loader) => {})
+  function AddEtage_03_Raeume(){
+    return AddSingleMesh("obj/Main_Etage_03_Geo.obj")
+  }
+  function AddEtage_03_Geo(){
+    return AddSingleMesh("obj/Main_Etage_03_Raeume.obj")
+  }
+  function AddEtage_02_Raeume(){
+    return AddSingleMesh("obj/Main_Etage_02_Geo.obj")
+  }
+  function AddEtage_02_Geo(){
+    return AddSingleMesh("obj/Main_Etage_02_Raeume.obj")
+  }
+  function AddEtage_01_Raeume(){
+    return AddSingleMesh("obj/Main_Etage_01_Geo.obj")
+  }
+  function AddEtage_01_Geo(){
+    return AddSingleMesh("obj/Main_Etage_01_Raeume.obj")
+  }
+  function AddEtage_00_Raeume(){
+    return AddSingleMesh("obj/Main_Etage_00_Geo.obj")
+  }
+  function AddEtage_00_Geo(){
+    return AddSingleMesh("obj/Main_Etage_00_Raeume.obj")
+  }
 
-    const listofMashes = []
+  function AddSingleMesh(path){
+    const obj = useLoader(OBJLoader, path, (loader) => {})
+
+    const listofMeshes = []
 
     obj.children.map(e => {
-      listofMashes.push(RenderChild2(e))
+      listofMeshes.push(RenderChild2(e))
     })
 
-    return listofMashes.map(e => {
+    return listofMeshes.map(e => {
       return e
     })
   }
@@ -89,7 +114,7 @@ const Scene = () => {
   /* Linien gen https://codesandbox.io/s/r3f-line-adding-points-workaround-11g9h?file=/src/index.js */
 
   async function wegBerechnung(start, ende){
-    const pathMesh = await importPathMesh("obj/pathMesh.obj")
+    const pathMesh = await importPathMesh("obj/PathMesh.obj")
     const pathtest = await findPath(pathMesh[start],pathMesh[ende],pathMesh)
     return pathtest
   }
@@ -142,26 +167,7 @@ const Scene = () => {
   const [aufzugRadio, setAufzugRadio] = useState(null);
   const [popupTrigger, setPopupTrigger] = useState(null);
 
-  function ButtonDerFunktioniert(){
 
-    return(
-      <div className="addNewPointRandom">
-        <div className='flex'>
-          <input
-            onChange={(e) => handleaddNumber(e)}
-            value={wegpunkt1 ? wegpunkt1 : ""}
-            type="number"
-          />
-          <input
-            onChange={(e) => handleaddNumber2(e)}
-            value={wegpunkt2 ? wegpunkt2 : ""}
-            type="number"
-          />
-          <button onClick={addnewBtn}>Zeig mir den weg</button>
-        </div>
-      </div>
-    )
-  }
 
   const handleaddNumber = (e) => {
     setWegpunkt1(e.target.value);
@@ -188,58 +194,53 @@ const Scene = () => {
 
   // Weg genrieren Button mit Popup
   function WegButtonPopup() {
-    
       return (
         <div className='ignore'>
           <div className="WegButton">
-           
-           <button onClick={e => {setPopupTrigger(true)}} >Weg generieren</button> 
-           
-           
+           <button onClick={e => setPopupTrigger(true)} >Weg generieren</button> 
            </div>
             {popupTrigger === true &&
             <div className="WegButtonPopup">
               <form>
-                <label htmlFor="startPunkt" >Start Raumnummer </label>
-                  <input
-                    id="startPunkt" 
-                    onChange={(e) => handleaddNumber(e)}
-                    value={wegpunkt1 ? wegpunkt1 : ""}
-                    type="number"
-                  />
+              <label htmlFor="startPunkt" >Start Raumnummer </label>
+            <input
+                  id="startPunkt" 
+                  onChange={(e) => handleaddNumber(e)}
+                  value={wegpunkt1 ? wegpunkt1 : ""}
+                  type="number"
+                />
+                
                 </form>
-
                 <form>
-                  <label htmlFor="endPunkt">Ziel Raumnummer </label>
-                  <input
-                    id="endPunkt" 
-                    onChange={(e) => handleaddNumber2(e)}
-                    value={wegpunkt2 ? wegpunkt2 : ""}
-                    type="number"
-                  />
+                <label htmlFor="endPunkt">Ziel Raumnummer </label>
+                <input
+                  id="endPunkt" 
+                  onChange={(e) => handleaddNumber2(e)}
+                  value={wegpunkt2 ? wegpunkt2 : ""}
+                  type="number"
+                />
+                
                 </form>
-
                 <form class="formMitPadding">
-                  <input 
-                    type="radio" 
-                    id="treppeRadio"   
-                    onChange={(e) => handleRadioButtons(e.target.id)}
-                    checked={treppeRadio}
-                    />
-                  <label htmlFor="treppeRadio">Treppe</label>
-                  <input 
-                    type="radio" 
-                    id="aufzugRadio"   
-                    onChange={(e) => handleRadioButtons(e.target.id)}
-                    checked={aufzugRadio}
-                    />
-                  <label htmlFor="aufzugRadio">Aufzug</label>
+                <input 
+                  type="radio" 
+                  id="treppeRadio"   
+                  onChange={(e) => handleRadioButtons(e.target.id)}
+                  checked={treppeRadio}
+                  />
+                <label htmlFor="treppeRadio">Treppe</label>
+                <input 
+                  type="radio" 
+                  id="aufzugRadio"   
+                  onChange={(e) => handleRadioButtons(e.target.id)}
+                  checked={aufzugRadio}
+                  />
+                <label htmlFor="aufzugRadio">Aufzug</label>
                 </form>
-
                 <form>
-                  <button onClick={() => handleBerechneWegButton()}>Weg generieren</button>
+                
+                <button onClick={() => handleBerechneWegButton()}>Weg generieren</button>
                 </form>
-
             </div> 
           }
         
@@ -342,14 +343,12 @@ const Scene = () => {
             }
           }
           >
-          <meshStandardMaterial color={active ? 'green' : 'red'  && hovered ? 'yellow' : 'red'} />
+          <meshStandardMaterial color={active ? 'green' : 'gray'  && hovered ? 'yellow' : 'gray'} />
       </mesh>
     )
   }
 
-
-  
-
+ 
   // 
 
   return ( 
@@ -370,9 +369,19 @@ const Scene = () => {
         intensity={0.8}
       />
 
-      <AddSingleMesh/>
+      <AddEtage_03_Geo/>
+      <AddEtage_03_Raeume/>
+      <AddEtage_02_Geo/>
+      <AddEtage_02_Raeume/>
+      <AddEtage_01_Geo/>
+      <AddEtage_01_Raeume/>
+      <AddEtage_00_Geo/>
+      <AddEtage_00_Raeume/>
 
       <Thing points={wegPunkte || dummy_points} />
+
+    
+
   </Canvas>
 
   <div className='main'>
@@ -383,9 +392,6 @@ const Scene = () => {
     <WegButtonPopup/>
   </div>
 
-    <div className='main2'>
-      <ButtonDerFunktioniert/>
-    </div>
   </>
   );
 };
