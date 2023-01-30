@@ -30,6 +30,7 @@ import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 import {findPath} from "./test/FindPath";
 import {importPathMesh} from "./test/ImportPathMesh";
 import {RenderChild, Thing, AddNewPointRandom, BadCode} from "./buildingGen"
+import {MeshClickable, MeshNOTClickable, ImportMeshesFromOBJ} from "./test/MeshFunctions";
 import { hover } from '@testing-library/user-event/dist/hover';
 
 /*
@@ -52,45 +53,21 @@ const Scene = () => {
   // Gebäude !-Pathfinding ist in der buildingGen.js-!
 
   function AddEtage_03_Raeume(){
-    return AddSingleMesh("obj/Main_Etage_03_Geo.obj")
-  }
+    return ImportMeshesFromOBJ("obj/Main_Etage_03_Raeume.obj",true, "red", "yellow", "green", raumauswahl, activeRooms)}
   function AddEtage_03_Geo(){
-    return AddSingleMesh("obj/Main_Etage_03_Raeume.obj")
-  }
+    return ImportMeshesFromOBJ("obj/Main_Etage_03_Geo.obj",false, "gray", "", "", raumauswahl, activeRooms)}
   function AddEtage_02_Raeume(){
-    return AddSingleMesh("obj/Main_Etage_02_Geo.obj")
-  }
+    return ImportMeshesFromOBJ("obj/Main_Etage_02_Raeume.obj",true, "red", "yellow", "green", raumauswahl, activeRooms)}
   function AddEtage_02_Geo(){
-    return AddSingleMesh("obj/Main_Etage_02_Raeume.obj")
-  }
+    return ImportMeshesFromOBJ("obj/Main_Etage_02_Geo.obj",false, "gray", "", "", raumauswahl, activeRooms)}
   function AddEtage_01_Raeume(){
-    return AddSingleMesh("obj/Main_Etage_01_Geo.obj")
-  }
+    return ImportMeshesFromOBJ("obj/Main_Etage_01_Raeume.obj",true, "red", "yellow", "green", raumauswahl, activeRooms)}
   function AddEtage_01_Geo(){
-    return AddSingleMesh("obj/Main_Etage_01_Raeume.obj")
-  }
+    return ImportMeshesFromOBJ("obj/Main_Etage_01_Geo.obj",false, "gray", "", "", raumauswahl, activeRooms)}
   function AddEtage_00_Raeume(){
-    return AddSingleMesh("obj/Main_Etage_00_Geo.obj")
-  }
+    return ImportMeshesFromOBJ("obj/Main_Etage_00_Raeume.obj",true, "red", "yellow", "green", raumauswahl, activeRooms)}
   function AddEtage_00_Geo(){
-    return AddSingleMesh("obj/Main_Etage_00_Raeume.obj")
-  }
-
-  function AddSingleMesh(path){
-    const obj = useLoader(OBJLoader, path, (loader) => {})
-
-    const listofMeshes = []
-
-    obj.children.map(e => {
-      listofMeshes.push(RenderChild2(e))
-    })
-
-    return listofMeshes.map(e => {
-      return e
-    })
-  }
-
-
+    return ImportMeshesFromOBJ("obj/Main_Etage_00_Geo.obj",false, "gray", "", "", raumauswahl, activeRooms)}
 
   /* Kamera einstellung und erstellung */
   const [kamera, set] = useState(false)
@@ -248,7 +225,6 @@ const Scene = () => {
       )
   }
 
-
   function Thing({ points }){
     return (
       <>
@@ -309,45 +285,6 @@ const Scene = () => {
         throw new Error();
     }
   }
-  
-  function RenderChild2(e){
-    const [active, setActive] = useState(false)
-    const [hovered, setHover] = useState(false)
-
-    const [state, dispatcher] = useReducer(raumauswahl)
-
-    const raumname = "" + e.name
-    raumname.slice(-3)
-    
-    return(
-      <mesh
-            scale = {e.scale}
-            material = {e.material}
-            geometry = {e.geometry}
-            key = {e.id}
-            name = {raumname}
-            
-            onPointerOver={(event) => {setHover(true); event.stopPropagation()}}
-
-            onPointerOut={(event) => {setHover(false); event.stopPropagation()}}
-
-            onClick={(e) => { 
-              if(activeRooms.length <= 1){
-                setActive(!active)
-                active ? dispatcher({type: 'decrement', payloade: raumname.slice(-3)}) : dispatcher({type: 'increment', payloade: raumname.slice(-3)})
-              } else {
-                setActive(false)
-                dispatcher({type: 'decrement', payloade: raumname.slice(-3)})
-              }
-              e.stopPropagation()
-            }
-          }
-          >
-          <meshStandardMaterial color={active ? 'green' : 'gray'  && hovered ? 'yellow' : 'gray'} />
-      </mesh>
-    )
-  }
-
  
   // 
 
