@@ -3,7 +3,7 @@ import * as THREE from "three";
 
 async function findPath(startPoint, endPoint, pathMesh, takeStairs, takeElevator){
 
-    setElevationFlags(startPoint, endPoint, pathMesh, takeStairs, takeElevator)
+    await setElevationFlags(startPoint, endPoint, pathMesh, takeStairs, takeElevator)
 
     var tookStairs = false
 
@@ -14,10 +14,10 @@ async function findPath(startPoint, endPoint, pathMesh, takeStairs, takeElevator
     while (currentLoc !== endPoint) {
         // console.log(currentLoc.id)
 
-        if(!tookStairs && currentLoc.pos === endPoint.pos){
+        if(!tookStairs && currentLoc.pos.y === endPoint.pos.y){
             tookStairs = true
             pathMesh.forEach(point =>{
-                if(point.stairs || point.elevator){
+                if(point.stairs === true || point.elevator === true){
                     point.endFlag = true
                 }
             })
@@ -95,7 +95,7 @@ async function getPath(startPoint, endPoint){
 
         currentPoint = currentPoint.edges.find(
             edge => (
-                (edge.neighbour.depth === currentPoint.depth-1 && edge.neighbour.endFlag === false) ||
+                (edge.neighbour.depth === currentPoint.depth-1) ||
                 (edge.neighbour === startPoint)
             )
         ).neighbour
@@ -126,13 +126,14 @@ async function setElevationFlags(startPoint, endPoint, pathMesh, takeStairs, tak
                     }
                 })
             }
+
             if(endPoint.pos.y > startPoint.pos.y){
-                if(element.pos.y < startPoint.pos.y){
+                if(element.pos.y < startPoint.pos.y || element.pos.y > endPoint.pos.y){
                     element.endFlag = true
                 }
             }
             if(endPoint.pos.y < startPoint.pos.y){
-                if(element.pos.y > startPoint.pos.y){
+                if(element.pos.y > startPoint.pos.y || element.pos.y < endPoint.pos.y){
                     element.endFlag = true
                 }
             }

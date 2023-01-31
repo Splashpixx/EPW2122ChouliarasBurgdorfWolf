@@ -237,12 +237,12 @@ const Scene = () => {
   /* Linien gen https://codesandbox.io/s/r3f-line-adding-points-workaround-11g9h?file=/src/index.js */
 
   async function wegBerechnung(start, ende, treppe, aufzug){
-    const pathMesh = await importPathMesh("obj/PathMesh.obj")
-    const pathtest = await findPath(pathMesh[start],pathMesh[ende],pathMesh,treppe,aufzug)
+    const pathMesh = await importPathMesh("obj/pathMesh.obj")
+    const pathtest = await findPath(pathMesh[start],pathMesh[ende],pathMesh,true,false)
     return pathtest
   }
 
-  function routeBerechnen() {
+function routeBerechnen() {
 
     setWegPunkte(wegPunkte => [])
 
@@ -252,7 +252,7 @@ const Scene = () => {
     console.log(auswahl1, auswahl2, activeRooms)
     
     if (auswahl1 > 0 || auswahl2 > 0) {
-      const weg = wegBerechnung(auswahl1, auswahl2)
+      const weg =  wegBerechnung(auswahl1, auswahl2)
       weg.then((data) => {
         if(data != null){
           data.map((e) => {
