@@ -66,8 +66,9 @@ async function findPath(startPoint, endPoint, pathMesh, takeStairs, takeElevator
 
 async function calcPrio(edges,endPoint) {
     edges.forEach(edge => {
-        if (edge.neighbour.prio === 0) {
+        if (edge.neighbour.prio === null) {
             edge.neighbour.prio = edge.neighbour.pos.distanceTo(endPoint.pos)
+            console.log(edge.neighbour.prio)
         }
     });
 }
@@ -116,6 +117,8 @@ async function setElevationFlags(startPoint, endPoint, pathMesh, takeStairs, tak
                 pathMesh.forEach(element => {
                     if (element.stairs === true){
                         element.endFlag = true
+                    } else {
+                        element.prio = 0.000001
                     }
                 })
             }
@@ -123,6 +126,8 @@ async function setElevationFlags(startPoint, endPoint, pathMesh, takeStairs, tak
                 pathMesh.forEach(element => {
                     if (element.elevator === true){
                         element.endFlag = true
+                    } else {
+                        element.prio = 0.000001
                     }
                 })
             }
