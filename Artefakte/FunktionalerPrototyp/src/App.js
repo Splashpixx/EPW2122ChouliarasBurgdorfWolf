@@ -33,6 +33,8 @@ import {RenderChild, Thing, AddNewPointRandom, BadCode} from "./buildingGen"
 // import {MeshClickable, MeshNOTClickable, ImportMeshesFromOBJ} from "./test/MeshFunctions";
 import { hover } from '@testing-library/user-event/dist/hover';
 
+import { EffectComposer, DepthOfField, Bloom, Noise, Vignette } from '@react-three/postprocessing'
+
 /*
 !- Hooks -!
 - Hooks starten immer mit use (useState, useEffekt, useReducer...)
@@ -368,6 +370,10 @@ const Scene = () => {
   return ( 
     <>
     <Canvas>
+
+        <EffectComposer>
+            <Vignette eskil={false} offset={0.01} darkness={1} />
+        </EffectComposer>
 
         <PerspectiveCamera position={[0, 20, 1.8]} fov={120} makeDefault={!kamera} rotation={[0,-90,0]} enableRotate={rotierbarkeit}/>
         <OrbitControls position={[20,40,10]} makeDefault={kamera} enableRotate={rotierbarkeit}/>
