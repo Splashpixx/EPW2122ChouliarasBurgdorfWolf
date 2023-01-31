@@ -83,10 +83,12 @@ function MeshNOTClickable(scale, material, geometry, id, name, baseColor, raumau
 
             onClick={(e) => {}}
         >
-            <meshStandardMaterial color={baseColor} />
+            <meshToonMaterial color={baseColor} />
         </mesh>
     )
 }
+
+
 
 
 

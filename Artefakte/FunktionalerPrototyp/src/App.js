@@ -33,7 +33,7 @@ import {RenderChild, Thing, AddNewPointRandom, BadCode} from "./buildingGen"
 // import {MeshClickable, MeshNOTClickable, ImportMeshesFromOBJ} from "./test/MeshFunctions";
 import { hover } from '@testing-library/user-event/dist/hover';
 
-import { EffectComposer, DepthOfField, Bloom, Noise, Vignette } from '@react-three/postprocessing'
+import {EffectComposer, DepthOfField, Bloom, Noise, Vignette, Outline} from '@react-three/postprocessing'
 
 /*
 !- Hooks -!
@@ -61,7 +61,7 @@ const Scene = () => {
   
 
  //kamera = true ist die normale kamera, false orthographisch
-  const [kamera, set] = useState(false)
+  const [kamera, set] = useState(true)
   const rotierbarkeit = (kamera ? true : false)
 
   const [wegPunkte, setWegPunkte] = useState(null)
@@ -366,6 +366,23 @@ const Scene = () => {
     )
   }
 
+  function CameraSelection(){
+      if (kamera){
+          return <PerspectiveCamera position={[-80, 60, 100]} fov={80} makeDefault={true} />
+      }else{
+          return <OrthographicCamera position={[-60,10, 0]} fov={0} makeDefault={true} rotation={[0,-90,0]} scale={[0.15,0.15,0.15]} />
+      }
+  }
+
+    function CameraControls(){
+        if (kamera){
+            return <OrbitControls enableRotate={true} target={[-60,0,0]}/>
+        }else{
+            return <OrbitControls enableRotate={false} target={[-60,0, 0]}/>
+        }
+
+    }
+
 
   return ( 
     <>
@@ -373,10 +390,11 @@ const Scene = () => {
 
         <EffectComposer>
             <Vignette eskil={false} offset={0.01} darkness={1} />
+            <Outline blendFunction={1} edgeStrength={10.0} visibleEdgeColor={10} hiddenEdgeColor={10} width={10} height={10}/>
         </EffectComposer>
 
-        <PerspectiveCamera position={[0, 20, 1.8]} fov={120} makeDefault={!kamera} rotation={[0,-90,0]} enableRotate={rotierbarkeit}/>
-        <OrbitControls position={[20,40,10]} makeDefault={kamera} enableRotate={rotierbarkeit}/>
+        <CameraSelection />
+        <CameraControls />
 
         <ambientLight 
         intensity={0.5}
