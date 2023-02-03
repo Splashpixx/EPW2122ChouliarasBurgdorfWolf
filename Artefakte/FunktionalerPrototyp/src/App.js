@@ -52,17 +52,20 @@ Bieten die Möglichkeit, State in Functional Components zu nutzen, was bisher nu
 const Scene = () => {
 
   // Setting const
-  const [wegpunkt1, setWegpunkt1] = useState(null);
-  const [wegpunkt2, setWegpunkt2] = useState(null);
+  const [wegpunkt1, setWegpunkt1] = useState();
+  const [wegpunkt2, setWegpunkt2] = useState();
 
   const [treppeRadio, setTreppeRadio] = useState(true);
   const [aufzugRadio, setAufzugRadio] = useState(null);
   const [popupTrigger, setPopupTrigger] = useState(null);
+
+
   
 
  //kamera = true ist die normale kamera, false orthographisch
   const [kamera, set] = useState(true)
-  const rotierbarkeit = (kamera ? true : false)
+//  const rotierbarkeit = (kamera ? true : false)
+
 
   const [wegPunkte, setWegPunkte] = useState(null)
 
@@ -71,7 +74,7 @@ const Scene = () => {
     // Fügt dem Array über uns den angeklickten vector hinzu
     function raumauswahl(state, action) {
     
-      const vecToArray = action.payloade
+      const vecToArray = action.payloade.slice(-3)
       // Increment = Raum ist Aktiv, Decrement = Raum ist inaktiv 
       switch (action.type) {
         case 'increment':
@@ -109,8 +112,8 @@ const Scene = () => {
   
   // Gebäude !-Pathfinding ist in der buildingGen.js-!
 
-  function AddEtage03Raeume(){
-    return ImportMeshesFromOBJ("obj/Main_Etage_03_Raeume.obj",true, "#ff0000", "yellow", "green", raumauswahl, activeRooms)}
+  const AddEtage03Raeume = () => { return ImportMeshesFromOBJ("obj/Main_Etage_03_Raeume.obj",true, "#ff0000", "yellow", "green", raumauswahl, activeRooms)}
+
   function AddEtage03Geo(){
     return ImportMeshesFromOBJ("obj/Main_Etage_03_Geo.obj",false, "#aaaaaa", "", "", raumauswahl, activeRooms)}
   function AddEtage02Raeume(){
@@ -131,7 +134,6 @@ const Scene = () => {
     return ImportMeshesFromOBJ("obj/Elevators.obj",false, "#5566bb", "", "", raumauswahl, activeRooms)}
   function AddGround(){
     return ImportMeshesFromOBJ("obj/Ground.obj",false, "#222222", "", "", raumauswahl, activeRooms)}
-
 
     function ImportMeshesFromOBJ(path, clickable, baseColor, hoverColor, activeColor, raumauswahl, activeRooms){
       const obj = useLoader(OBJLoader, path, (loader) => {})
@@ -168,6 +170,9 @@ const Scene = () => {
       const [active, setActive] = useState(false)
       const [hovered, setHover] = useState(false)
       const [state, dispatcher] = useReducer(raumauswahl)
+
+      const raumname = "" + name
+      raumname.slice(-3)
   
       return(
           <mesh
@@ -184,10 +189,10 @@ const Scene = () => {
               onClick={(e) => {
                   if(activeRooms.length <= 1){
                       setActive(!active)
-                      active ? dispatcher({type: 'decrement', payloade: name}) : dispatcher({type: 'increment', payloade: name})
+                      active ? dispatcher({type: 'decrement', payloade: raumname}) : dispatcher({type: 'increment', payloade: raumname})
                   } else {
                       setActive(false)
-                      dispatcher({type: 'decrement', payloade: name})
+                      dispatcher({type: 'decrement', payloade: raumname})
                   }
                   e.stopPropagation()
               }
@@ -236,7 +241,7 @@ const Scene = () => {
   /* ALLES MIT LINIEN IST HIER*/
   /* Linien gen https://codesandbox.io/s/r3f-line-adding-points-workaround-11g9h?file=/src/index.js */
 
-  async function wegBerechnung(start, ende, treppe, aufzug){
+  async function wegBerechnung(start, ende){
     const pathMesh = await importPathMesh("obj/pathMesh.obj")
     const pathtest = await findPath(pathMesh[start],pathMesh[ende],pathMesh,true,false)
     return pathtest
@@ -244,10 +249,12 @@ const Scene = () => {
 
 function routeBerechnen() {
 
+
+
     setWegPunkte(wegPunkte => [])
 
-    const auswahl1 = Number(activeRooms[0].slice(-3))
-    const auswahl2 = Number(activeRooms[1].slice(-3))
+    const auswahl1 = Number(activeRooms[0])
+    const auswahl2 = Number(activeRooms[1])
 
     console.log(auswahl1, auswahl2, activeRooms)
     
@@ -256,9 +263,11 @@ function routeBerechnen() {
       weg.then((data) => {
         if(data != null){
           data.map((e) => {
+            console.log(e)
             setWegPunkte((points) => [...(points || [[0, 0, 0]]), [e.x, e.y, e.z]])}
           )
         }
+        console.log("ende der Berechnung")
       })
 
     } else if (wegpunkt1 != null || wegpunkt2 != null) {
@@ -276,13 +285,12 @@ function routeBerechnen() {
     }
   }
 
-  const handleaddNumber = (e) => {
-    setWegpunkt1(e.target.value);
-  };
+/*
+  useEffect(() => {
+    const timeoutId = setTimeout(() => console.log(`I can see you're not typing. I can use "${wegpunkt1}" now!`), 1000);
+    return () => clearTimeout(timeoutId);
+  }, [wegpunkt1]);*/
 
-  const handleaddNumber2 = (e) => {
-    setWegpunkt2(e.target.value);
-  };
 
   const handleRadioButtons = (radioName) => {
       if(radioName === "aufzugRadio") {
@@ -293,61 +301,70 @@ function routeBerechnen() {
         setTreppeRadio(true)
       }
   };
-/* Aufruf Wegfinndungsalgorithmus aus Popup   kann gleich raus
-  const handleBerechneWegButton = () => {
-    setPopupTrigger(false);
-    const popupWeg = wegBerechnung(wegpunkt1, wegpunkt2,setTreppeRadio, setAufzugRadio);
-    popupWeg.then((data) => {
-      if(data != null){
-        data.map((e) => {
-          setWegPunkte((points) => [...(points || [[0, 0, 0]]), [e.x, e.y, e.z]])}
-        )
+
+  
+    const start = useRef();
+    const ziel = useRef();
+
+    const submitHandler = (e) => {
+      const weg1 = Number(start.current.value)
+      const weg2 = Number(ziel.current.value)
+
+      
+
+      if (weg1 > 0 || weg2 > 0) {
+        const testWeg = wegBerechnung(weg1, weg2)
+        testWeg.then((data) => {
+          if(data != null){
+            data.map((e) => {
+              console.log(e)
+              /* angenommen man hat ein objekt=[ ob1: "a", ob2: "b",ob3: "c" ] dann ist {...objekt} das gleiche wie { ob1="a", ob2="b", ob3="c" } */
+              setWegPunkte((points) => [...(points || [[0, 0, 0]]), [e.x, e.y, e.z]])}
+            )
+          }
+        }) 
+      } else {
+        routeBerechnen()
       }
-    })
-    console.log(popupWeg)
-  }
-  */
+    }
+
 
   // Weg genrieren im UI
   function UiRoute(){
     return(
-      <div className="uiRoute">
-        <div className='flex'>
-          <input
-            id= "startpunkt"
-            onChange={(e) => handleaddNumber(e)}
-            value={wegpunkt1 ? wegpunkt1 : ""}
-            type="number"
-          />
-          <input
-            id= "zielpunkt"
-            onChange={(e) => handleaddNumber2(e)}
-            value={wegpunkt2 ? wegpunkt2 : ""}
-            type="number"
-          />
-        </div>
-        
-        <div className="treppeAufzug">
-        <button    
-          type="button"
-          onChange={(e) => handleRadioButtons(e.target.id)}
-          checked={treppeRadio}
-          
-          > Treppe </button>
+      
+        <div className='uiRoute'>
+            <form >
+              <input 
+                ref={start} 
+                placeholder="Start"
+              />
+              <input 
+                ref={ziel} 
+                placeholder="Ziel"
+              /><br/>
 
-        <button    
-          type="button"
-          onChange={(e) => handleRadioButtons(e.target.id)}
-          checked={aufzugRadio}
-          > Aufzug </button>
-          
-        </div>
+            <div className="treppeAufzug">
+              <button
+                type="button"
+                onChange={(e) => handleRadioButtons(e.target.id)}
+                checked={treppeRadio}
+                style={{ backgroundColor: treppeRadio ? "#C60C0F" : "#8C8C8C" }}
+                onClick={(e) => handleRadioButtons("treppeRadio")}
+                > Treppe </button>
 
-        <div className="berechnenButton">
-        <button onClick={routeBerechnen}>Route berechnen</button>
-        </div>
+              <button    
+                type="button"
+                onChange={(e) => handleRadioButtons(e.target.id)}
+                style={{ backgroundColor: aufzugRadio ? "#C60C0F" : "#8C8C8C" }}
+                onClick={(e) => handleRadioButtons("aufzugRadio")}
+                //checked={aufzugRadio}
+                > Aufzug </button>
 
-      </div>
+                <button className="berechnenButton" type="button" onClick={submitHandler}>Route generieren</button>
+              </div>
+            </form>
+        </div>
     )
   }
 
@@ -366,6 +383,8 @@ function routeBerechnen() {
     )
   }
 
+// Kamera
+
   function CameraSelection(){
       if (kamera){
           return <PerspectiveCamera position={[-80, 60, 100]} fov={80} makeDefault={true} />
@@ -380,7 +399,6 @@ function routeBerechnen() {
         }else{
             return <OrbitControls enableRotate={false} target={[-60,0, 0]}/>
         }
-
     }
 
 
@@ -455,3 +473,21 @@ export default App;
    It also gives you the current size of the canvas in screen and viewport coordinates.
    https://docs.pmnd.rs/react-three-fiber/api/hooks
   */
+/*
+
+<input
+            id= "startpunkt"
+            onInput={(e) => setWegpunkt1(e.target.value)}
+            value={wegpunkt1 ? wegpunkt1 : ""}
+            type="number"
+            placeholder="Start"
+          />
+          <input
+            id= "zielpunkt"
+            onChange={(e) => setWegpunkt2(e.target.value)}
+            value={wegpunkt2 ? wegpunkt2 : ""}
+            type="number"
+            placeholder="Ziel"
+          />
+
+*/
