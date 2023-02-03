@@ -169,6 +169,8 @@ const Scene = () => {
           return MeshNOTClickable(e.scale, e.material, e.geometry, e.id, raumname, baseColor, raumauswahl, activeRooms)
       }
   }
+
+  const meshcollection = []
   
   function MeshClickable(scale, material, geometry, id, name, baseColor, hoverColor, activeColor, raumauswahl, activeRooms){
   
@@ -178,6 +180,13 @@ const Scene = () => {
 
       const raumname = "" + name
       raumname.slice(-3)
+
+      const info = {
+        raumnummer : name.substring(0, 4),
+        meshid : raumname.slice(-3)
+      }
+
+      meshcollection.push(info)
   
       return(
           <mesh
@@ -258,8 +267,6 @@ const Scene = () => {
    return pathtest
   }
 
-  
-
 function routeBerechnen() {
 
     setWegPunkte(wegPunkte => [])
@@ -292,16 +299,19 @@ function routeBerechnen() {
       })
     } else {
       const allPathes = meshImport();
+      /*
       allPathes.then((data) => {
         if(data != null){
           data.map((e) => {
             //console.log(e.pos)
-            /* angenommen man hat ein objekt=[ ob1: "a", ob2: "b",ob3: "c" ] dann ist {...objekt} das gleiche wie { ob1="a", ob2="b", ob3="c" } */
+            /* angenommen man hat ein objekt=[ ob1: "a", ob2: "b",ob3: "c" ] dann ist {...objekt} das gleiche wie { ob1="a", ob2="b", ob3="c" } 
             setWegPunkte((points) => [...(points || [[0, 0, 0]]), [e.pos.x, e.pos.y, e.pos.z]])}
           )
         }
       })
+      */
       console.log("error keine wegpunkte ausgewählt")
+      //console.log(meshcollection)
     }
 
     
@@ -323,14 +333,35 @@ function routeBerechnen() {
         setTreppeRadio(true)
       }
   };
-
   
     const start = useRef();
     const ziel = useRef();
 
+    const findID = (stringvonetwas) => {
+      var returnThis;
+      meshcollection.map((e) => {
+        if (e.raumnummer == stringvonetwas) {
+          console.log("Gefunden")
+          returnThis = e.meshid
+        }
+      })
+      return returnThis
+    }
+
     const submitHandler = (e) => {
-      const weg1 = Number(start.current.value)
-      const weg2 = Number(ziel.current.value) 
+      var weg1
+      var weg2
+
+      if(start.current.value.length > 3){
+        const startNeu = findID(start.current.value.replace(".", "")) ;
+        const ende = findID(ziel.current.value.replace(".", "")) ;
+        console.log(startNeu, ende)
+        weg1 = Number(startNeu)
+        weg2 = Number(ende) 
+      } else {
+        weg1 = Number(start.current.value)
+        weg2 = Number(ziel.current.value) 
+      }
 
       if (weg1 > 0 || weg2 > 0) {
         const testWeg = wegBerechnung(weg1, weg2)
