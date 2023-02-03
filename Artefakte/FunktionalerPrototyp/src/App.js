@@ -51,6 +51,11 @@ Bieten die Möglichkeit, State in Functional Components zu nutzen, was bisher nu
 
 const Scene = () => {
 
+  const[showEtage3, setshowEtage3] = useState(true)
+  const[showEtage2, setshowEtage2] = useState(true)
+  const[showEtage1, setshowEtage1] = useState(true)
+  const[showEtage0, setshowEtage0] = useState(true)
+
   // Setting const
   const [wegpunkt1, setWegpunkt1] = useState();
   const [wegpunkt2, setWegpunkt2] = useState();
@@ -401,6 +406,21 @@ function routeBerechnen() {
         }
     }
 
+  // Etagen auswahl
+
+
+
+  function EtagenAuswahl(){
+    return(
+      <div className="etagen">
+        <button style={{ backgroundColor: showEtage3 ? "#8C8C8C" : "#C60C0F" }} onClick={() => setshowEtage3(!showEtage3)}>Etage 3</button>
+        <button style={{ backgroundColor: showEtage2 ? "#8C8C8C" : "#C60C0F" }} onClick={() => setshowEtage2(!showEtage2)}>Etage 2</button>
+        <button style={{ backgroundColor: showEtage1 ? "#8C8C8C" : "#C60C0F" }} onClick={() => setshowEtage1(!showEtage1)}>Etage 1</button>
+        <button style={{ backgroundColor: showEtage0 ? "#8C8C8C" : "#C60C0F" }} onClick={() => setshowEtage0(!showEtage0)}>Etage 0</button>
+      </div>
+    )
+  }
+
 
   return ( 
     <>
@@ -425,14 +445,14 @@ function routeBerechnen() {
           intensity={0.8}
         />
 
-        <AddEtage03Geo/>
-        <AddEtage03Raeume/>
-        <AddEtage02Geo/>
-        <AddEtage02Raeume/>
-        <AddEtage01Geo/>
-        <AddEtage01Raeume/>
-        <AddEtage00Geo/>
-        <AddEtage00Raeume/>
+        {showEtage3 && <AddEtage03Geo/>}
+        {showEtage3 && <AddEtage03Raeume/>}
+        {showEtage2 && <AddEtage02Geo/>}
+        {showEtage2 && <AddEtage02Raeume/>}
+        {showEtage1 &&<AddEtage01Geo/>}
+        {showEtage1 &&<AddEtage01Raeume/>}
+        {showEtage0 && <AddEtage00Geo/>}
+        {showEtage0 && <AddEtage00Raeume/>}
         <AddStairs/>
         <AddElevators/>
         <AddGround/>
@@ -443,10 +463,10 @@ function routeBerechnen() {
 
     <div className='main'>
       <SwitchCam/>
+      <EtagenAuswahl/>
     </div>
 
     <div className='main2'>
-
       <UiRoute/>
     </div>
 

@@ -38,11 +38,12 @@ code {
 
 
 .SwitchCam {
+display: flex;
+flex-direction: column;
 position: relative;
-top: 8vh;
+top: 26vh;
 right: -90vw;
 background: #AAAAAA;
-padding: 30px;
 border-radius: 10px;
 width: 120px;
 height: 50px;
@@ -187,4 +188,32 @@ pointer-events: all;
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+/* Etagen auswahl */
+
+.etagen {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  top: 0vh;
+  right: -90vw;
+  background: #AAAAAA;
+  padding: 10px;
+  border-radius: 10px;
+  width: 120px;
+  z-index: 20000;
+  pointer-events: all;
+}
+  
+.etagen > button {
+  padding: 5px 10px;
+  width: 100px;
+  border-radius: 5px;
+  border: solid 2px white;
+  outline: none;
+  background: #AAAAAA;
+  color: Black;
+  cursor: pointer;
 }
