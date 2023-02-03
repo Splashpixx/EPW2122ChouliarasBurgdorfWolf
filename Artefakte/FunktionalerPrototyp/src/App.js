@@ -246,33 +246,38 @@ const Scene = () => {
   /* ALLES MIT LINIEN IST HIER*/
   /* Linien gen https://codesandbox.io/s/r3f-line-adding-points-workaround-11g9h?file=/src/index.js */
 
-  async function wegBerechnung(start, ende){
+  async function meshImport(){
     const pathMesh = await importPathMesh("obj/pathMesh.obj")
-    const pathtest = await findPath(pathMesh[start],pathMesh[ende],pathMesh,true,false)
-    return pathtest
+    return pathMesh
   }
 
+  async function wegBerechnung(start, ende){
+    const pathMesh = await importPathMesh("obj/pathMesh.obj")
+    //console.log(pathMesh[start])
+    const pathtest = await findPath(pathMesh[start],pathMesh[ende],pathMesh,true,false)
+   return pathtest
+  }
+
+  
+
 function routeBerechnen() {
-
-
 
     setWegPunkte(wegPunkte => [])
 
     const auswahl1 = Number(activeRooms[0])
     const auswahl2 = Number(activeRooms[1])
 
-    console.log(auswahl1, auswahl2, activeRooms)
+    //console.log(auswahl1, auswahl2, activeRooms)
     
     if (auswahl1 > 0 || auswahl2 > 0) {
       const weg =  wegBerechnung(auswahl1, auswahl2)
       weg.then((data) => {
         if(data != null){
           data.map((e) => {
-            console.log(e)
             setWegPunkte((points) => [...(points || [[0, 0, 0]]), [e.x, e.y, e.z]])}
           )
         }
-        console.log("ende der Berechnung")
+        console.log("--- ende der Berechnung ---")
       })
 
     } else if (wegpunkt1 != null || wegpunkt2 != null) {
@@ -286,8 +291,20 @@ function routeBerechnen() {
         }
       })
     } else {
+      const allPathes = meshImport();
+      allPathes.then((data) => {
+        if(data != null){
+          data.map((e) => {
+            //console.log(e.pos)
+            /* angenommen man hat ein objekt=[ ob1: "a", ob2: "b",ob3: "c" ] dann ist {...objekt} das gleiche wie { ob1="a", ob2="b", ob3="c" } */
+            setWegPunkte((points) => [...(points || [[0, 0, 0]]), [e.pos.x, e.pos.y, e.pos.z]])}
+          )
+        }
+      })
       console.log("error keine wegpunkte ausgewählt")
     }
+
+    
   }
 
 /*
@@ -313,9 +330,7 @@ function routeBerechnen() {
 
     const submitHandler = (e) => {
       const weg1 = Number(start.current.value)
-      const weg2 = Number(ziel.current.value)
-
-      
+      const weg2 = Number(ziel.current.value) 
 
       if (weg1 > 0 || weg2 > 0) {
         const testWeg = wegBerechnung(weg1, weg2)

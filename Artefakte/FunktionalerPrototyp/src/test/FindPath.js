@@ -11,8 +11,23 @@ async function findPath(startPoint, endPoint, pathMesh, takeStairs, takeElevator
 
     let currentLoc = startPoint
 
+    const StopPoint = 1000
+    var countforStop = 0
+
     while (currentLoc !== endPoint) {
         // console.log(currentLoc.id)
+        
+        if(StopPoint === countforStop){
+            let path = await getPath(startPoint, endPoint)
+            pathMesh.forEach(pathPoint => {
+                pathPoint.prio = null
+                pathPoint.depth = null
+                pathPoint.endFlag = false
+            })
+            console.log(path)
+            return path
+            break;
+        }
 
         if(!tookStairs && currentLoc.pos.y === endPoint.pos.y){
             tookStairs = true
@@ -43,6 +58,8 @@ async function findPath(startPoint, endPoint, pathMesh, takeStairs, takeElevator
                     ))
                 ).neighbour
             } catch (error){
+                console.log(error)
+                countforStop += 1
             }
 
             if(newPoint === undefined){
@@ -54,13 +71,15 @@ async function findPath(startPoint, endPoint, pathMesh, takeStairs, takeElevator
                 currentLoc = newPoint
             }
         }
-    }
+    } // End While
+
     let path = await getPath(startPoint, endPoint)
     pathMesh.forEach(pathPoint => {
         pathPoint.prio = null
         pathPoint.depth = null
         pathPoint.endFlag = false
     })
+
     return path
 }
 
@@ -68,7 +87,7 @@ async function calcPrio(edges,endPoint) {
     edges.forEach(edge => {
         if (edge.neighbour.prio === null) {
             edge.neighbour.prio = edge.neighbour.pos.distanceTo(endPoint.pos)
-            console.log(edge.neighbour.prio)
+            //console.log(edge)
         }
     });
 }
