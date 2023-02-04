@@ -217,3 +217,27 @@ pointer-events: all;
   color: Black;
   cursor: pointer;
 }
+
+/* Burger Menu */
+
+.burgerMenu {
+  background-image: url(/public/icons/burgerIcon.svg);
+  width: 28px;
+  height: 25px;
+  display: inline-block;
+}
+
+.burgerMenu.open {
+  background-image: url(/public/icons/closeIcon.svg);
+}
+
+.menuOpen{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: #E8E8E8;
+  padding: 30px;
+  border-radius: 10px;
+  border: 10px;
+  box-shadow: 0 16px 40px -5px rgba(0, 0, 0, 0.5) !important;
+}

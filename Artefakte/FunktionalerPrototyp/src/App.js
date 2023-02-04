@@ -20,6 +20,9 @@ import { useLoader } from '@react-three/fiber'
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
 import { PerspectiveCamera } from "@react-three/drei";
 import React, { useState, useRef, useLayoutEffect, useReducer, Suspense, useEffect  } from "react";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Line2 } from 'three/examples/jsm/lines/Line2'
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
@@ -379,14 +382,20 @@ function routeBerechnen() {
       }
     }
 
+ //Fügt das Burger Icon hinzu
+ library.add(fas);
 
-  // Weg genrieren im UI
-  function UiRoute(){
-    return(
-      
-        <div className='uiRoute'>
-            <form >
-              <input 
+ // Weg genrieren im UI
+ function UiRoute() {
+   const [isOpen, setOpen] = useState(false);
+ 
+   return (
+     <div className="uiRoute">
+       <div className={`burgerMenu${isOpen ? " open" : ""}`} onClick={() => setOpen(!isOpen)}>
+       </div>
+       {isOpen && (
+         <><div className='menuOpen'>
+            <input 
                 ref={start} 
                 placeholder="Start"
               />
@@ -394,30 +403,30 @@ function routeBerechnen() {
                 ref={ziel} 
                 placeholder="Ziel"
               /><br/>
-
-            <div className="treppeAufzug">
-              <button
-                type="button"
-                onChange={(e) => handleRadioButtons(e.target.id)}
-                checked={treppeRadio}
-                style={{ backgroundColor: treppeRadio ? "#C60C0F" : "#8C8C8C" }}
-                onClick={(e) => handleRadioButtons("treppeRadio")}
-                > Treppe </button>
-
-              <button    
-                type="button"
-                onChange={(e) => handleRadioButtons(e.target.id)}
-                style={{ backgroundColor: aufzugRadio ? "#C60C0F" : "#8C8C8C" }}
-                onClick={(e) => handleRadioButtons("aufzugRadio")}
-                //checked={aufzugRadio}
-                > Aufzug </button>
-
-                <button className="berechnenButton" type="button" onClick={submitHandler}>Route generieren</button>
-              </div>
-            </form>
-        </div>
-    )
-  }
+         </div><div className="treppeAufzug">
+             <button
+               type="button"
+               onChange={(e) => handleRadioButtons(e.target.id)}
+               checked={treppeRadio}
+             >
+               Treppe
+             </button>
+ 
+             <button
+               type="button"
+               onChange={(e) => handleRadioButtons(e.target.id)}
+               checked={aufzugRadio}
+             >
+               Aufzug
+             </button>
+           </div><div className="berechnenButton">
+             <button onClick={routeBerechnen}>Route berechnen</button>
+           </div></>
+       )}
+     </div>
+   );
+ }
+ 
 
   function LineRenderer({ points }){
     return (
