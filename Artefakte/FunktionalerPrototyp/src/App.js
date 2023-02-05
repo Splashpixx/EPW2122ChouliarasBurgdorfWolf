@@ -389,39 +389,54 @@ function routeBerechnen() {
  function UiRoute() {
    const [isOpen, setOpen] = useState(false);
  
+   //<br/>
    return (
-     <div className="uiRoute">
-       <div className={`burgerMenu${isOpen ? " open" : ""}`} onClick={() => setOpen(!isOpen)}>
-       </div>
-       {isOpen && (
-         <><div className='menuOpen'>
-            <input 
+    <div className="uiRoute">
+      <div className={`burgerMenu${isOpen ? " open" : ""}`} onClick={() => setOpen(!isOpen)}>
+      </div>
+      {isOpen && (
+        <div className='background' >
+          <><div className='menuOpen'>
+            <form>
+              <input 
                 ref={start} 
                 placeholder="Start"
               />
+              <button
+                type="button"
+                onClick={(e) => console.log("Element2 das angeklickt wird: ",e)}
+                >auswählen
+              </button>
+            </form>
+            <form>
               <input 
                 ref={ziel} 
                 placeholder="Ziel"
-              /><br/>
-         </div><div className="treppeAufzug">
-             <button
-               type="button"
-               onChange={(e) => handleRadioButtons(e.target.id)}
-               checked={treppeRadio}
-             >
-               Treppe
+              />                  
+              <button
+                display= "inline-block"
+                type="button"
+                onClick={(e) => console.log("Element1 das angeklickt wird: ",e)}
+              >auswählen
+              </button>
+            </form>
+          </div><div className="treppeAufzug">
+            <button
+              type="button"
+              onChange={(e) => handleRadioButtons(e.target.id)}
+              checked={treppeRadio}
+            >Treppe
+            </button>
+            <button
+              type="button"
+              onChange={(e) => handleRadioButtons(e.target.id)}
+              checked={aufzugRadio}
+             >Aufzug
              </button>
- 
-             <button
-               type="button"
-               onChange={(e) => handleRadioButtons(e.target.id)}
-               checked={aufzugRadio}
-             >
-               Aufzug
-             </button>
-           </div><div className="berechnenButton">
+          </div><div className="berechnenButton">
              <button onClick={routeBerechnen}>Route berechnen</button>
            </div></>
+           </div>
        )}
      </div>
    );

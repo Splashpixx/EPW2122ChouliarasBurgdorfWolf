@@ -106,68 +106,6 @@ pointer-events: all;
     padding-bottom: 10px;
   }
 
-  /*Button von Domenic*/ 
-  .uiRoute{
-    position: absolute;
-    top: -95vh;
-    right: -3vw;
-    color: white;
-    background: #E8E8E8;
-    padding: 30px;
-    border-radius: 10px;
-    border: 10px;
-    box-shadow: 0 16px 40px -5px rgba(0, 0, 0, 0.5);
-    width: 120px;
-    height: 60px;
-    font-size: 3em;
-    width: 400px;
-    height: 150px;
-    font-size: 1em;
-    z-index: 20000;
-    pointer-events: all;
-  }
-  
-  .uiRoute> button {
-    margin: 10px;
-    padding: 5px 10px;
-    left: 0;
-    bottom: 0;
-    width: 100px;
-    border-radius: 5px;
-    border: solid 2px white;
-    outline: none;
-    background: transparent;
-    color: white;
-    cursor: pointer;
-  }
-
-  .treppeAufzug > button {
-    margin: 10px;
-    padding: 5px 10px;
-    padding-top: 10px;
-    left: 0;
-    bottom: 0;
-    width: 100px;
-    border-radius: 5px;
-    border: none;
-    outline: none;
-    background: #8C8C8C;
-    color: white;
-    cursor: pointer;
-  }
-
-  .berechnenButton{
-    margin: 10px;
-    padding: 5px 10px;
-    left: 0;
-    bottom: 0;
-    width: 100px;
-    border-radius: 5px;
-    outline: none;
-    background: #000000 !important;
-    color: white;
-    cursor: pointer;
-  }
 
 .main2 {
   position: relative;
@@ -218,6 +156,41 @@ pointer-events: all;
   cursor: pointer;
 }
 
+/*Button von Domenic*/ 
+.uiRoute{
+ top: -95vh;
+ right: -3vw;
+ width: 28px;
+ height: 25px;
+ z-index: 20000;
+ pointer-events: all;
+}
+     
+.treppeAufzug > button {
+  margin: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background: #8C8C8C;
+  color: white;
+  cursor: pointer;
+}
+   
+.berechnenButton > button{
+  margin-top: 10px;
+  margin-left: 10px;
+  width: 218px;
+  height: 30px;
+  border-radius: 10px;
+  outline: none;
+  background: #000000 !important;
+  color: white;
+  cursor: pointer;
+}
+
 /* Burger Menu */
 
 .burgerMenu {
@@ -231,13 +204,50 @@ pointer-events: all;
   background-image: url(/public/icons/closeIcon.svg);
 }
 
-.menuOpen{
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+
+.menuOpen{ 
+  float: left;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: max-content;
+}
+
+.menuOpen form input {
+  width: 130px;
+  height: 40px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+}
+
+.menuOpen form button {
+  margin-left: 8px;
+  width: 80px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  background-color: #C60C0F;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.background{
+  top: -95vh;
+  right: -3vw;
+  color: white;
   background: #E8E8E8;
-  padding: 30px;
   border-radius: 10px;
   border: 10px;
-  box-shadow: 0 16px 40px -5px rgba(0, 0, 0, 0.5) !important;
+  /*box-shadow: 0 10px 40px -5px rgba(0, 0, 0, 0.5);*/
+  width: 250px;
+  height: 230px;
+  font-size: 3em;
+  font-size: 1em;
+  z-index: 20000;
+  pointer-events: all;
 }
