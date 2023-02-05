@@ -20,6 +20,9 @@ import { useLoader } from '@react-three/fiber'
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
 import { PerspectiveCamera } from "@react-three/drei";
 import React, { useState, useRef, useLayoutEffect, useReducer, Suspense, useEffect  } from "react";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Line2 } from 'three/examples/jsm/lines/Line2'
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
@@ -27,7 +30,7 @@ import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 
 // Eigene Scripts //
 
-import {findPath} from "./test/FindPath";
+import {findPath, findPathSimple} from "./test/FindPath";
 import {importPathMesh} from "./test/ImportPathMesh";
 import {RenderChild, Thing, AddNewPointRandom, BadCode} from "./buildingGen"
 // import {MeshClickable, MeshNOTClickable, ImportMeshesFromOBJ} from "./test/MeshFunctions";
@@ -263,7 +266,7 @@ const Scene = () => {
   async function wegBerechnung(start, ende){
     const pathMesh = await importPathMesh("obj/pathMesh.obj")
     //console.log(pathMesh[start])
-    const pathtest = await findPath(pathMesh[start],pathMesh[ende],pathMesh,true,false)
+    const pathtest = await findPathSimple(pathMesh[start],pathMesh[ende],pathMesh,true,false)
    return pathtest
   }
 
@@ -377,45 +380,66 @@ function routeBerechnen() {
       }
     }
 
+ //Fügt das Burger Icon hinzu
+ library.add(fas);
 
-  // Weg genrieren im UI
-  function UiRoute(){
-    return(
-      
-        <div className='uiRoute'>
-            <form >
+ // Weg genrieren im UI
+ function UiRoute() {
+   const [isOpen, setOpen] = useState(false);
+ 
+   //<br/>
+   return (
+    <div className="uiRoute">
+      <div className={`burgerMenu${isOpen ? " open" : ""}`} onClick={() => setOpen(!isOpen)}>
+      </div>
+      {isOpen && (
+        <div className='background' >
+          <><div className='menuOpen'>
+            <form>
               <input 
                 ref={start} 
                 placeholder="Start"
               />
+              <button
+                type="button"
+                onClick={(e) => console.log("Element2 das angeklickt wird: ",e)}
+                >auswählen
+              </button>
+            </form>
+            <form>
               <input 
                 ref={ziel} 
                 placeholder="Ziel"
-              /><br/>
-
-            <div className="treppeAufzug">
+              />                  
               <button
+                display= "inline-block"
                 type="button"
-                onChange={(e) => handleRadioButtons(e.target.id)}
-                checked={treppeRadio}
-                style={{ backgroundColor: treppeRadio ? "#C60C0F" : "#8C8C8C" }}
-                onClick={(e) => handleRadioButtons("treppeRadio")}
-                > Treppe </button>
-
-              <button    
-                type="button"
-                onChange={(e) => handleRadioButtons(e.target.id)}
-                style={{ backgroundColor: aufzugRadio ? "#C60C0F" : "#8C8C8C" }}
-                onClick={(e) => handleRadioButtons("aufzugRadio")}
-                //checked={aufzugRadio}
-                > Aufzug </button>
-
-                <button className="berechnenButton" type="button" onClick={submitHandler}>Route generieren</button>
-              </div>
+                onClick={(e) => console.log("Element1 das angeklickt wird: ",e)}
+              >auswählen
+              </button>
             </form>
-        </div>
-    )
-  }
+          </div><div className="treppeAufzug">
+            <button
+              type="button"
+              onChange={(e) => handleRadioButtons(e.target.id)}
+              checked={treppeRadio}
+            >Treppe
+            </button>
+            <button
+              type="button"
+              onChange={(e) => handleRadioButtons(e.target.id)}
+              checked={aufzugRadio}
+             >Aufzug
+             </button>
+          </div><div className="berechnenButton">
+             <button onClick={routeBerechnen}>Route berechnen</button>
+           </div></>
+           </div>
+       )}
+     </div>
+   );
+ }
+ 
 
   function LineRenderer({ points }){
     return (

@@ -1,5 +1,31 @@
 import * as THREE from "three";
 
+async function findPathSimple(startPoint, endPoint, pathMesh, takeStairs, takeElevator){
+
+    await setElevationFlags(startPoint, endPoint, pathMesh, takeStairs, takeElevator)
+
+    startPoint.depth = 0
+
+    var currentDepth = 0
+
+    while (endPoint.depth === null){
+        pathMesh.forEach(pathPoint =>{
+            if (pathPoint.depth === currentDepth){
+                setDepth(pathPoint.edges, pathPoint.depth)
+            }
+        })
+        currentDepth++
+    }
+
+    let path = await getPath(startPoint, endPoint)
+    pathMesh.forEach(pathPoint => {
+        pathPoint.prio = null
+        pathPoint.depth = null
+        pathPoint.endFlag = false
+    })
+
+    return path
+}
 
 async function findPath(startPoint, endPoint, pathMesh, takeStairs, takeElevator){
 
@@ -100,7 +126,7 @@ async function sortPrio(edges) {
 
 async function setDepth(edges, depthValue){
     edges.forEach(edge =>{
-        if(edge.neighbour.depth == null){
+        if(edge.neighbour.depth == null && edge.neighbour.endFlag === false){
             edge.neighbour.depth = (depthValue + 1)
         }
     })
@@ -166,4 +192,4 @@ async function setElevationFlags(startPoint, endPoint, pathMesh, takeStairs, tak
 }
 
 
-export {findPath};
+export {findPath, findPathSimple};
