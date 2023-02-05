@@ -462,7 +462,7 @@ function routeBerechnen() {
       if (kamera){
           return <PerspectiveCamera position={[-80, 60, 100]} fov={80} makeDefault={true} />
       }else{
-          return <OrthographicCamera position={[-60,10, 0]} fov={0} makeDefault={true} rotation={[0,-90,0]} scale={[0.15,0.15,0.15]} />
+          return <OrthographicCamera position={[-60,12, 0]} fov={0} makeDefault={true} rotation={[0,-90,0]} scale={[0.15,0.15,0.15]} />
       }
   }
 
