@@ -341,7 +341,6 @@ function routeBerechnen() {
       var returnThis;
       meshcollection.map((e) => {
         if (e.raumnummer == stringvonetwas) {
-          console.log("Gefunden")
           returnThis = e.meshid
         }
       })
@@ -355,7 +354,6 @@ function routeBerechnen() {
       if(start.current.value.length > 3){
         const startNeu = findID(start.current.value.replace(".", "")) ;
         const ende = findID(ziel.current.value.replace(".", "")) ;
-        console.log(startNeu, ende)
         weg1 = Number(startNeu)
         weg2 = Number(ende) 
       } else {
