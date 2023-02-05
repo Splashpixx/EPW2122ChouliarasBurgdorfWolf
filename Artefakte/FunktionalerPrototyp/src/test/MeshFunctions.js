@@ -19,20 +19,19 @@ function ImportMeshesFromOBJ(path, clickable, baseColor, hoverColor, activeColor
 function RenderChild2(e, clickable, baseColor, hoverColor, activeColor, raumauswahl, activeRooms){
     const [active, setActive] = useState(false)
     const [hovered, setHover] = useState(false)
-
     const [state, dispatcher] = useReducer(raumauswahl)
 
     const raumname = "" + e.name
     raumname.slice(-3)
 
     if (clickable){
-        return MeshClickable(e.scale, e.material, e.geometry, e.id, raumname, baseColor, hoverColor, activeColor, raumauswahl, activeRooms)
+        return MeshClickable(e.scale, e.geometry, e.id, raumname, baseColor, hoverColor, activeColor, raumauswahl, activeRooms)
     }else{
-        return MeshNOTClickable(e.scale, e.material, e.geometry, e.id, raumname, baseColor, raumauswahl, activeRooms)
+        return MeshNOTClickable(e.scale, e.geometry, e.id, raumname, baseColor, raumauswahl, activeRooms)
     }
 }
 
-function MeshClickable(scale, material, geometry, id, name, baseColor, hoverColor, activeColor, raumauswahl, activeRooms){
+function MeshClickable(scale, geometry, id, name, baseColor, hoverColor, activeColor, raumauswahl, activeRooms){
 
     const [active, setActive] = useState(false)
     const [hovered, setHover] = useState(false)
@@ -41,7 +40,6 @@ function MeshClickable(scale, material, geometry, id, name, baseColor, hoverColo
     return(
         <mesh
             scale = {scale}
-            material = {material}
             geometry = {geometry}
             key = {id}
             name = {name}
@@ -67,7 +65,7 @@ function MeshClickable(scale, material, geometry, id, name, baseColor, hoverColo
     )
 }
 
-function MeshNOTClickable(scale, material, geometry, id, name, baseColor, raumauswahl){
+function MeshNOTClickable(scale,geometry, id, name, baseColor, raumauswahl){
 
     const [active, setActive] = useState(false)
     const [hovered, setHover] = useState(false)
@@ -76,14 +74,12 @@ function MeshNOTClickable(scale, material, geometry, id, name, baseColor, raumau
     return(
         <mesh
             scale = {scale}
-            material = {material}
             geometry = {geometry}
             key = {id}
             name = {name}
-
             onClick={(e) => {}}
         >
-            <meshToonMaterial color={baseColor} />
+            <meshStandardMaterial color={baseColor} />
         </mesh>
     )
 }

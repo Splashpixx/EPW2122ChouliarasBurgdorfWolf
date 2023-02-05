@@ -33,10 +33,10 @@ import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 import {findPath, findPathSimple} from "./test/FindPath";
 import {importPathMesh} from "./test/ImportPathMesh";
 import {RenderChild, Thing, AddNewPointRandom, BadCode} from "./buildingGen"
-// import {MeshClickable, MeshNOTClickable, ImportMeshesFromOBJ} from "./test/MeshFunctions";
+import {MeshClickable, MeshNOTClickable, ImportMeshesFromOBJ} from "./test/MeshFunctions";
 import { hover } from '@testing-library/user-event/dist/hover';
 
-import {EffectComposer, DepthOfField, Bloom, Noise, Vignette, Outline} from '@react-three/postprocessing'
+import {EffectComposer, DepthOfField, Bloom, Noise, Vignette, Outline, Selection, Select} from '@react-three/postprocessing'
 
 /*
 !- Hooks -!
@@ -143,103 +143,8 @@ const Scene = () => {
   function AddGround(){
     return ImportMeshesFromOBJ("obj/Ground.obj",false, "#222222", "", "", raumauswahl, activeRooms)}
 
-    function ImportMeshesFromOBJ(path, clickable, baseColor, hoverColor, activeColor, raumauswahl, activeRooms){
-      const obj = useLoader(OBJLoader, path, (loader) => {})
-  
-      const listofMeshes = []
-  
-      obj.children.map(e => {
-          listofMeshes.push(RenderChild2(e, clickable, baseColor, hoverColor, activeColor, raumauswahl, activeRooms))
-      })
-  
-      return listofMeshes.map(e => {
-          return e
-      })
-  }
-  
-  function RenderChild2(e, clickable, baseColor, hoverColor, activeColor, raumauswahl, activeRooms){
-      const [active, setActive] = useState(false)
-      const [hovered, setHover] = useState(false)
-  
-      const [state, dispatcher] = useReducer(raumauswahl)
-  
-      const raumname = "" + e.name
-      raumname.slice(-3)
-  
-      if (clickable){
-          return MeshClickable(e.scale, e.material, e.geometry, e.id, raumname, baseColor, hoverColor, activeColor, raumauswahl, activeRooms)
-      }else{
-          return MeshNOTClickable(e.scale, e.material, e.geometry, e.id, raumname, baseColor, raumauswahl, activeRooms)
-      }
-  }
 
   const meshcollection = []
-  
-  function MeshClickable(scale, material, geometry, id, name, baseColor, hoverColor, activeColor, raumauswahl, activeRooms){
-  
-      const [active, setActive] = useState(false)
-      const [hovered, setHover] = useState(false)
-      const [state, dispatcher] = useReducer(raumauswahl)
-
-      const raumname = "" + name
-      raumname.slice(-3)
-
-      const info = {
-        raumnummer : name.substring(0, 4),
-        meshid : raumname.slice(-3)
-      }
-
-      meshcollection.push(info)
-  
-      return(
-          <mesh
-              scale = {scale}
-              material = {material}
-              geometry = {geometry}
-              key = {id}
-              name = {name}
-  
-              onPointerOver={(event) => {setHover(true); event.stopPropagation()}}
-  
-              onPointerOut={(event) => {setHover(false); event.stopPropagation()}}
-  
-              onClick={(e) => {
-                  if(activeRooms.length <= 1){
-                      setActive(!active)
-                      active ? dispatcher({type: 'decrement', payloade: raumname}) : dispatcher({type: 'increment', payloade: raumname})
-                  } else {
-                      setActive(false)
-                      dispatcher({type: 'decrement', payloade: raumname})
-                  }
-                  e.stopPropagation()
-              }
-              }
-          >
-              <meshStandardMaterial color={active ? activeColor : baseColor  && hovered ? hoverColor : baseColor} />
-          </mesh>
-      )
-  }
-  
-  function MeshNOTClickable(scale, material, geometry, id, name, baseColor, raumauswahl){
-  
-      const [active, setActive] = useState(false)
-      const [hovered, setHover] = useState(false)
-      const [state, dispatcher] = useReducer(raumauswahl)
-  
-      return(
-          <mesh
-              scale = {scale}
-              material = {material}
-              geometry = {geometry}
-              key = {id}
-              name = {name}
-  
-              onClick={(e) => {}}
-          >
-              <meshStandardMaterial color={baseColor} />
-          </mesh>
-      )
-  }
  
   /* Kamera einstellung und erstellung */
   
@@ -494,10 +399,7 @@ function routeBerechnen() {
     <>
     <Canvas>
 
-        <EffectComposer>
-            <Vignette eskil={false} offset={0.01} darkness={1} />
-            <Outline blendFunction={1} edgeStrength={10.0} visibleEdgeColor={10} hiddenEdgeColor={10} width={10} height={10}/>
-        </EffectComposer>
+
 
         <CameraSelection />
         <CameraControls />
@@ -510,20 +412,30 @@ function routeBerechnen() {
           castShadow
           shadow-mapSize-height={512}
           shadow-mapSize-width={512}
-          intensity={0.8}
+          intensity={0.5}
         />
 
-        {showEtage3 && <AddEtage03Geo/>}
-        {showEtage3 && <AddEtage03Raeume/>}
-        {showEtage2 && <AddEtage02Geo/>}
-        {showEtage2 && <AddEtage02Raeume/>}
-        {showEtage1 &&<AddEtage01Geo/>}
-        {showEtage1 &&<AddEtage01Raeume/>}
-        {showEtage0 && <AddEtage00Geo/>}
-        {showEtage0 && <AddEtage00Raeume/>}
-        <AddStairs/>
-        <AddElevators/>
-        <AddGround/>
+        <Selection>
+            <EffectComposer autoclear={false}>
+                <Outline blur visibleEdgeColor={"white"} hiddenEdgeColor={"black"} edgeStrength={10} edgeStrength={100} width={500} />
+                <Vignette darkness={0.9} offset={0.22} eskil={false} />
+            </EffectComposer>
+            <Select enabled={true}>
+                {showEtage3 && <AddEtage03Geo/>}
+                {showEtage3 && <AddEtage03Raeume/>}
+                {showEtage2 && <AddEtage02Geo/>}
+                {showEtage2 && <AddEtage02Raeume/>}
+                {showEtage1 &&<AddEtage01Geo/>}
+                {showEtage1 &&<AddEtage01Raeume/>}
+                {showEtage0 && <AddEtage00Geo/>}
+                {showEtage0 && <AddEtage00Raeume/>}
+                <AddStairs/>
+                <AddElevators/>
+                <AddGround/>
+            </Select>
+        </Selection>
+
+
 
         <LineRenderer points={wegPunkte || [ [0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0] ]} />
 
