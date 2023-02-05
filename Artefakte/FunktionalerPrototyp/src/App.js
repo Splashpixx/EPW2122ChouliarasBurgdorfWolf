@@ -30,7 +30,7 @@ import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 
 // Eigene Scripts //
 
-import {findPath} from "./test/FindPath";
+import {findPath, findPathSimple} from "./test/FindPath";
 import {importPathMesh} from "./test/ImportPathMesh";
 import {RenderChild, Thing, AddNewPointRandom, BadCode} from "./buildingGen"
 // import {MeshClickable, MeshNOTClickable, ImportMeshesFromOBJ} from "./test/MeshFunctions";
@@ -266,7 +266,7 @@ const Scene = () => {
   async function wegBerechnung(start, ende){
     const pathMesh = await importPathMesh("obj/pathMesh.obj")
     //console.log(pathMesh[start])
-    const pathtest = await findPath(pathMesh[start],pathMesh[ende],pathMesh,true,false)
+    const pathtest = await findPathSimple(pathMesh[start],pathMesh[ende],pathMesh,true,false)
    return pathtest
   }
 
