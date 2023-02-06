@@ -147,15 +147,11 @@ const Scene = () => {
   const meshcollection = []
  
   /* Kamera einstellung und erstellung */
-  
-  function changeView(){
-    set(!kamera)
-  }
 
   function SwitchCam() {
     return (
       <div className="SwitchCam">
-        <button onClick={changeView}>Switch cam</button>
+        <button onClick={() => set(!kamera)}>Switch cam</button>
       </div>
     )
   }
@@ -219,7 +215,6 @@ function routeBerechnen() {
       })
       */
       console.log("error keine wegpunkte ausgewählt")
-      //console.log(meshcollection)
     }
 
     
