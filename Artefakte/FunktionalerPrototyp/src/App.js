@@ -432,14 +432,14 @@ function routeBerechnen() {
              >Aufzug
              </button>
           </div><div className="berechnenButton">
-             <button onClick={routeBerechnen}>Route berechnen</button>
+             <button onClick={submitHandler}>Route berechnen</button>
            </div></>
            </div>
        )}
      </div>
    );
  }
- 
+
 
   function LineRenderer({ points }){
     return (
@@ -456,8 +456,8 @@ function routeBerechnen() {
     )
   }
 
-// Kamera
 
+// Kamera
   function CameraSelection(){
       if (kamera){
           return <PerspectiveCamera position={[-80, 60, 100]} fov={80} makeDefault={true} />
