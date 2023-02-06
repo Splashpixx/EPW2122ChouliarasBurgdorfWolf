@@ -68,7 +68,7 @@ const Scene = () => {
   const [popupTrigger, setPopupTrigger] = useState(null);
 
 
-  
+
 
  //kamera = true ist die normale kamera, false orthographisch
   const [kamera, set] = useState(true)
@@ -287,19 +287,19 @@ function routeBerechnen() {
 
  //Fügt das Burger Icon hinzu
  library.add(fas);
-
+ const [isOpen, setOpen] = useState(false);
  // Weg genrieren im UI
- function UiRoute() {
-   const [isOpen, setOpen] = useState(false);
+  function UiRoute() {
+    
  
-   //<br/>
    return (
     <div className="uiRoute">
       <div className={`burgerMenu${isOpen ? " open" : ""}`} onClick={() => setOpen(!isOpen)}>
-      </div>
+    </div>
+
       {isOpen && (
         <div className='background' >
-          <><div className='menuOpen'>
+          <div className='menuOpen'>
             <form>
               <input 
                 ref={start} 
@@ -310,8 +310,7 @@ function routeBerechnen() {
                 onClick={(e) => console.log("Element2 das angeklickt wird: ",e)}
                 >auswählen
               </button>
-            </form>
-            <form>
+            <br/>
               <input 
                 ref={ziel} 
                 placeholder="Ziel"
@@ -323,27 +322,32 @@ function routeBerechnen() {
               >auswählen
               </button>
             </form>
-          </div><div className="treppeAufzug">
+          </div>
+          
+          <div className="treppeAufzug">
             <button
+              style={{ backgroundColor: treppeRadio ? "#00FA9A" : "#C60C0F" }}
               type="button"
-              onChange={(e) => handleRadioButtons(e.target.id)}
-              checked={treppeRadio}
+              onClick={() => handleRadioButtons("treppeRadio")}
             >Treppe
             </button>
             <button
+              style={{ backgroundColor: aufzugRadio ? "#00FA9A" : "#C60C0F" }}
               type="button"
-              onChange={(e) => handleRadioButtons(e.target.id)}
-              checked={aufzugRadio}
+              onClick={() => handleRadioButtons("aufzugRadio")}
              >Aufzug
              </button>
-          </div><div className="berechnenButton">
-             <button onClick={submitHandler}>Route berechnen</button>
-           </div></>
-           </div>
+          </div>
+          
+          <div className="berechnenButton">
+           <button onClick={submitHandler}>Route berechnen</button>
+          </div>
+        
+        </div>
        )}
      </div>
    );
- }
+  }
 
 
   function LineRenderer({ points }){
@@ -362,7 +366,7 @@ function routeBerechnen() {
   }
 
 
-// Kamera
+  // Kamera
   function CameraSelection(){
       if (kamera){
           return <PerspectiveCamera position={[-80, 60, 100]} fov={80} makeDefault={true} />
@@ -371,25 +375,24 @@ function routeBerechnen() {
       }
   }
 
-    function CameraControls(){
-        if (kamera){
-            return <OrbitControls enableRotate={true} target={[-60,0,0]}/>
-        }else{
-            return <OrbitControls enableRotate={false} target={[-60,0, 0]}/>
-        }
-    }
+  function CameraControls(){
+      if (kamera){
+          return <OrbitControls enableRotate={true} target={[-60,0,0]}/>
+      }else{
+          return <OrbitControls enableRotate={false} target={[-60,0, 0]}/>
+      }
+  }
+
 
   // Etagen auswahl
-
-
 
   function EtagenAuswahl(){
     return(
       <div className="etagen">
-        <button style={{ backgroundColor: showEtage3 ? "#8C8C8C" : "#C60C0F" }} onClick={() => setshowEtage3(!showEtage3)}>Etage 3</button>
-        <button style={{ backgroundColor: showEtage2 ? "#8C8C8C" : "#C60C0F" }} onClick={() => setshowEtage2(!showEtage2)}>Etage 2</button>
-        <button style={{ backgroundColor: showEtage1 ? "#8C8C8C" : "#C60C0F" }} onClick={() => setshowEtage1(!showEtage1)}>Etage 1</button>
-        <button style={{ backgroundColor: showEtage0 ? "#8C8C8C" : "#C60C0F" }} onClick={() => setshowEtage0(!showEtage0)}>Etage 0</button>
+        <button style={{ backgroundColor: showEtage3 ? "#00FA9A" : "#C60C0F" }} onClick={() => setshowEtage3(!showEtage3)}>Etage 3</button>
+        <button style={{ backgroundColor: showEtage2 ? "#00FA9A" : "#C60C0F" }} onClick={() => setshowEtage2(!showEtage2)}>Etage 2</button>
+        <button style={{ backgroundColor: showEtage1 ? "#00FA9A" : "#C60C0F" }} onClick={() => setshowEtage1(!showEtage1)}>Etage 1</button>
+        <button style={{ backgroundColor: showEtage0 ? "#00FA9A" : "#C60C0F" }} onClick={() => setshowEtage0(!showEtage0)}>Etage 0</button>
       </div>
     )
   }
@@ -417,7 +420,7 @@ function routeBerechnen() {
 
         <Selection>
             <EffectComposer autoclear={false}>
-                <Outline blur visibleEdgeColor={"white"} hiddenEdgeColor={"black"} edgeStrength={10} edgeStrength={100} width={500} />
+                <Outline blur visibleEdgeColor={"white"} hiddenEdgeColor={"black"} edgeStrength={100} width={500} />
                 <Vignette darkness={0.9} offset={0.22} eskil={false} />
             </EffectComposer>
             <Select enabled={true}>

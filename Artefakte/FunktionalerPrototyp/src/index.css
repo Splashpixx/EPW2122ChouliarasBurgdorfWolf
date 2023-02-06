@@ -26,7 +26,6 @@ code {
   pointer-events: none;
 }
 
-
 @media only screen and (max-width: 500px) {
 .canvas-container {
   margin-bottom: -40px;
@@ -67,7 +66,6 @@ color: Black;
 cursor: pointer;
 }
 
-
 .WegButtonPopup{
 position: absolute;
 top: -93vh;
@@ -101,10 +99,10 @@ pointer-events: all;
   pointer-events: all;
   }
 
-  .formMitPadding {
-    padding-top: 5px;
-    padding-bottom: 10px;
-  }
+.formMitPadding {
+  padding-top: 5px;
+  padding-bottom: 10px;
+}
 
 
 .main2 {
