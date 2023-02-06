@@ -68,7 +68,7 @@ const Scene = () => {
   const [popupTrigger, setPopupTrigger] = useState(null);
 
 
-  
+
 
  //kamera = true ist die normale kamera, false orthographisch
   const [kamera, set] = useState(true)
@@ -323,20 +323,24 @@ function routeBerechnen() {
               >auswählen
               </button>
             </form>
-          </div><div className="treppeAufzug">
+          </div>
+          
+          <div className="treppeAufzug">
             <button
+              style={{ backgroundColor: treppeRadio ? "#8C8C8C" : "#C60C0F" }}
               type="button"
-              onChange={(e) => handleRadioButtons(e.target.id)}
-              checked={treppeRadio}
+              onClick={handleRadioButtons("treppeRadio")}
             >Treppe
             </button>
             <button
+              style={{ backgroundColor: aufzugRadio ? "#8C8C8C" : "#C60C0F" }}
               type="button"
-              onChange={(e) => handleRadioButtons(e.target.id)}
-              checked={aufzugRadio}
+              onClick={handleRadioButtons("aufzugRadio")}
              >Aufzug
              </button>
-          </div><div className="berechnenButton">
+          </div>
+          
+            <div className="berechnenButton">
              <button onClick={submitHandler}>Route berechnen</button>
            </div></>
            </div>
@@ -386,10 +390,10 @@ function routeBerechnen() {
   function EtagenAuswahl(){
     return(
       <div className="etagen">
-        <button style={{ backgroundColor: showEtage3 ? "#8C8C8C" : "#C60C0F" }} onClick={() => setshowEtage3(!showEtage3)}>Etage 3</button>
-        <button style={{ backgroundColor: showEtage2 ? "#8C8C8C" : "#C60C0F" }} onClick={() => setshowEtage2(!showEtage2)}>Etage 2</button>
-        <button style={{ backgroundColor: showEtage1 ? "#8C8C8C" : "#C60C0F" }} onClick={() => setshowEtage1(!showEtage1)}>Etage 1</button>
-        <button style={{ backgroundColor: showEtage0 ? "#8C8C8C" : "#C60C0F" }} onClick={() => setshowEtage0(!showEtage0)}>Etage 0</button>
+        <button style={{ backgroundColor: showEtage3 ? "#00FA9A" : "#C60C0F" }} onClick={() => setshowEtage3(!showEtage3)}>Etage 3</button>
+        <button style={{ backgroundColor: showEtage2 ? "#00FA9A" : "#C60C0F" }} onClick={() => setshowEtage2(!showEtage2)}>Etage 2</button>
+        <button style={{ backgroundColor: showEtage1 ? "#00FA9A" : "#C60C0F" }} onClick={() => setshowEtage1(!showEtage1)}>Etage 1</button>
+        <button style={{ backgroundColor: showEtage0 ? "#00FA9A" : "#C60C0F" }} onClick={() => setshowEtage0(!showEtage0)}>Etage 0</button>
       </div>
     )
   }
@@ -417,7 +421,7 @@ function routeBerechnen() {
 
         <Selection>
             <EffectComposer autoclear={false}>
-                <Outline blur visibleEdgeColor={"white"} hiddenEdgeColor={"black"} edgeStrength={10} edgeStrength={100} width={500} />
+                <Outline blur visibleEdgeColor={"white"} hiddenEdgeColor={"black"} edgeStrength={100} width={500} />
                 <Vignette darkness={0.9} offset={0.22} eskil={false} />
             </EffectComposer>
             <Select enabled={true}>
