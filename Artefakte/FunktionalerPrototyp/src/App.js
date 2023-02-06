@@ -287,19 +287,19 @@ function routeBerechnen() {
 
  //Fügt das Burger Icon hinzu
  library.add(fas);
-
+ const [isOpen, setOpen] = useState(false);
  // Weg genrieren im UI
- function UiRoute() {
-   const [isOpen, setOpen] = useState(false);
+  function UiRoute() {
+    
  
-   //<br/>
    return (
     <div className="uiRoute">
       <div className={`burgerMenu${isOpen ? " open" : ""}`} onClick={() => setOpen(!isOpen)}>
-      </div>
+    </div>
+
       {isOpen && (
         <div className='background' >
-          <><div className='menuOpen'>
+          <div className='menuOpen'>
             <form>
               <input 
                 ref={start} 
@@ -310,8 +310,7 @@ function routeBerechnen() {
                 onClick={(e) => console.log("Element2 das angeklickt wird: ",e)}
                 >auswählen
               </button>
-            </form>
-            <form>
+            <br/>
               <input 
                 ref={ziel} 
                 placeholder="Ziel"
@@ -327,27 +326,28 @@ function routeBerechnen() {
           
           <div className="treppeAufzug">
             <button
-              style={{ backgroundColor: treppeRadio ? "#8C8C8C" : "#C60C0F" }}
+              style={{ backgroundColor: treppeRadio ? "#00FA9A" : "#C60C0F" }}
               type="button"
-              onClick={handleRadioButtons("treppeRadio")}
+              onClick={() => handleRadioButtons("treppeRadio")}
             >Treppe
             </button>
             <button
-              style={{ backgroundColor: aufzugRadio ? "#8C8C8C" : "#C60C0F" }}
+              style={{ backgroundColor: aufzugRadio ? "#00FA9A" : "#C60C0F" }}
               type="button"
-              onClick={handleRadioButtons("aufzugRadio")}
+              onClick={() => handleRadioButtons("aufzugRadio")}
              >Aufzug
              </button>
           </div>
           
-            <div className="berechnenButton">
-             <button onClick={submitHandler}>Route berechnen</button>
-           </div></>
-           </div>
+          <div className="berechnenButton">
+           <button onClick={submitHandler}>Route berechnen</button>
+          </div>
+        
+        </div>
        )}
      </div>
    );
- }
+  }
 
 
   function LineRenderer({ points }){
@@ -366,7 +366,7 @@ function routeBerechnen() {
   }
 
 
-// Kamera
+  // Kamera
   function CameraSelection(){
       if (kamera){
           return <PerspectiveCamera position={[-80, 60, 100]} fov={80} makeDefault={true} />
@@ -375,17 +375,16 @@ function routeBerechnen() {
       }
   }
 
-    function CameraControls(){
-        if (kamera){
-            return <OrbitControls enableRotate={true} target={[-60,0,0]}/>
-        }else{
-            return <OrbitControls enableRotate={false} target={[-60,0, 0]}/>
-        }
-    }
+  function CameraControls(){
+      if (kamera){
+          return <OrbitControls enableRotate={true} target={[-60,0,0]}/>
+      }else{
+          return <OrbitControls enableRotate={false} target={[-60,0, 0]}/>
+      }
+  }
+
 
   // Etagen auswahl
-
-
 
   function EtagenAuswahl(){
     return(
