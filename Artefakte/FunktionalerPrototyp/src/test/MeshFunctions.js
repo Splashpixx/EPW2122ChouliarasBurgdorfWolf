@@ -2,6 +2,8 @@ import React, {useReducer, useState} from "react";
 import {useLoader} from "@react-three/fiber";
 import {OBJLoader} from "three/addons/loaders/OBJLoader";
 
+const meshcollection = []
+
 function ImportMeshesFromOBJ(path, clickable, baseColor, hoverColor, activeColor, raumauswahl, activeRooms){
     const obj = useLoader(OBJLoader, path, (loader) => {})
 
@@ -36,6 +38,16 @@ function MeshClickable(scale, geometry, id, name, baseColor, hoverColor, activeC
     const [active, setActive] = useState(false)
     const [hovered, setHover] = useState(false)
     const [state, dispatcher] = useReducer(raumauswahl)
+
+    const raumname = "" + name
+    raumname.slice(-3)
+
+    const clickableRooms = {
+        raumnummer : name.substring(0, 4),
+        meshid : raumname.slice(-3)
+      }
+
+    meshcollection.push(clickableRooms)
 
     return(
         <mesh
@@ -88,4 +100,4 @@ function MeshNOTClickable(scale,geometry, id, name, baseColor, raumauswahl){
 
 
 
-export {MeshClickable, MeshNOTClickable, ImportMeshesFromOBJ};
+export {MeshClickable, MeshNOTClickable, ImportMeshesFromOBJ, meshcollection};

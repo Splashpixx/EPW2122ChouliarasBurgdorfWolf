@@ -33,7 +33,7 @@ import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 import {findPath, findPathSimple} from "./test/FindPath";
 import {importPathMesh} from "./test/ImportPathMesh";
 import {RenderChild, Thing, AddNewPointRandom, BadCode} from "./buildingGen"
-import {MeshClickable, MeshNOTClickable, ImportMeshesFromOBJ} from "./test/MeshFunctions";
+import {MeshClickable, MeshNOTClickable, ImportMeshesFromOBJ, meshcollection} from "./test/MeshFunctions";
 import { hover } from '@testing-library/user-event/dist/hover';
 
 import {EffectComposer, DepthOfField, Bloom, Noise, Vignette, Outline, Selection, Select} from '@react-three/postprocessing'
@@ -144,10 +144,9 @@ const Scene = () => {
     return ImportMeshesFromOBJ("obj/Ground.obj",false, "#222222", "", "", raumauswahl, activeRooms)}
 
 
-  const meshcollection = []
+  const meshcollectionZ = meshcollection[0]
  
   /* Kamera einstellung und erstellung */
-
   function SwitchCam() {
     return (
       <div className="SwitchCam">
@@ -202,22 +201,8 @@ function routeBerechnen() {
         }
       })
     } else {
-      const allPathes = meshImport();
-      /*
-      allPathes.then((data) => {
-        if(data != null){
-          data.map((e) => {
-            //console.log(e.pos)
-            /* angenommen man hat ein objekt=[ ob1: "a", ob2: "b",ob3: "c" ] dann ist {...objekt} das gleiche wie { ob1="a", ob2="b", ob3="c" } 
-            setWegPunkte((points) => [...(points || [[0, 0, 0]]), [e.pos.x, e.pos.y, e.pos.z]])}
-          )
-        }
-      })
-      */
       console.log("error keine wegpunkte ausgewählt")
-    }
-
-    
+    }    
   }
 
 /*
@@ -225,7 +210,6 @@ function routeBerechnen() {
     const timeoutId = setTimeout(() => console.log(`I can see you're not typing. I can use "${wegpunkt1}" now!`), 1000);
     return () => clearTimeout(timeoutId);
   }, [wegpunkt1]);*/
-
 
   const handleRadioButtons = (radioName) => {
       if(radioName === "aufzugRadio") {
@@ -255,10 +239,13 @@ function routeBerechnen() {
       var weg2
 
       if(start.current.value.length > 3){
+        
         const startNeu = findID(start.current.value.replace(".", "")) ;
         const ende = findID(ziel.current.value.replace(".", "")) ;
         weg1 = Number(startNeu)
         weg2 = Number(ende) 
+        console.log(weg1)
+        console.log(weg2)
       } else {
         weg1 = Number(start.current.value)
         weg2 = Number(ziel.current.value) 
@@ -284,8 +271,7 @@ function routeBerechnen() {
  library.add(fas);
  const [isOpen, setOpen] = useState(false);
  // Weg genrieren im UI
-  function UiRoute() {
-    
+  function UiRoute() {    
  
    return (
     <div className="uiRoute">
