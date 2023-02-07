@@ -8,13 +8,19 @@ async function findPathSimple(startPoint, endPoint, pathMesh, takeStairs, takeEl
 
     var currentDepth = 0
 
+    const StopPoint = 1000
+    var countforStop = 0
+
     while (endPoint.depth === null){
         pathMesh.forEach(pathPoint =>{
             if (pathPoint.depth === currentDepth){
                 setDepth(pathPoint.edges, pathPoint.depth)
+                //console.log(pathPoint)
             }
         })
         currentDepth++
+        countforStop ++
+        if(StopPoint === countforStop){break;}
     }
 
     let path = await getPath(startPoint, endPoint)
@@ -23,7 +29,7 @@ async function findPathSimple(startPoint, endPoint, pathMesh, takeStairs, takeEl
         pathPoint.depth = null
         pathPoint.endFlag = false
     })
-
+    //console.log(path)
     return path
 }
 

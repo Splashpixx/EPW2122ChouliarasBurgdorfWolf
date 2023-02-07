@@ -32,6 +32,7 @@ import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 
 import {findPath, findPathSimple} from "./test/FindPath";
 import {importPathMesh} from "./test/ImportPathMesh";
+//import {Cam, SwitchCam} from "./cameraAndUI";
 import {RenderChild, Thing, AddNewPointRandom, BadCode} from "./buildingGen"
 import {MeshClickable, MeshNOTClickable, ImportMeshesFromOBJ, meshcollection} from "./test/MeshFunctions";
 import { hover } from '@testing-library/user-event/dist/hover';
@@ -143,67 +144,26 @@ const Scene = () => {
   function AddGround(){
     return ImportMeshesFromOBJ("obj/Ground.obj",false, "#222222", "", "", raumauswahl, activeRooms)}
 
-
-  const meshcollectionZ = meshcollection[0]
  
-  /* Kamera einstellung und erstellung */
+  // Kamera einstellung und erstellung 
   function SwitchCam() {
     return (
       <div className="SwitchCam">
         <button onClick={() => set(!kamera)}>Switch cam</button>
       </div>
     )
-  }
+  } 
 
   /* ALLES MIT LINIEN IST HIER*/
   /* Linien gen https://codesandbox.io/s/r3f-line-adding-points-workaround-11g9h?file=/src/index.js */
 
-  async function meshImport(){
-    const pathMesh = await importPathMesh("obj/pathMesh.obj")
-    return pathMesh
-  }
-
-  async function wegBerechnung(start, ende){
+  async function wegBerechnung(start, ende, treppe, aufzug){
     const pathMesh = await importPathMesh("obj/pathMesh.obj")
     //console.log(pathMesh[start])
-    const pathtest = await findPathSimple(pathMesh[start],pathMesh[ende],pathMesh,true,false)
+    const pathtest = await findPathSimple(pathMesh[start],pathMesh[ende],pathMesh, treppe, aufzug)
    return pathtest
   }
 
-function routeBerechnen() {
-
-    setWegPunkte(wegPunkte => [])
-
-    const auswahl1 = Number(activeRooms[0])
-    const auswahl2 = Number(activeRooms[1])
-
-    //console.log(auswahl1, auswahl2, activeRooms)
-    
-    if (auswahl1 > 0 || auswahl2 > 0) {
-      const weg =  wegBerechnung(auswahl1, auswahl2)
-      weg.then((data) => {
-        if(data != null){
-          data.map((e) => {
-            setWegPunkte((points) => [...(points || [[0, 0, 0]]), [e.x, e.y, e.z]])}
-          )
-        }
-        console.log("--- ende der Berechnung ---")
-      })
-
-    } else if (wegpunkt1 != null || wegpunkt2 != null) {
-      const testWeg = wegBerechnung(wegpunkt1, wegpunkt2)
-      testWeg.then((data) => {
-        if(data != null){
-          data.map((e) => {
-            /* angenommen man hat ein objekt=[ ob1: "a", ob2: "b",ob3: "c" ] dann ist {...objekt} das gleiche wie { ob1="a", ob2="b", ob3="c" } */
-            setWegPunkte((points) => [...(points || [[0, 0, 0]]), [e.x, e.y, e.z]])}
-          )
-        }
-      })
-    } else {
-      console.log("error keine wegpunkte ausgewählt")
-    }    
-  }
 
 /*
   useEffect(() => {
@@ -238,21 +198,24 @@ function routeBerechnen() {
       var weg1
       var weg2
 
+      setWegPunkte(wegPunkte => [])
+
+      const auswahl1 = Number(activeRooms[0])
+      const auswahl2 = Number(activeRooms[1])
+
       if(start.current.value.length > 3){
-        
         const startNeu = findID(start.current.value.replace(".", "")) ;
         const ende = findID(ziel.current.value.replace(".", "")) ;
         weg1 = Number(startNeu)
-        weg2 = Number(ende) 
-        console.log(weg1)
-        console.log(weg2)
+        weg2 = Number(ende)
       } else {
         weg1 = Number(start.current.value)
         weg2 = Number(ziel.current.value) 
       }
 
+
       if (weg1 > 0 || weg2 > 0) {
-        const testWeg = wegBerechnung(weg1, weg2)
+        const testWeg = wegBerechnung(weg1, weg2, treppeRadio, aufzugRadio)
         testWeg.then((data) => {
           if(data != null){
             data.map((e) => {
@@ -262,20 +225,33 @@ function routeBerechnen() {
             )
           }
         }) 
+      } else if(auswahl1 > 0 || auswahl2 > 0) {
+        const weg =  wegBerechnung(auswahl1, auswahl2, treppeRadio, aufzugRadio)
+        weg.then((data) => {
+          if(data != null){
+            data.map((e) => {
+              setWegPunkte((points) => [...(points || [[0, 0, 0]]), [e.x, e.y, e.z]])}
+            )
+          }
+          console.log("--- ende der Berechnung ---")
+        })
       } else {
-        routeBerechnen()
+        console.log("error keine wegpunkte ausgewählt")
       }
     }
 
+
+    const [updated, setUpdated] = useState();
+    const [updated2, setUpdated2] = useState();
  //Fügt das Burger Icon hinzu
- library.add(fas);
- const [isOpen, setOpen] = useState(false);
+    library.add(fas);
+    const [isOpen, setOpen] = useState(false);
  // Weg genrieren im UI
   function UiRoute() {    
  
    return (
     <div className="uiRoute">
-      <div className={`burgerMenu${isOpen ? " open" : ""}`} onClick={() => setOpen(!isOpen)}>
+      <div className={`burgerMenu${isOpen ? "open" : ""}`} onClick={() => setOpen(!isOpen)}>
     </div>
 
       {isOpen && (
@@ -285,21 +261,36 @@ function routeBerechnen() {
               <input 
                 ref={start} 
                 placeholder="Start"
+                defaultValue={updated}
               />
               <button
                 type="button"
-                onClick={(e) => console.log("Element2 das angeklickt wird: ",e)}
+                onClick={(e) => {
+                  meshcollection.map((e) => {
+                    if (e.meshid == Number(activeRooms[0])){
+                      setUpdated(e.raumnummer)
+                    }
+                  })
+                }}
                 >auswählen
               </button>
-            <br/>
+              </form><form>
               <input 
                 ref={ziel} 
                 placeholder="Ziel"
+                defaultValue={updated2}
               />                  
               <button
                 display= "inline-block"
                 type="button"
-                onClick={(e) => console.log("Element1 das angeklickt wird: ",e)}
+                onClick={(e) => {
+                  meshcollection.map((e) => {
+                    if (e.meshid == Number(activeRooms[1])){
+                      setUpdated2(e.raumnummer)
+                    }
+                })
+                  
+                }}
               >auswählen
               </button>
             </form>
@@ -321,7 +312,7 @@ function routeBerechnen() {
           </div>
           
           <div className="berechnenButton">
-           <button onClick={submitHandler}>Route berechnen</button>
+          <button onClick={submitHandler}>Route berechnen</button>
           </div>
         
         </div>
@@ -329,7 +320,6 @@ function routeBerechnen() {
      </div>
    );
   }
-
 
   function LineRenderer({ points }){
     return (
@@ -379,14 +369,15 @@ function routeBerechnen() {
   }
 
 
+
+
   return ( 
     <>
     <Canvas>
 
+          <CameraSelection />
+          <CameraControls /> 
 
-
-        <CameraSelection />
-        <CameraControls />
 
         <ambientLight 
         intensity={0.5}
@@ -419,19 +410,14 @@ function routeBerechnen() {
             </Select>
         </Selection>
 
-
-
         <LineRenderer points={wegPunkte || [ [0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0] ]} />
 
     </Canvas>
 
     <div className='main'>
+      <UiRoute/>
       <SwitchCam/>
       <EtagenAuswahl/>
-    </div>
-
-    <div className='main2'>
-      <UiRoute/>
     </div>
 
   </>

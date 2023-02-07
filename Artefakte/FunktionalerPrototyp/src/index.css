@@ -27,61 +27,70 @@ code {
 }
 
 @media only screen and (max-width: 500px) {
-.canvas-container {
-  margin-bottom: -40px;
+  .canvas-container {
+    margin-bottom: -40px;
+  }
+  .canvas-container::after {
+    display: none;
+  }
 }
-.canvas-container::after {
-  display: none;
-}
-}
-
 
 .SwitchCam {
-display: flex;
-flex-direction: column;
-position: relative;
-top: 26vh;
-right: -90vw;
-background: #AAAAAA;
-border-radius: 10px;
-width: 120px;
-height: 50px;
-font-size: 3em;
-z-index: 20000;
-pointer-events: all;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 23vh;
+  right: -90vw;
+  background: #AAAAAA;
+  border-radius: 10px;
+  width: 120px;
+  height: 50px;
+  font-size: 3em;
+  z-index: 20000;
+  pointer-events: all;
+}
+
+.uiRoute{
+  position: relative;
+  top: 4vh;
+  right: -2vw;
+  width: 28px;
+  height: 25px;
+  z-index: 20000;
+  pointer-events: all;
 }
 
 .SwitchCam > button {
-margin: 10px;
-padding: 5px 10px;
-position: absolute;
-left: 0;
-bottom: 0;
-width: 100px;
-border-radius: 5px;
-border: solid 2px white;
-outline: none;
-background: #AAAAAA;
-color: Black;
-cursor: pointer;
+  margin: 10px;
+  padding: 5px 10px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100px;
+  border-radius: 5px;
+  border: solid 2px white;
+  outline: none;
+  background: #AAAAAA;
+  color: Black;
+  cursor: pointer;
 }
 
 .WegButtonPopup{
-position: absolute;
-top: -93vh;
-left: 45vw;
-transform: translate(-50%, -50%);
-color: #C60C0F;
-background: #E8E8E8;
-padding: 30px;
-border-radius: 5px;
-border: 10px;
-box-shadow: 0 16px 40px -5px rgba(0, 0, 0, 0.5);
-width: 420px;
-height: 170px;
-font-size: 1.2em;
-z-index: 20000;
-pointer-events: all;
+  position: absolute;
+  top: -93vh;
+  left: 45vw;
+  transform: translate(-50%, -50%);
+  color: #C60C0F;
+  background: #E8E8E8;
+  padding: 30px;
+  border-radius: 5px;
+  border: 10px;
+  box-shadow: 0 16px 40px -5px rgba(0, 0, 0, 0.5);
+  width: 420px;
+  height: 170px;
+  font-size: 1.2em;
+  z-index: 20000;
+  pointer-events: all;
 }
 
 .WegButton {
@@ -104,22 +113,6 @@ pointer-events: all;
   padding-bottom: 10px;
 }
 
-
-.main2 {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  color: white;
-  pointer-events: none;
-}
-
-.main2 > div {
-  position: relative;
-  height: auto;
-}
-
 .flex{
   display: flex;
   flex-direction: column;
@@ -133,7 +126,7 @@ pointer-events: all;
   flex-direction: column;
   gap: 20px;
   position: relative;
-  top: 0vh;
+  top: -4vh;
   right: -90vw;
   background: #AAAAAA;
   padding: 10px;
@@ -155,14 +148,7 @@ pointer-events: all;
 }
 
 /*Button von Domenic*/ 
-.uiRoute{
- top: -95vh;
- right: -3vw;
- width: 28px;
- height: 25px;
- z-index: 20000;
- pointer-events: all;
-}
+
      
 .treppeAufzug > button {
   margin: 10px;
@@ -198,18 +184,23 @@ pointer-events: all;
   display: inline-block;
 }
 
-.burgerMenu.open {
+.burgerMenuopen {
   background-image: url(/public/icons/closeIcon.svg);
+  width: 28px;
+  height: 25px;
+  margin-bottom: 10px;
+  display: inline-block;
 }
 
+.burgerMenuopen:hover{
+  rotate: -70deg;
+}
 
-.menuOpen{ 
-  float: left;
+.menuOpen{
   padding-top: 10px;
   padding-bottom: 10px;
   padding-left: 10px;
   padding-right: 10px;
-  width: max-content;
 }
 
 .menuOpen form input {
@@ -231,19 +222,155 @@ pointer-events: all;
   background-color: #C60C0F;
   color: white;
   font-size: 14px;
-  cursor: pointer;
+  cursor: grabbing ;
 }
 
 .background{
-  top: -95vh;
+  top: -90vh;
   right: -3vw;
   color: white;
   background: #E8E8E8;
   border-radius: 10px;
   border: 10px;
-  /*box-shadow: 0 10px 40px -5px rgba(0, 0, 0, 0.5);*/
-  width: 250px;
+  min-width: 240px;
   height: 230px;
   z-index: 20000;
   pointer-events: all;
+}
+
+@media only screen and (max-width: 727px) {
+  
+  .etagen {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    position: relative;
+    top: 70vh;
+    right: -0vw;
+    margin-left: 20px;
+    margin-right: 20px;
+    background: #AAAAAA;
+    padding: 10px;
+    border-radius: 10px;
+    width: auto;
+    z-index: 20000;
+    pointer-events: all;
+  }
+
+  .SwitchCam {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: 68vh;
+    width: 100px;
+    right: -70vw;
+    background: #AAAAAA;
+    border-radius: 10px;
+    font-size: 3em;
+    z-index: 20000;
+    pointer-events: all;
+    }
+    
+  .etagen > button {
+    padding: 5px 10px;
+    width: 100px;
+    border-radius: 5px;
+    border: solid 2px white;
+    outline: none;
+    background: #AAAAAA;
+    color: Black;
+  }
+
+  .SwitchCam > button {
+  margin: 10px;
+  padding: 5px 7px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: auto;
+  border-radius: 5px;
+  border: solid 2px white;
+  outline: none;
+  background: #AAAAAA;
+  color: Black;
+  cursor: pointer;
+  }
+
+  .uiRoute{
+    top: 5vh;
+    right: -5vw;
+    z-index: 20001;
+    pointer-events: all;
+   }
+
+   .burgerMenu {
+    background-image: url(/public/icons/burgerIcon.svg);
+    width: 28px;
+    height: 25px;
+    display: absolute;
+  }
+  
+  .burgerMenu.open {
+    background-image: url(/public/icons/closeIcon.svg);
+  }
+
+  .burgerMenuopen:hover{
+    rotate: 0deg;
+  }
+
+  .background{
+    top: -90vh;
+    right: -3vw;
+    color: white;
+    background: #E8E8E8;
+    border-radius: 10px;
+    border: 10px;
+    min-width: 250px;
+    height: 210px;
+    z-index: 20000;
+    pointer-events: all;
+  }
+
+  .menuOpen form{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .menuOpen form input {
+    height: 40px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+  }
+  
+  .menuOpen form button {
+    margin-left: 8px;
+    text-align: center;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    background-color: #C60C0F;
+    color: white;
+    font-size: 12px;
+  }
+
+  .treppeAufzug{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .treppeAufzug > button {
+    margin: 0px 10px 5px 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background: #8C8C8C;
+    color: white;
+  }
+
 }
