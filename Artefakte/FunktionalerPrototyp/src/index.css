@@ -16,12 +16,24 @@ code {
   overflow: hidden;
 }
 
+@media only screen and (max-width: 500px) {
+  .canvas-container {
+    margin-bottom: -40px;
+  }
+  .canvas-container::after {
+    display: none;
+  }
+}
+
 .SwitchCamNew button{
-  padding: 5px 10px;
+ 
   position: absolute;
-  right: -97vw;
+  right: -95.8vw;
   top: 27vh;
   width: 100px;
+  height: 35px;
+  gap: 20px;
+  padding: 5px 10px; 
   border-radius: 5px;
   border: solid 2px white;
   outline: none;
@@ -57,34 +69,6 @@ code {
   cursor: pointer;
 }
 
-
-@media only screen and (max-width: 500px) {
-  .canvas-container {
-    margin-bottom: -40px;
-  }
-  .canvas-container::after {
-    display: none;
-  }
-}
-
-
-
-/* OLD */
-.SwitchCam {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  top: 23vh;
-  right: -90vw;
-  background: #AAAAAA;
-  border-radius: 10px;
-  width: 120px;
-  height: 50px;
-  font-size: 3em;
-  z-index: 20000;
-  pointer-events: all;
-}
-
 .uiRoute{
   position: relative;
   top: 4vh;
@@ -93,59 +77,6 @@ code {
   height: 25px;
   z-index: 20000;
   pointer-events: all;
-}
-
-.SwitchCam > button {
-  margin: 10px;
-  padding: 5px 10px;
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100px;
-  border-radius: 5px;
-  border: solid 2px white;
-  outline: none;
-  background: #AAAAAA;
-  color: Black;
-  cursor: pointer;
-}
-
-.WegButtonPopup{
-  position: absolute;
-  top: -93vh;
-  left: 45vw;
-  transform: translate(-50%, -50%);
-  color: #C60C0F;
-  background: #E8E8E8;
-  padding: 30px;
-  border-radius: 5px;
-  border: 10px;
-  box-shadow: 0 16px 40px -5px rgba(0, 0, 0, 0.5);
-  width: 420px;
-  height: 170px;
-  font-size: 1.2em;
-  z-index: 20000;
-  pointer-events: all;
-}
-
-.WegButton {
-  position: absolute;
-  top: -90vh;
-  right: 91vw;
-  color: #EA5B0C;
-  background: #E8E8E8;
-  padding: 10px;
-  border-radius: 5px;
-  width: 120px;
-  height: 60px;
-  font-size: 16px;
-  z-index: 20000;
-  pointer-events: all;
-  }
-
-.formMitPadding {
-  padding-top: 5px;
-  padding-bottom: 10px;
 }
 
 .flex{
@@ -187,7 +118,7 @@ code {
 
 .burgerMenu {
   background-image: url(/public/icons/burgerIcon.svg);
-  width: 28px;
+  width: 26px;
   height: 25px;
   display: inline-block;
 }
@@ -246,6 +177,18 @@ code {
   pointer-events: all;
 }
 
+/*Unten folgt die mobile ansicht*/
+
+/*@media only screen and (max-width: 500px) {
+  .canvas-container {
+    margin-bottom: -40px;
+  }
+  .canvas-container::after {
+    display: none;
+  }
+}*/
+
+
 @media only screen and (max-width: 727px) {
   
   .etagen {
@@ -265,19 +208,6 @@ code {
     pointer-events: all;
   }
 
-  .SwitchCam {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    top: 68vh;
-    width: 100px;
-    right: -70vw;
-    background: #AAAAAA;
-    border-radius: 10px;
-    font-size: 3em;
-    z-index: 20000;
-    pointer-events: all;
-    }
     
   .etagen > button {
     padding: 5px 10px;
@@ -289,20 +219,20 @@ code {
     color: Black;
   }
 
-  .SwitchCam > button {
-  margin: 10px;
-  padding: 5px 7px;
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: auto;
-  border-radius: 5px;
-  border: solid 2px white;
-  outline: none;
-  background: #AAAAAA;
-  color: Black;
-  cursor: pointer;
+  .SwitchCamNew button{
+    padding: 5px 10px;
+    position: absolute;
+    right: -97vw;
+    top: 27vh;
+    width: 100px;
+    border-radius: 5px;
+    border: solid 2px white;
+    outline: none;
+    background: #AAAAAA;
+    color: Black;
+    cursor: pointer;
   }
+  
 
   .uiRoute{
     top: 5vh;

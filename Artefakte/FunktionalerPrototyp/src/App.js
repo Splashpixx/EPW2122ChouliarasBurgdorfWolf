@@ -307,13 +307,13 @@ const Scene = () => {
              
              <div className="treppeAufzug">
                <button
-                 style={{ backgroundColor: treppeRadio ? "#00FA9A" : "#C60C0F" }}
+                 style={{ backgroundColor: treppeRadio ? "#C60C0F" : "#AAAAAA" }}
                  type="button"
                  onClick={() => handleRadioButtons("treppeRadio")}
                >Treppe
                </button>
                <button
-                 style={{ backgroundColor: aufzugRadio ? "#00FA9A" : "#C60C0F" }}
+                 style={{ backgroundColor: aufzugRadio ? "#C60C0F" : "#AAAAAA" }}
                  type="button"
                  onClick={() => handleRadioButtons("aufzugRadio")}
                 >Aufzug
