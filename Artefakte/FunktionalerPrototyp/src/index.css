@@ -37,7 +37,7 @@ code {
   border-radius: 5px;
   border: solid 2px white;
   outline: none;
-  background: #AAAAAA;
+  background: #E8E8E8;
   color: Black;
   cursor: pointer;
 }
@@ -50,7 +50,7 @@ code {
   position: relative;
   top: 5vh;
   right: -90vw;
-  background: #AAAAAA;
+  background: #E8E8E8;
   padding: 10px;
   border-radius: 10px;
   width: 120px;
@@ -62,7 +62,7 @@ code {
   padding: 5px 10px;
   width: 100px;
   border-radius: 5px;
-  border: solid 2px white;
+  border: none;
   outline: none;
   background: #AAAAAA;
   color: Black;

@@ -92,24 +92,24 @@ const Scene = () => {
   // Gebäude !-Pathfinding ist in der buildingGen.js-!
   const AddEtage03Raeume_01 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_03_01.obj",true, "#146152", "yellow", "green", raumauswahl, activeRooms)}
   const AddEtage03Raeume_02 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_03_02.obj",true, "#257263", "yellow", "green", raumauswahl, activeRooms)}
-  const AddEtage03Geo = () => {     return ImportMeshesFromOBJ("obj/Etage_03_Geo.obj",false, "#999999", "", "", raumauswahl, activeRooms)}
+  const AddEtage03Geo = () => {     return ImportMeshesFromOBJ("obj/Etage_03_Geo.obj",false, "#9b9b9b", "", "", raumauswahl, activeRooms)}
 
   const AddEtage02Raeume_01 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_02_01.obj",true, "#44803F", "yellow", "green", raumauswahl, activeRooms)}
   const AddEtage02Raeume_02 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_02_02.obj",true, "#55914F", "yellow", "green", raumauswahl, activeRooms)}
-  const AddEtage02Geo = () => {     return ImportMeshesFromOBJ("obj/Etage_02_Geo.obj",false, "#999999", "", "", raumauswahl, activeRooms)}
+  const AddEtage02Geo = () => {     return ImportMeshesFromOBJ("obj/Etage_02_Geo.obj",false, "#adadad", "", "", raumauswahl, activeRooms)}
 
   const AddEtage01Raeume_01 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_01_01.obj",true, "#a3be55", "yellow", "green", raumauswahl, activeRooms)}
   const AddEtage01Raeume_02 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_01_02.obj",true, "#B4CF66", "yellow", "green", raumauswahl, activeRooms)}
   const AddEtage01Eingang =() => {      return ImportMeshesFromOBJ("obj/Main_Etage_01_Eingang.obj",true, "#FF7777", "yellow", "green", raumauswahl, activeRooms)}
-  const AddEtage01Geo = () => {     return ImportMeshesFromOBJ("obj/Etage_01_Geo.obj",false, "#999999", "", "", raumauswahl, activeRooms)}
+  const AddEtage01Geo = () => {     return ImportMeshesFromOBJ("obj/Etage_01_Geo.obj",false, "#bfbfbf", "", "", raumauswahl, activeRooms)}
 
   const AddEtage00Raeume_01 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_00_01.obj",true, "#eedb4b", "yellow", "green", raumauswahl, activeRooms)}
   const AddEtage00Raeume_02 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_00_02.obj",true, "#FFEC5C", "yellow", "green", raumauswahl, activeRooms)}
   const AddEtage00Eingang =() => {      return ImportMeshesFromOBJ("obj/Main_Etage_00_Eingang.obj",true, "#FF7777", "yellow", "green", raumauswahl, activeRooms)}
-  const AddEtage00Geo =() => {      return ImportMeshesFromOBJ("obj/Etage_00_Geo.obj",false, "#999999", "", "", raumauswahl, activeRooms)}
+  const AddEtage00Geo =() => {      return ImportMeshesFromOBJ("obj/Etage_00_Geo.obj",false, "#d1d1d1", "", "", raumauswahl, activeRooms)}
 
-  const AddStairs = () => {         return ImportMeshesFromOBJ("obj/Treppen.obj",false, "#5566bb", "", "", raumauswahl, activeRooms)}
-  const AddElevators = () => {      return ImportMeshesFromOBJ("obj/Aufzuge.obj",false, "#334499", "", "", raumauswahl, activeRooms)}
+  const AddStairs = () => {         return ImportMeshesFromOBJ("obj/Treppen.obj",false, "#5b64ff", "", "", raumauswahl, activeRooms)}
+  const AddElevators = () => {      return ImportMeshesFromOBJ("obj/Aufzuge.obj",false, "#298bff", "", "", raumauswahl, activeRooms)}
   const AddAsphalt = () => {         return ImportMeshesFromOBJ("obj/Surrounding_Asphalt.obj",false, "#777777", "", "", raumauswahl, activeRooms)}
   const AddErde = () => {         return ImportMeshesFromOBJ("obj/Surrounding_Erde.obj",false, "#65350F", "", "", raumauswahl, activeRooms)}
   const AddMetalThing = () => {         return ImportMeshesFromOBJ("obj/Surrounding_MetalThing.obj",false, "#f57743", "", "", raumauswahl, activeRooms)}
@@ -126,7 +126,7 @@ const Scene = () => {
    return pathtest
   }
 
-  
+
 
   const findID = (stringvonetwas) => {
       var returnThis;
@@ -199,11 +199,11 @@ const Scene = () => {
           <mesh {...props}>
             <Html>
               <div className="etagen">
-                <button style={{ backgroundColor: showEtage3 ? "#00FA9A" : "#888888" }} onClick={() => setshowEtage3(!showEtage3)}>Etage 3</button>
-                <button style={{ backgroundColor: showEtage2 ? "#00FA9A" : "#888888" }} onClick={() => setshowEtage2(!showEtage2)}>Etage 2</button>
-                <button style={{ backgroundColor: showEtage1 ? "#00FA9A" : "#888888" }} onClick={() => setshowEtage1(!showEtage1)}>Etage 1</button>
-                <button style={{ backgroundColor: showEtage0 ? "#00FA9A" : "#888888" }} onClick={() => setshowEtage0(!showEtage0)}>Etage 0</button>
-                <button style={{ backgroundColor: showUmgebung ? "#00FA9A" : "#888888" }} onClick={() => setshowUmgebung(!showUmgebung)}>Umgebung</button>
+                <button style={{ backgroundColor: showEtage3 ? "#C60C0F" : "#8C8C8C" }} onClick={() => setshowEtage3(!showEtage3)}>Etage 3</button>
+                <button style={{ backgroundColor: showEtage2 ? "#C60C0F" : "#8C8C8C" }} onClick={() => setshowEtage2(!showEtage2)}>Etage 2</button>
+                <button style={{ backgroundColor: showEtage1 ? "#C60C0F" : "#8C8C8C" }} onClick={() => setshowEtage1(!showEtage1)}>Etage 1</button>
+                <button style={{ backgroundColor: showEtage0 ? "#C60C0F" : "#8C8C8C" }} onClick={() => setshowEtage0(!showEtage0)}>Etage 0</button>
+                <button style={{ backgroundColor: showUmgebung ? "#C60C0F" : "#8C8C8C" }} onClick={() => setshowUmgebung(!showUmgebung)}>Umgebung</button>
               </div>
             </Html>
           </mesh>
@@ -232,7 +232,9 @@ const Scene = () => {
 
       if(start.current.value.length > 3){
         const startNeu = findID(start.current.value.replace(".", "")) ;
+        console.log(startNeu);
         const ende = findID(ziel.current.value.replace(".", "")) ;
+        console.log(ende);
         weg1 = Number(startNeu)
         weg2 = Number(ende)
       } else {
@@ -266,6 +268,9 @@ const Scene = () => {
         console.log("error keine wegpunkte ausgewählt")
       }
   }
+
+    var perspCamConfig = {position:[-80, 60, 100], fov:80 , makeDefault:kamera, rotation:[0,-20,0]}
+    var orthoCamConfig = {position:[-60,12, 0], fov:0, makeDefault: !kamera, rotation:[0,-90,0], scale:[0.15,0.15,0.15]}
 
     // UI Route ... fml
     const UiRoute = (props) => {   
@@ -354,7 +359,7 @@ const Scene = () => {
           return (
           <>
           <OrbitControls enableRotate={true} target={[-60,0,0]}/>
-          <PerspectiveCamera position={[-80, 60, 100]} fov={80} makeDefault={kamera} rotation={[0,-20,0]}>
+          <PerspectiveCamera {...perspCamConfig}>
             <Torus position={[0]}/>
             <EtagenAuswahl position={[0]}/>
             <UiRoute position={[0]}/>
@@ -395,7 +400,7 @@ const Scene = () => {
           return (
             <>
               <OrbitControls enableRotate={false} target={[-60,0, 0]}/>
-              <OrthographicCamera position={[-60,12, 0]} fov={0} makeDefault={!kamera} rotation={[0,-90,0]} scale={[0.15,0.15,0.15]}>
+              <OrthographicCamera {...orthoCamConfig}>
                 <Torus position={[10, 100]}/>
                 <EtagenAuswahl position={[0,10]}/>
                 <UiRoute position={[0,5]}/>
