@@ -42,11 +42,11 @@ async function convertToPointsAndEdgesData(input){
         if(element[0] == "v"){
             let elementSplit = element.split(" ");
             let vecX = parseFloat(elementSplit[1])
-            vecX = (Math.round(vecX * 10000) / 10000)
+            vecX = (Math.round(vecX * 100000) / 100000)
             let vecY = parseFloat(elementSplit[2])
-            vecY = (Math.round(vecY * 10000) / 10000)
+            vecY = (Math.round(vecY * 100000) / 100000)
             let vecZ = parseFloat(elementSplit[3])
-            vecZ = (Math.round(vecZ * 10000) / 10000)
+            vecZ = (Math.round(vecZ * 100000) / 100000)
             let newPathMeshPoint = new PathMeshPoint(vIndexCount, new THREE.Vector3(vecX,vecY,vecZ))
             points.push(newPathMeshPoint)
             vIndexCount++

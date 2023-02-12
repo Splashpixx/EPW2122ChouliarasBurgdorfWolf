@@ -2,6 +2,9 @@ import * as THREE from "three";
 
 async function findPathSimple(startPoint, endPoint, pathMesh, takeStairs, takeElevator){
 
+    console.log(startPoint)
+    console.log(endPoint)
+
     await setElevationFlags(startPoint, endPoint, pathMesh, takeStairs, takeElevator)
 
     startPoint.depth = 0
@@ -19,7 +22,7 @@ async function findPathSimple(startPoint, endPoint, pathMesh, takeStairs, takeEl
             }
         })
         currentDepth++
-        countforStop ++
+        countforStop++
         if(StopPoint === countforStop){break;}
     }
 
