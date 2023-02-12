@@ -37,6 +37,7 @@ import {importPathMesh} from "./test/ImportPathMesh";
 import {RenderChild, Thing, AddNewPointRandom, BadCode} from "./buildingGen"
 import {MeshClickable, MeshNOTClickable, ImportMeshesFromOBJ, meshcollection} from "./test/MeshFunctions";
 import { hover } from '@testing-library/user-event/dist/hover';
+import Camera from "./test/ConsistentCamera";
 
 import {EffectComposer, DepthOfField, Bloom, Noise, Vignette, Outline, Selection, Select} from '@react-three/postprocessing'
 
@@ -359,11 +360,11 @@ const Scene = () => {
           return (
           <>
           <OrbitControls enableRotate={true} target={[-60,0,0]}/>
-          <PerspectiveCamera {...perspCamConfig}>
+          <Camera>
             <Torus position={[0]}/>
             <EtagenAuswahl position={[0]}/>
             <UiRoute position={[0]}/>
-          </PerspectiveCamera>
+          </Camera>
 
           <Selection>
             <EffectComposer autoclear={false}>
@@ -400,11 +401,11 @@ const Scene = () => {
           return (
             <>
               <OrbitControls enableRotate={false} target={[-60,0, 0]}/>
-              <OrthographicCamera {...orthoCamConfig}>
+              <Camera>
                 <Torus position={[10, 100]}/>
                 <EtagenAuswahl position={[0,10]}/>
                 <UiRoute position={[0,5]}/>
-              </OrthographicCamera>
+              </Camera>
 
               <Selection>
             <EffectComposer autoclear={false}>
