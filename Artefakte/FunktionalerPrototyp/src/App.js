@@ -88,30 +88,30 @@ const Scene = () => {
   }
 
   // Gebäude !-Pathfinding ist in der buildingGen.js-!
-  const AddEtage03Raeume_01 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_03_01.obj",true, "#146152", "yellow", "green", raumauswahl, activeRooms)}
-  const AddEtage03Raeume_02 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_03_02.obj",true, "#257263", "yellow", "green", raumauswahl, activeRooms)}
-  const AddEtage03Geo = () => {     return ImportMeshesFromOBJ("obj/Etage_03_Geo.obj",false, "#9b9b9b", "", "", raumauswahl, activeRooms)}
+  const AddEtage03Raeume_01 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_03_01.obj",true, "#67d98b", "#e68b56", "#c5181f", raumauswahl, activeRooms)}
+  const AddEtage03Raeume_02 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_03_02.obj",true, "#5ab475", "#e68b56", "#c5181f", raumauswahl, activeRooms)}
+  const AddEtage03Geo = () => {     return ImportMeshesFromOBJ("obj/Etage_03_Geo.obj",false, "#adadad", "", "", raumauswahl, activeRooms)}
 
-  const AddEtage02Raeume_01 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_02_01.obj",true, "#44803F", "yellow", "green", raumauswahl, activeRooms)}
-  const AddEtage02Raeume_02 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_02_02.obj",true, "#55914F", "yellow", "green", raumauswahl, activeRooms)}
-  const AddEtage02Geo = () => {     return ImportMeshesFromOBJ("obj/Etage_02_Geo.obj",false, "#adadad", "", "", raumauswahl, activeRooms)}
+  const AddEtage02Raeume_01 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_02_01.obj",true, "#85b0ee", "#e68b56", "#c31820", raumauswahl, activeRooms)}
+  const AddEtage02Raeume_02 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_02_02.obj",true, "#7094c9", "#e68b56", "#c31820", raumauswahl, activeRooms)}
+  const AddEtage02Geo = () => {     return ImportMeshesFromOBJ("obj/Etage_02_Geo.obj",false, "#c4c4c4", "", "", raumauswahl, activeRooms)}
 
-  const AddEtage01Raeume_01 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_01_01.obj",true, "#a3be55", "yellow", "green", raumauswahl, activeRooms)}
-  const AddEtage01Raeume_02 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_01_02.obj",true, "#B4CF66", "yellow", "green", raumauswahl, activeRooms)}
-  const AddEtage01Eingang =() => {      return ImportMeshesFromOBJ("obj/Main_Etage_01_Eingang.obj",true, "#eedb4b", "yellow", "green", raumauswahl, activeRooms)}
-  const AddEtage01Geo = () => {     return ImportMeshesFromOBJ("obj/Etage_01_Geo.obj",false, "#bfbfbf", "", "", raumauswahl, activeRooms)}
+  const AddEtage01Raeume_01 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_01_01.obj",true, "#67d98b", "#f1679a", "#c11821", raumauswahl, activeRooms)}
+  const AddEtage01Raeume_02 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_01_02.obj",true, "#5ab475", "#f1679a", "#bf1822", raumauswahl, activeRooms)}
+  const AddEtage01Eingang =() => {      return ImportMeshesFromOBJ("obj/Main_Etage_01_Eingang.obj",true, "#9ab5d2", "#f1679a", "#bd1823", raumauswahl, activeRooms)}
+  const AddEtage01Geo = () => {     return ImportMeshesFromOBJ("obj/Etage_01_Geo.obj",false, "#d3d3d3", "", "", raumauswahl, activeRooms)}
 
-  const AddEtage00Raeume_01 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_00_01.obj",true, "#eedb4b", "yellow", "green", raumauswahl, activeRooms)}
-  const AddEtage00Raeume_02 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_00_02.obj",true, "#FFEC5C", "yellow", "green", raumauswahl, activeRooms)}
-  const AddEtage00Eingang =() => {      return ImportMeshesFromOBJ("obj/Main_Etage_00_Eingang.obj",true, "#eedb4b", "yellow", "green", raumauswahl, activeRooms)}
-  const AddEtage00Geo =() => {      return ImportMeshesFromOBJ("obj/Etage_00_Geo.obj",false, "#d1d1d1", "", "", raumauswahl, activeRooms)}
+  const AddEtage00Raeume_01 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_00_01.obj",true, "#85b0ee", "#f1679a", "#bc1824", raumauswahl, activeRooms)}
+  const AddEtage00Raeume_02 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_00_02.obj",true, "#7094c9", "#f1679a", "#9e141f", raumauswahl, activeRooms)}
+  const AddEtage00Eingang =() => {      return ImportMeshesFromOBJ("obj/Main_Etage_00_Eingang.obj",true, "#99b4d1", "#f1679a", "#bc1824", raumauswahl, activeRooms)}
+  const AddEtage00Geo =() => {      return ImportMeshesFromOBJ("obj/Etage_00_Geo.obj",false, "#e8e8e8", "", "", raumauswahl, activeRooms)}
 
-  const AddStairs = () => {         return ImportMeshesFromOBJ("obj/Treppen.obj",false, "#5b64ff", "", "", raumauswahl, activeRooms)}
-  const AddElevators = () => {      return ImportMeshesFromOBJ("obj/Aufzuge.obj",false, "#298bff", "", "", raumauswahl, activeRooms)}
-  const AddAsphalt = () => {         return ImportMeshesFromOBJ("obj/Surrounding_Asphalt.obj",false, "#777777", "", "", raumauswahl, activeRooms)}
-  const AddErde = () => {         return ImportMeshesFromOBJ("obj/Surrounding_Erde.obj",false, "#65350F", "", "", raumauswahl, activeRooms)}
+  const AddStairs = () => {         return ImportMeshesFromOBJ("obj/Treppen.obj",false, "#ffc940", "", "", raumauswahl, activeRooms)}
+  const AddElevators = () => {      return ImportMeshesFromOBJ("obj/Aufzuge.obj",false, "#ffc940", "", "", raumauswahl, activeRooms)}
+  const AddAsphalt = () => {         return ImportMeshesFromOBJ("obj/Surrounding_Asphalt.obj",false, "#8c8c8c", "", "", raumauswahl, activeRooms)}
+  const AddErde = () => {         return ImportMeshesFromOBJ("obj/Surrounding_Erde.obj",false, "#676767", "", "", raumauswahl, activeRooms)}
   const AddMetalThing = () => {         return ImportMeshesFromOBJ("obj/Surrounding_MetalThing.obj",false, "#f57743", "", "", raumauswahl, activeRooms)}
-  const AddMetalThingStangen = () => {         return ImportMeshesFromOBJ("obj/Surrounding_MetalThing_Stangen.obj",false, "#BBBBBB", "", "", raumauswahl, activeRooms)}
+  const AddMetalThingStangen = () => {         return ImportMeshesFromOBJ("obj/Surrounding_MetalThing_Stangen.obj",false, "#e1e1e1", "", "", raumauswahl, activeRooms)}
   const AddGrund = () => {         return ImportMeshesFromOBJ("obj/Surrounding_Grund.obj",false, "#666666", "", "", raumauswahl, activeRooms)}
 
   /* ALLES MIT LINIEN IST HIER*/
@@ -144,7 +144,7 @@ const Scene = () => {
                   geom.setFromPoints(points.map((p) => new THREE.Vector3(p[0], p[1], p[2])))
                 }}
             />
-            <lineBasicMaterial color="#ff0000" linewidth={50}/>
+            <lineBasicMaterial color="#c5181f" linewidth={50}/>
           </line>
         </>
     )
