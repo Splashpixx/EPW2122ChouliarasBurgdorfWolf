@@ -99,7 +99,7 @@ const Scene = () => {
   const AddEtage00Raeume = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_00_Raeume.obj",true, "#440000", "yellow", "green", raumauswahl, activeRooms)}
   const AddEtage00Geo =() => {      return ImportMeshesFromOBJ("obj/Main_Etage_00_Geo.obj",false, "#666666", "", "", raumauswahl, activeRooms)}
   const AddStairs = () => {         return ImportMeshesFromOBJ("obj/Stairs.obj",false, "#66aa66", "", "", raumauswahl, activeRooms)}
-  const AddElevators = () => {      return ImportMeshesFromOBJ("obj/Elevators.obj",false, "#5566bb", "", "", raumauswahl, activeRooms)}
+  const AddElevators = () => {      return ImportMeshesFromOBJ("obj/Aufzuge.obj",false, "#5566bb", "", "", raumauswahl, activeRooms)}
   const AddGround = () => {         return ImportMeshesFromOBJ("obj/Ground.obj",false, "#222222", "", "", raumauswahl, activeRooms)}
 
   /* ALLES MIT LINIEN IST HIER*/
