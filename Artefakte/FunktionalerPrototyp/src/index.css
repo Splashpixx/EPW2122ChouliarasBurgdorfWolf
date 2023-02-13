@@ -16,32 +16,6 @@ code {
   overflow: hidden;
 }
 
-@media only screen and (max-width: 500px) {
-  .canvas-container {
-    margin-bottom: -40px;
-  }
-  .canvas-container::after {
-    display: none;
-  }
-}
-
-.SwitchCamNew button{
- 
-  position: absolute;
-  right: -95.8vw;
-  top: 30vh;
-  width: 100px;
-  height: 35px;
-  gap: 20px;
-  padding: 5px 10px; 
-  border-radius: 5px;
-  border: solid 2px white;
-  outline: none;
-  background: #E8E8E8;
-  color: Black;
-  cursor: pointer;
-}
-
 .etagen {
   position: absolute;
   display: flex;
@@ -65,7 +39,7 @@ code {
   border: none;
   outline: none;
   background: #AAAAAA;
-  color: Black;
+  color: white;
   cursor: pointer;
 }
 
@@ -179,17 +153,7 @@ code {
 
 /*Unten folgt die mobile ansicht*/
 
-/*@media only screen and (max-width: 500px) {
-  .canvas-container {
-    margin-bottom: -40px;
-  }
-  .canvas-container::after {
-    display: none;
-  }
-}*/
-
-
-@media only screen and (max-width: 727px) {
+@media only screen and (max-width: 1200px) {
   
   .etagen {
     display: flex;
@@ -216,23 +180,9 @@ code {
     border: solid 2px white;
     outline: none;
     background: #AAAAAA;
-    color: Black;
+    color: white;
   }
 
-  .SwitchCamNew button{
-    padding: 5px 10px;
-    position: absolute;
-    right: -97vw;
-    top: 27vh;
-    width: 100px;
-    border-radius: 5px;
-    border: solid 2px white;
-    outline: none;
-    background: #AAAAAA;
-    color: Black;
-    cursor: pointer;
-  }
-  
 
   .uiRoute{
     top: 5vh;
