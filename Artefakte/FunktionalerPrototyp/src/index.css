@@ -81,11 +81,16 @@ code {
   margin-left: 10px;
   width: 218px;
   height: 30px;
+  border-color: #70b785;
   border-radius: 10px;
   outline: none;
-  background: #000000 !important;
+  background: #70b785 !important;
   color: white;
   cursor: pointer;
+}
+
+.berechnenButton
+{
 }
 
 /* Burger Menu */
