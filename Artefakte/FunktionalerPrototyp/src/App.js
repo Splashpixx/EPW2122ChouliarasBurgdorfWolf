@@ -96,14 +96,14 @@ const Scene = () => {
   const AddEtage02Raeume_02 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_02_02.obj",true, "#7094c9", "#e68b56", "#c31820", raumauswahl, activeRooms)}
   const AddEtage02Geo = () => {     return ImportMeshesFromOBJ("obj/Etage_02_Geo.obj",false, "#c4c4c4", "", "", raumauswahl, activeRooms)}
 
-  const AddEtage01Raeume_01 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_01_01.obj",true, "#67d98b", "#f1679a", "#c11821", raumauswahl, activeRooms)}
-  const AddEtage01Raeume_02 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_01_02.obj",true, "#5ab475", "#f1679a", "#bf1822", raumauswahl, activeRooms)}
-  const AddEtage01Eingang =() => {      return ImportMeshesFromOBJ("obj/Main_Etage_01_Eingang.obj",true, "#9ab5d2", "#f1679a", "#bd1823", raumauswahl, activeRooms)}
+  const AddEtage01Raeume_01 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_01_01.obj",true, "#67d98b", "#e68b56", "#c11821", raumauswahl, activeRooms)}
+  const AddEtage01Raeume_02 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_01_02.obj",true, "#5ab475", "#e68b56", "#bf1822", raumauswahl, activeRooms)}
+  const AddEtage01Eingang =() => {      return ImportMeshesFromOBJ("obj/Main_Etage_01_Eingang.obj",true, "#9ab5d2", "#e68b56", "#bd1823", raumauswahl, activeRooms)}
   const AddEtage01Geo = () => {     return ImportMeshesFromOBJ("obj/Etage_01_Geo.obj",false, "#d3d3d3", "", "", raumauswahl, activeRooms)}
 
-  const AddEtage00Raeume_01 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_00_01.obj",true, "#85b0ee", "#f1679a", "#bc1824", raumauswahl, activeRooms)}
-  const AddEtage00Raeume_02 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_00_02.obj",true, "#7094c9", "#f1679a", "#9e141f", raumauswahl, activeRooms)}
-  const AddEtage00Eingang =() => {      return ImportMeshesFromOBJ("obj/Main_Etage_00_Eingang.obj",true, "#99b4d1", "#f1679a", "#bc1824", raumauswahl, activeRooms)}
+  const AddEtage00Raeume_01 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_00_01.obj",true, "#85b0ee", "#e68b56", "#bc1824", raumauswahl, activeRooms)}
+  const AddEtage00Raeume_02 = () => {  return ImportMeshesFromOBJ("obj/Main_Etage_00_02.obj",true, "#7094c9", "#e68b56", "#9e141f", raumauswahl, activeRooms)}
+  const AddEtage00Eingang =() => {      return ImportMeshesFromOBJ("obj/Main_Etage_00_Eingang.obj",true, "#99b4d1", "#e68b56", "#bc1824", raumauswahl, activeRooms)}
   const AddEtage00Geo =() => {      return ImportMeshesFromOBJ("obj/Etage_00_Geo.obj",false, "#e8e8e8", "", "", raumauswahl, activeRooms)}
 
   const AddStairs = () => {         return ImportMeshesFromOBJ("obj/Treppen.obj",false, "#ffc940", "", "", raumauswahl, activeRooms)}
