@@ -186,7 +186,7 @@ const Scene = () => {
                   <button style={{ backgroundColor: showEtage1 ? "#C60C0F" : "#8C8C8C" }} onClick={() => setshowEtage1(!showEtage1)}>Etage 1</button>
                   <button style={{ backgroundColor: showEtage0 ? "#C60C0F" : "#8C8C8C" }} onClick={() => setshowEtage0(!showEtage0)}>Etage 0</button>
                   <button style={{ backgroundColor: showUmgebung ? "#C60C0F" : "#8C8C8C" }} onClick={() => setshowUmgebung(!showUmgebung)}>Umgebung</button>
-                  <button style={{ backgroundColor: showUmgebung ? "#C60C0F" : "#8C8C8C" }} onClick={() => set(!kamera)}>Switch cam</button>
+                  <button style={{ backgroundColor: showUmgebung ? "#70b684" : "#70b583" }} onClick={() => set(!kamera)}>Switch cam</button>
                 </div>
               </Html>
             </mesh>
