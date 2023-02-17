@@ -168,7 +168,7 @@ const Scene = () => {
     const [isOpen, setOpen] = useState(false);
 
     const [treppeRadio, setTreppeRadio] = useState(true);
-    const [aufzugRadio, setAufzugRadio] = useState(null);
+    const [aufzugRadio, setAufzugRadio] = useState(false);
 
 
 
